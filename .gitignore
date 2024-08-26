@@ -1,0 +1,8 @@
+.obsidian/
+.notebook/
+.vscode/
+.idea/
+.DS_Store
+.gitattributes
+.gitmodules
+.gitkeep
