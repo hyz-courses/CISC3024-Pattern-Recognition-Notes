@@ -108,10 +108,9 @@ MNIST database.
 	- The prob. that this person doesn't gets cancer is:
 		- $P(\omega_2|+) = \dfrac{P(+|\omega_2)\times P(\omega_2)}{P(x)}=\dfrac{0.03\times0.992}{P(x)}=\dfrac{0.02976}{P(x)}$
 	- Therefore, the classification result would be:
-		- $$
-			\begin{aligned}
-			\omega_{target}=argmax_i[P(\omega_i|+)] \\ =argmax_i[\dfrac{P(+|\omega_i)\times P(\omega_i)}{P(x)}] \\ =argmax_i[P(+|\omega_i)\times P(\omega_i)] \\
-			=\omega_2, for 0.00784 < 0.02976
-			\end{aligned}
-			$$
+		- $\omega_{target}=argmax_i[P(\omega_i|+)]$
+		  $=argmax_i[\dfrac{P(+|\omega_i)\times P(\omega_i)}{P(x)}]$
+		  $=argmax_i[P(+|\omega_i)\times P(\omega_i)]$
+		  $=\omega_2$, for $0.00784 < 0.02976$
+		  
 		- That is, $no\_cancer$.
