@@ -48,7 +48,7 @@ MNIST database.
 		- The sum of the prior probabilities of all classes is $1$.
 
 # 2.2 Prior & Posterior Probabilities
-## 2.2.1 Prior Probability
+## 2.2.1 [DEF] Prior Probability
 - Decision **BEFORE** Observation (Naïve Decision Rule).
 	- Don't care about test sample $x$.
 	- Given $x$, always choose the class that:
@@ -60,7 +60,7 @@ MNIST database.
 	3. Then, classify $x$ directly into $argmax_i[P(\omega_i)]$.
 - The decision is the same all the time obviously, and the prob. of a right guess is $\dfrac{1}{c}$. 
 
-## 2.2.2 Posterior Probability
+## 2.2.2 [DEF] Posterior Probability
 - Decision **WITH** Observation.
 	- Cares about test sample $x$.
 	- Considering $x$, as well as the prior probabilities $P(\omega) = \{P(\omega_1),P(\omega_2),...,P(\omega_c)\}$, 
@@ -99,14 +99,14 @@ MNIST database.
 		- $P(\omega_1)=0.008$
 		- $P(\omega_2)=1-P(\omega_1)=0.992$
 	- Likelihoods:
-		- For class $\omega_1={cancer}$:    $P(+|\omega_1)=0.98$, $P(-|\omega_1)=0.02$
+		- For class $\omega_1={cancer}$:       $P(+|\omega_1)=0.98$, $P(-|\omega_1)=0.02$
 		- For class $\omega_2={no\_cancer}$: $P(+|\omega_2)=0.03$, $P(-|\omega_2)=0.97$. 
 **Classification:**
 - Given a test sample $x=+$.
 	- The prob. that this person gets cancer is:
-		- $P(\omega_1|+)=\dfrac{P(+|\omega_1)\times P(\omega_1)}{P(x)}=\dfrac{0.98\times0.008}{P(x)}=\dfrac{0.00784}{P(x)}$.
+		- $P(\omega_1|+)=\dfrac{P(+|\omega_1)\times P(\omega_1)}{P(+)}=\dfrac{0.98\times0.008}{P(+)}=\dfrac{0.00784}{P(+)}$.
 	- The prob. that this person doesn't gets cancer is:
-		- $P(\omega_2|+) = \dfrac{P(+|\omega_2)\times P(\omega_2)}{P(x)}=\dfrac{0.03\times0.992}{P(x)}=\dfrac{0.02976}{P(x)}$
+		- $P(\omega_2|+) = \dfrac{P(+|\omega_2)\times P(\omega_2)}{P(+)}=\dfrac{0.03\times0.992}{P(+)}=\dfrac{0.02976}{P(+)}$
 	- Therefore, the classification result would be:
 		- $\omega_{target}=argmax_i[P(\omega_i|+)]$
 		  $=argmax_i[\dfrac{P(+|\omega_i)\times P(\omega_i)}{P(x)}]$
@@ -114,3 +114,20 @@ MNIST database.
 		  $=\omega_2$, for $0.00784 < 0.02976$
 		  
 		- That is, $no\_cancer$.
+
+# 2.3 Loss Functions
+## 2.3.0 Basics
+- Different selections may have different importance.
+	- In pure Naive Bayes, we only consider probability.
+	- However, 
+		- we can tolerate "non-cancer" being classified into "cancer", 
+		- while it's more lossy to classify "cancer" into "non-cancer".
+	- Need to consider this kind of "loss" into our decision method.
+- We want to know if the Bayes decision rule is optimal.
+	- Need a evaluation method
+	- calc how many error you make, sum together
+## 2.3.1 Probability of Error
+For only two classes:
+- If $P(\omega_1|x)>P(\omega_2|x)$, $x\leftarrow\omega_1$. Prob. of error: $P(\omega_2|x)$.
+-  If $P(\omega_1|x)<P(\omega_2|x)$, $x\leftarrow\omega_2$. Prob. of error: $P(\omega_1|x)$.
+## 2.3.2 Loss Function
