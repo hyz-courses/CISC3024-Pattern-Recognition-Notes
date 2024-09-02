@@ -1,6 +1,6 @@
 # 2.1 Bayes Decision Theory
 Basic Assumptions
-- The decision problem is posed in probablistic terms.
+- The decision problem is posed in probabilistic terms.
 - **ALL** relevant probability values are known.
 
 ## 2.1.1 Process
@@ -112,7 +112,6 @@ MNIST database.
 		  $=argmax_i[\dfrac{P(+|\omega_i)\times P(\omega_i)}{P(x)}]$
 		  $=argmax_i[P(+|\omega_i)\times P(\omega_i)]$
 		  $=\omega_2$, for $0.00784 < 0.02976$
-		  
 		- That is, $no\_cancer$.
 
 # 2.3 Loss Functions
@@ -131,3 +130,39 @@ For only two classes:
 - If $P(\omega_1|x)>P(\omega_2|x)$, $x\leftarrow\omega_1$. Prob. of error: $P(\omega_2|x)$.
 -  If $P(\omega_1|x)<P(\omega_2|x)$, $x\leftarrow\omega_2$. Prob. of error: $P(\omega_1|x)$.
 ## 2.3.2 Loss Function
+**Problem**
+- Take action $\alpha_i$ for a given $x$.
+	- The action $\alpha_i$: To assign the test pattern $x$ the class $\omega_i$.
+- Introduce the loss $\lambda(\alpha_i|\omega_j)$, for the true class $\omega_j$ and action $\alpha_i$ on $x$. 
+- Don't actually know the true class $\omega_j$, so we use the Expected Loss.
+
+**Expected Loss (Average Loss, Conditional Risk):**
+- The expected loss of classifying $x$ into $\omega_i$.
+- $R(\alpha_i|x)=\sum_{j=1}^{c}{\lambda(\alpha_i|\omega_j)\times P(\omega_j|x)}$ , where
+	- $\lambda(\alpha_i|\omega_j)$: The loss of classifying $x$ into $\omega_i$ under the true class $\omega_j$.
+	- $P(\omega_j|x)$: The posterior probability that x belongs to class $\omega_j$.
+
+**Bayes Risk**:
+- The modified measurement of the original Bayes Rule.
+	- Consider the importance of each error.
+	- Consider the max prob -> Consider the min Loss
+- The action that gives the minimum expected loss of $x$.
+- $\alpha(x)=argmin_{\alpha_i\in A}R(\alpha_i|x)$
+	- $=argmin_{\alpha_i\in A}\sum_{j=1}^{c}\lambda(\alpha_i|\omega_j)P(\omega_j|x)$
+
+**Example:**
+- Known:
+	- Test sample $x$.
+	- Classes $\omega = \{\omega_1,\omega_2\}$.
+	- The calculated posterior probabilities:
+		- $P(\omega_1|x)$, $P(\omega_2|x)$.
+	- Loss Matrix:$\begin{bmatrix}  \lambda_{11} & \lambda_{12} \\  \lambda_{21} & \lambda_{22}  \end{bmatrix}$, where $\lambda_{ij}=\lambda(\alpha_i|\omega_j)$.
+- $\omega_{target}=argmin_{\alpha_i\in A}R(\alpha_i|x)$
+- If we choose $\omega_1$, we have:
+	- $R(\alpha_1|x)<R(\alpha_2|x)$
+	- $\iff \lambda_{11}P(\omega_1|x)+\lambda_{12}P(\omega_2|x)<\lambda_{21}P(\omega_1|x)+\lambda_{22}P(\omega_2|x)$
+	- $\iff (\lambda_{11}-\lambda_{21})P(\omega_1|x)<(\lambda_{12}-\lambda_{22})P(\omega_2|x)$
+	- $\iff \dfrac{P(\omega_1|x)}{P(\omega_2|x)}>\dfrac{\lambda_{12}-\lambda_{22}}{\lambda_{11}-\lambda_{21}}$
+	- $\iff \dfrac{P(x|\omega_1)P(\omega_1)}{P(x|\omega_2)P(\omega_2)}>\dfrac{\lambda_{12}-\lambda_{22}}{\lambda{11}-\lambda_{21}}$
+	- $\iff \dfrac{P(x|\omega_1)}{P(x|\omega_2)}>\dfrac{(\lambda_{12}-\lambda_{22})P(\omega_2)}{(\lambda_{21}-\lambda_{22})P(\omega_1)}$
+	- $\iff \dfrac{P(x|\omega_1)}{P(x|\omega_2)}>\theta_t$
