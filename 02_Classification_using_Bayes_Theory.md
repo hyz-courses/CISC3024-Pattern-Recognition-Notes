@@ -47,9 +47,9 @@ MNIST database.
 		- $\sum_{i=1}^{c}P(\omega_i)=1$.
 		- The sum of the prior probabilities of all classes is $1$.
 
-# 2.2 Prior & Posterior Probabilities
-## 2.2.1 [DEF] Prior Probability
-- Decision **BEFORE** Observation (Naïve Decision Rule).
+# 2.2 Prior & Posterior Probabilities 先验与后验概率
+## 2.2.1 [DEF] Prior Probability 先验概率
+- Decision **BEFORE** Observation (Naïve Decision Rule). 
 	- Don't care about test sample $x$.
 	- Given $x$, always choose the class that:
 		- has the most member in the database.
@@ -60,8 +60,8 @@ MNIST database.
 	3. Then, classify $x$ directly into $argmax_i[P(\omega_i)]$.
 - The decision is the same all the time obviously, and the prob. of a right guess is $\dfrac{1}{c}$. 
 
-## 2.2.2 [DEF] Posterior Probability
-- Decision **WITH** Observation.
+## 2.2.2 [DEF] Posterior Probability 后验概率
+- Decision **WITH** Observation. 
 	- Cares about test sample $x$.
 	- Considering $x$, as well as the prior probabilities $P(\omega) = \{P(\omega_1),P(\omega_2),...,P(\omega_c)\}$, 
 		- and give $x$ the class with the biggest posterior probability.
@@ -114,14 +114,14 @@ MNIST database.
 		  $=\omega_2$, for $0.00784 < 0.02976$
 		- That is, $no\_cancer$.
 
-# 2.3 Loss Functions
-## 2.3.0 Basics
-- Different selections may have different importance.
-	- In pure Naive Bayes, we only consider probability.
+# 2.3 Loss Functions 决策成本函数
+## 2.3.0 Why do we use loss functions?
+- Different selection errors may have differently significant consequences, i.e., "losses" or "costs". 不同决策的成本、后果不同。
+	- In pure Naïve Bayes classification, we only consider probability.
 	- However, 
 		- we can tolerate "non-cancer" being classified into "cancer", 
 		- while it's more lossy to classify "cancer" into "non-cancer".
-	- Need to consider this kind of "loss" into our decision method.
+	- There is a need to consider this kind of "loss" into our decision method.
 - We want to know if the Bayes decision rule is optimal.
 	- Need a evaluation method
 	- calc how many error you make, sum together
@@ -129,40 +129,150 @@ MNIST database.
 For only two classes:
 - If $P(\omega_1|x)>P(\omega_2|x)$, $x\leftarrow\omega_1$. Prob. of error: $P(\omega_2|x)$.
 -  If $P(\omega_1|x)<P(\omega_2|x)$, $x\leftarrow\omega_2$. Prob. of error: $P(\omega_1|x)$.
-## 2.3.2 Loss Function
+## 2.3.2 Loss Function (i.e., "Cost Function")
 **Problem**
 - Take action $\alpha_i$ for a given $x$.
 	- The action $\alpha_i$: To assign the test pattern $x$ the class $\omega_i$.
-- Introduce the loss $\lambda(\alpha_i|\omega_j)$, for the true class $\omega_j$ and action $\alpha_i$ on $x$. 
-- Don't actually know the true class $\omega_j$, so we use the Expected Loss.
+- Introduce the loss/cost $\lambda(\alpha_i|\omega_j)$, for the true class $\omega_j$ and action $\alpha_i$ on $x$. 
+	- That is, $\lambda(\alpha_i|\omega_j)$ is the cost of classifying **any** sample into class $\omega_i$ when the true class of that sample is $\omega_j$.
+	- For instance, $\lambda(\alpha_{cancer}|\omega_{no\_cancer})$ is the cost of diagnosing a patient that actually doesn't have cancer as "having cancer". 
+		- (Which by intuition is not as serious as its reverse, therefore the value of this $\lambda$ should also be lower than its reverse.)
+- We don't actually know the true class $\omega_j$ for a random sample $x$, so we use the Expected Loss.
+	- That is, we consider the "average loss" of classifying $x$ into $\omega_i$ by considering:
+		- The loss of classifying $x$ into $\omega_j$ for all $\omega_j \in \omega$.
+		- The probability that $x\in\omega_j$, i.e., $P(\omega_j|x)$. 
 
-**Expected Loss (Average Loss, Conditional Risk):**
+**[DEF]Expected Loss (Average Loss, Conditional Risk) 期望成本:**
 - The expected loss of classifying $x$ into $\omega_i$.
 - $R(\alpha_i|x)=\sum_{j=1}^{c}{\lambda(\alpha_i|\omega_j)\times P(\omega_j|x)}$ , where
-	- $\lambda(\alpha_i|\omega_j)$: The loss of classifying $x$ into $\omega_i$ under the true class $\omega_j$.
-	- $P(\omega_j|x)$: The posterior probability that x belongs to class $\omega_j$.
+	- $\lambda(\alpha_i|\omega_j)$: The cost of classifying $x$ into $\omega_i$ under the true class $\omega_j$.
+	- $P(\omega_j|x)$: The posterior probability that $x$ belongs to class $\omega_j$.
+		- Computed during the Naïve Bayes Classification with $P(\omega_j)$ and $P(x|\omega_j)$. 
 
-**Bayes Risk**:
+**[DEF]Bayes Risk 贝叶斯风险**:
 - The modified measurement of the original Bayes Rule.
 	- Consider the importance of each error.
-	- Consider the max prob -> Consider the min Loss
-- The action that gives the minimum expected loss of $x$.
-- $\alpha(x)=argmin_{\alpha_i\in A}R(\alpha_i|x)$
-	- $=argmin_{\alpha_i\in A}\sum_{j=1}^{c}\lambda(\alpha_i|\omega_j)P(\omega_j|x)$
+	- Consider minimum loss, instead of maximum probability.
+- Bayes Risk finds the action that gives the minimum expected loss of $x$.
+	- $\alpha(x)=argmin_{\alpha_i\in A}R(\alpha_i|x)$
+		- $=argmin_{\alpha_i\in A}\sum_{j=1}^{c}\lambda(\alpha_i|\omega_j)P(\omega_j|x)$
 
-**Example:**
+**Derivation: For a 2-class problem**
 - Known:
 	- Test sample $x$.
 	- Classes $\omega = \{\omega_1,\omega_2\}$.
 	- The calculated posterior probabilities:
 		- $P(\omega_1|x)$, $P(\omega_2|x)$.
 	- Loss Matrix:$\begin{bmatrix}  \lambda_{11} & \lambda_{12} \\  \lambda_{21} & \lambda_{22}  \end{bmatrix}$, where $\lambda_{ij}=\lambda(\alpha_i|\omega_j)$.
+		- $\lambda_{ij}$: The cost of classifying $x$ into $\omega_i$ when the true class of $x$ is $\omega_j$. 
 - $\omega_{target}=argmin_{\alpha_i\in A}R(\alpha_i|x)$
 - If we choose $\omega_1$, we have:
 	- $R(\alpha_1|x)<R(\alpha_2|x)$
 	- $\iff \lambda_{11}P(\omega_1|x)+\lambda_{12}P(\omega_2|x)<\lambda_{21}P(\omega_1|x)+\lambda_{22}P(\omega_2|x)$
-	- $\iff (\lambda_{11}-\lambda_{21})P(\omega_1|x)<(\lambda_{12}-\lambda_{22})P(\omega_2|x)$
-	- $\iff \dfrac{P(\omega_1|x)}{P(\omega_2|x)}>\dfrac{\lambda_{12}-\lambda_{22}}{\lambda_{11}-\lambda_{21}}$
-	- $\iff \dfrac{P(x|\omega_1)P(\omega_1)}{P(x|\omega_2)P(\omega_2)}>\dfrac{\lambda_{12}-\lambda_{22}}{\lambda{11}-\lambda_{21}}$
-	- $\iff \dfrac{P(x|\omega_1)}{P(x|\omega_2)}>\dfrac{(\lambda_{12}-\lambda_{22})P(\omega_2)}{(\lambda_{21}-\lambda_{22})P(\omega_1)}$
+	- $\iff (\lambda_{21}-\lambda_{11})P(\omega_1|x)>(\lambda_{12}-\lambda_{22})P(\omega_2|x)$
+	- $\iff \dfrac{P(\omega_1|x)}{P(\omega_2|x)}>\dfrac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}}$
+	- $\iff \dfrac{P(x|\omega_1)P(\omega_1)}{P(x|\omega_2)P(\omega_2)}>\dfrac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}}$
+	- $\iff \dfrac{P(x|\omega_1)}{P(x|\omega_2)}>\dfrac{(\lambda_{12}-\lambda_{22})P(\omega_2)}{(\lambda_{21}-\lambda_{11})P(\omega_1)}$
 	- $\iff \dfrac{P(x|\omega_1)}{P(x|\omega_2)}>\theta_t$
+## 2.3.3 Examples
+### Minimum Prob. Error and Minimum Risk
+
+Remark: Gaussian Distribution
+- $GD(x)=\dfrac{1}{\sigma\sqrt{2\pi}}e^{-\dfrac{(x-\mu)^2}{2\sigma^2}}$
+
+Given:
+- Two probability distributions of evidence $P(x|\omega_j)$ regarding $j\in\{1,2\}$.
+	- $P(x|\omega_1)=\dfrac{1}{\sqrt{\pi}}e^{-x^2}$, where $\mu=0, \sigma=\dfrac{1}{\sqrt{2}}$.
+	- $P(x|\omega_2)=\dfrac{1}{\sqrt{\pi}}e^{-(x-1)^2}$, where $\mu=1, \sigma=\dfrac{1}{\sqrt{2}}$.
+- Loss matrix:
+	- $\begin{bmatrix} \lambda_{11} & \lambda_{12} \\ \lambda_{21} & \lambda_{22} \end{bmatrix}= \begin{bmatrix} 0 & 1.0 \\ 0.5 & 0 \end{bmatrix}$
+Do:
+- The threshold $x_0$ for minimum $P_e$.
+	- $P(x_0|\omega_1)=P(x_0|\omega_2)$
+		- $\implies\dfrac{1}{\sqrt{\pi}}e^{-x_0^2}=\dfrac{1}{\sqrt{\pi}}e^{-(x_0-1)^2}$
+		- $\implies x_0=-x_0+1$,  omitting $x_0=x_0-1$ which is impossible;
+		- $\implies x_0=\dfrac{1}{2}$
+- The threshold $\hat{x_0}$ for minimum $R(\alpha_i|x)$.
+	- $R(\alpha_1|x)=R(\alpha_2|x)$
+		- $\implies \dfrac{P(\hat{x_0}|\omega_1)}{P(\hat{x_0}|\omega_2)}=\dfrac{(\lambda_{12}-\lambda_{22})P(\omega_2)}{(\lambda_{21}-\lambda_{11})P(\omega_1)}$
+		- $\implies \dfrac{P(\hat{x_0}|\omega_1)}{P(\hat{x_0}|\omega_2)}=\dfrac{(1-0)\times\dfrac{1}{2}}{(0.5-0)\times\dfrac{1}{2}}$
+		- $\implies P(\hat{x_0}|\omega_1)=2P(\hat{x_0}|\omega_2)$
+		- $\implies\dfrac{1}{\sqrt{\pi}}e^{\hat{-x_0}^2}=2\dfrac{1}{\sqrt{\pi}}e^{-(\hat{x_0}-1)^2}$
+		- $\implies-\hat{x_0}^2=\ln2-\hat{x_0}^2+2\hat{x_0}-1$
+		- $\implies \hat{x_0}=\dfrac{1-\ln2}{2}<\dfrac{1}{2}$
+
+![[Minimum Prob Error and Minimum Risk.png]]
+#### Minimum Error Rate Classification
+- A zero-one loss function
+	- $\begin{bmatrix}0 & 1\\ 1 & 0\end{bmatrix}$
+	- All errors are equally costly.
+- Conditional Risk:
+	- $R(\alpha_i|x)=\sum_{j=1}^{c}\lambda(\alpha_i|x)P(\omega_j|x)$
+	- $=\lambda(\alpha_i|\omega_i)P(\omega_i|x)+\sum_{j\neq i}\lambda(\alpha_i|\omega_j)P(\omega_j|x)$
+	- $=0+\sum_{j\neq i}1\times P(\omega_j|x)$
+	- $=\sum_{j\neq i}P(\omega_j|x)$
+	- $=1-P(\omega_i|x)$
+# 2.4 Discriminant Functions 判别函数
+**[DEF] Discriminant Function**
+- If a function $f$ satisfies:
+	- If $f(\cdot)$ monotonically increases, and
+	- $\forall i\neq j, f(P(\omega_i|x))>f(P(\omega_j|x))$, then
+	- $x\rightarrow\omega_i$
+- Then, $g_i(x)=f(P(\omega_i|x))$ is a discriminant function.
+- That is, this function is able to "tell" a certain one $\omega_i$ from others on any input $x$. 给定一个测试样本$x$，判别函数能够从所有其它分类中挑选一个最可能的$\omega_j$。
+	- i.e., it separates $\omega_i$ and $\neg \omega_i$.
+
+ **[PROP] Discriminant Function**
+- One function per class.
+	- A discriminant function is able to "tell" a certain one $\omega_i$ specifically for any input $x$.
+- Various discriminant functions $\rightarrow$ Identical classification results. 样式各异，结果相同。
+	- It is correct to say, the discriminant functions:
+		- **Preserves** the original monotonical-increase of its inputs.
+		- But only changes the changing rate by **processing** the inputs.
+	- i.e.,
+		- "$\forall i\neq j, f(g_i(x))>f(g_j(x))\land f\nearrow$ "and "$\forall i\neq j, g_i(x)>g_j(x)$" are equivalent in decision.
+		- Changing growth rate of input:
+			- $f(g_i(x))=k\cdot g_i(x)$, a linear change.
+			- $f(g_i(x))=\ln g_i(x)$, a log change, i.e., it grows, but slower as it proceed.
+		- Therefore, the discriminant function may vary, but the output is always the same.
+- Examples of discriminant functions:
+	- Minimum Risk: $g_i(x)=-R(\alpha_i|x) = -\lambda(\alpha_i|x)\times P(\omega_i|x)$, for $i\in[1,c]$
+	- Minimum Error Rate: $g_i(x)=P(\omega_i|x)$, for $i\in[1,c]$
+
+**[DEF] Decision Region 决策区域**
+- $c$ discriminant functions $\implies$ $c$ decision regions
+	- $g_i(x)\implies R_i\subset R^d,i\in[1,c]$
+- One function per decision region that is distinct and mutual-exclusive.
+	- $R_i=\{x|x\in R^d: \forall i\neq j, g_i(x)>g_j(x)\}$, where
+	- $\forall i\neq j, R_i\cap R_j=\emptyset$, and $\cap_{i=1}^{c}R_i=R^d$
+
+**[DEF] Decision Boundaries 决策边界**
+- "Surface" in feature space, where ties occur among 2 or more largest discriminant functions.
+
+![[Discriminant Functions.png]]
+# 2.5 Bayesian Classification for Normal Distributions
+## 2.5.1 Multi-Dimensional Normal Distribution 高维正态分布
+
+**1-D Case**
+- $x\sim N(\mu,\sigma):$   $P(x)=\dfrac{1}{\sigma\sqrt{2\pi}}e^{-\dfrac{(x-\mu)^2}{2\sigma^2}}$, where
+	- $\mu$ is the mean value.
+		- $\mu = E[x]$
+	- $\sigma^2$ is the variance.
+		- $\sigma = E[(x-\mu)^2]$
+
+**Multivariate Case**
+- $X\sim N(\mu,\Sigma):$   $P(X)=\dfrac{1}{|\Sigma|^{\dfrac{1}{2}}\times (2\pi)^{\dfrac{d}{2}}}e^{-\dfrac{1}{2}(X-\mu)^T \Sigma^{-1} (X-\mu)}$
+	- Regular Variables:
+		- $d$-dimensional random variables: $X=\begin{bmatrix}x_1\\x_2\\...\\x_d\end{bmatrix}$
+		- $d$-dimensional mean vector: $\mu=\begin{bmatrix}\mu_1\\\mu_2\\...\\\mu_d\end{bmatrix}=\begin{bmatrix}E(x_1)\\E(x_2)\\...\\E(x_d)\end{bmatrix}$
+		- $d\times d$ covariance matrix: $\Sigma = \begin{pmatrix} \sigma_{11} & \sigma_{12} & \cdots & \sigma_{1d} \\ \sigma_{21} & \sigma_{22} & \cdots & \sigma_{2d} \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{d1} & \sigma_{d2} & \cdots & \sigma_{dd} \end{pmatrix}=E[(X-\mu)(X-\mu)^T]$
+	- Explanations on $-\dfrac{1}{2}(X-\mu)^{T}\Sigma^{-1}(X-\mu)$
+		- Parts:
+			- $(X-\mu)^T=\begin{bmatrix}x_1-\mu_1\\x_2-\mu_2\\...\\x_d-\mu_d\end{bmatrix}^T=\begin{bmatrix}(x_1-\mu_1) & (x_2-\mu_2) & \cdots & (x_d-\mu_d)\end{bmatrix}$
+			- $\Sigma^{-1} = \begin{pmatrix} \sigma_{11}' & \sigma_{12}' & \cdots & \sigma_{1d}' \\ \sigma_{21}' & \sigma_{22}' & \cdots & \sigma_{2d}' \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{d1}' & \sigma_{d2}' & \cdots & \sigma_{dd}' \end{pmatrix}$
+			- $(X-\mu)=\begin{bmatrix}x_1-\mu_1\\x_2-\mu_2\\...\\x_d-\mu_d\end{bmatrix}$
+		- Whole:
+			- $-\dfrac{1}{2}(X-\mu)^{T}\Sigma^{-1}(X-\mu)$
+			- $=-\dfrac{1}{2}\begin{bmatrix}(x_1-\mu_1) & (x_2-\mu_2) & \cdots & (x_d-\mu_d)\end{bmatrix}\begin{pmatrix} \sigma_{11}' & \sigma_{12}' & \cdots & \sigma_{1d}' \\ \sigma_{21}' & \sigma_{22}' & \cdots & \sigma_{2d}' \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{d1}' & \sigma_{d2}' & \cdots & \sigma_{dd}' \end{pmatrix}\begin{bmatrix}x_1-\mu_1\\x_2-\mu_2\\...\\x_d-\mu_d\end{bmatrix}$
+			- $=-\dfrac{1}{2}\begin{bmatrix}a_1 & a_2 & \cdots a_d\end{bmatrix}\begin{bmatrix}x_1-\mu_1\\x_2-\mu_2\\...\\x_d-\mu_d\end{bmatrix}$
+			- $=y\geq 0$
