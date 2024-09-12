@@ -276,3 +276,19 @@ Do:
 			- $=-\dfrac{1}{2}\begin{bmatrix}(x_1-\mu_1) & (x_2-\mu_2) & \cdots & (x_d-\mu_d)\end{bmatrix}\begin{pmatrix} \sigma_{11}' & \sigma_{12}' & \cdots & \sigma_{1d}' \\ \sigma_{21}' & \sigma_{22}' & \cdots & \sigma_{2d}' \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{d1}' & \sigma_{d2}' & \cdots & \sigma_{dd}' \end{pmatrix}\begin{bmatrix}x_1-\mu_1\\x_2-\mu_2\\...\\x_d-\mu_d\end{bmatrix}$
 			- $=-\dfrac{1}{2}\begin{bmatrix}a_1 & a_2 & \cdots a_d\end{bmatrix}\begin{bmatrix}x_1-\mu_1\\x_2-\mu_2\\...\\x_d-\mu_d\end{bmatrix}$
 			- $=y\geq 0$
+
+**Example: 2-D Case**
+- $X\sim N(\mu,\Sigma):$   $P(X)=\dfrac{1}{|\Sigma|^{\dfrac{1}{2}}\times (2\pi)}e^{-\dfrac{1}{2}\begin{bmatrix}(x_1-\mu_1) & (x_2-\mu_2)\end{bmatrix} \Sigma^{-1} \begin{bmatrix}(x_1-\mu_1) \\ (x_2-\mu_2)\end{bmatrix}}$
+	- $2$ - dimensional random variable $X$: $X=\begin{bmatrix}x_1\\x_2\end{bmatrix}$
+	- $2$ - dimensional mean vector $\mu$: $\mu=\begin{bmatrix}\mu_1\\\mu_2\end{bmatrix}=\begin{bmatrix}E[x_1]\\E[x_2]\end{bmatrix}$
+	- $2\times2$ covariant matrix $\Sigma$:
+		- $\Sigma=E[(X-\mu)(X-\mu)^T]$
+		- $=E(\begin{bmatrix}x_1-\mu_1 \\ x_2-\mu_2\end{bmatrix}\begin{bmatrix}x_1-\mu_1 & x_2-\mu_2\end{bmatrix})$
+		- $=\begin{bmatrix}(x_1-\mu_1)^2 & (x_1-\mu_1)(x_2-\mu_2) \\ (x_2-\mu_2)(x_1-\mu_1) & (x_2-\mu_2)^2 \end{bmatrix}$
+		- $=\begin{bmatrix}\sigma_1^2 & \sigma \\ \sigma & \sigma_2^2\end{bmatrix}$
+- Minimum-error-rate classification:
+	- Discriminant Function: $g_i(x)=P(\omega_i|x), i\in[1,c]$
+	- Let: $g_i(x)=ln[P(\omega_i|x)]$
+		- $\implies g_i(x)=ln[P(X|\omega_i)P(\omega_i)]$
+		- $\implies g_i(x)=ln[P(X|\omega_i)]+ln[P(\omega_i)]$
+		- 
