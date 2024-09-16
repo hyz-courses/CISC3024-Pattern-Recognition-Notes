@@ -286,9 +286,51 @@ Do:
 		- $=E(\begin{bmatrix}x_1-\mu_1 \\ x_2-\mu_2\end{bmatrix}\begin{bmatrix}x_1-\mu_1 & x_2-\mu_2\end{bmatrix})$
 		- $=\begin{bmatrix}(x_1-\mu_1)^2 & (x_1-\mu_1)(x_2-\mu_2) \\ (x_2-\mu_2)(x_1-\mu_1) & (x_2-\mu_2)^2 \end{bmatrix}$
 		- $=\begin{bmatrix}\sigma_1^2 & \sigma \\ \sigma & \sigma_2^2\end{bmatrix}$
-- Minimum-error-rate classification:
-	- Discriminant Function: $g_i(x)=P(\omega_i|x), i\in[1,c]$
-	- Let: $g_i(x)=ln[P(\omega_i|x)]$
-		- $\implies g_i(x)=ln[P(X|\omega_i)P(\omega_i)]$
-		- $\implies g_i(x)=ln[P(X|\omega_i)]+ln[P(\omega_i)]$
-		- 
+
+## 2.5.2 Minimum-error-rate classification:
+**Recall:** 
+- Minimum-error-rate means that we ignore the "cost" of each decision. 
+- In other words, we only select the classes based on probabilities.
+
+### Pattern of Discriminant Function
+- Discriminant Function: $g_i(x)=P(\omega_i|x), i\in[1,c]$
+- Let: $g_i(x)=ln[P(\omega_i|x)]$
+	- $\implies g_i(x)=ln[P(X|\omega_i)P(\omega_i)]$
+	- $\implies g_i(x)=ln[P(X|\omega_i)]+ln[P(\omega_i)]$
+	- $\implies g_i(x)=ln[\dfrac{1}{|\Sigma|^{\dfrac{1}{2}}\times (2\pi)^{\dfrac{d}{2}}}e^{-\dfrac{1}{2}(X-\mu)^T \Sigma^{-1} (X-\mu)}]+ln[P(\omega_i)]$
+	- $\implies g_i(x)=$
+		- $-\dfrac{d}{2}ln(2\pi)-\dfrac{1}{2}|\Sigma_i| \ +$
+		- $-\dfrac{1}{2}(X-\mu_i)^T\Sigma_i^{-1}(X-\mu_i) \ +$
+		- $ln[P(\omega_i)]$
+- here, $-\dfrac{d}{2}ln(2\pi)$ is a constant, which can be ignored.
+
+### Case I: $\Sigma_i=\sigma^2I$
+- That is, $\Sigma_i=\sigma^2I=\begin{bmatrix} \sigma^2 & 0 & \cdots & 0 \\ 0 & \sigma ^2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \sigma^2 & \end{bmatrix}$
+- This suggests that the distribution is **isotropic** (各向同性的). 
+	- That is, the variance or spread is the same in all directions. 
+	- In other words, there is no directional preference in the spread of the distribution.
+
+- Therefore, we have:
+	- $|\Sigma_i|=\sigma^{2d}$
+	- $\Sigma_i^{-1}=\dfrac{1}{\sigma^2}I$
+- Thus, $g_i(x)=-\dfrac{1}{2}(X-\mu_i)^T\Sigma_i^{-1}(X-\mu_i) \ + \ ln[P(\omega_i)]$
+	- $=-\dfrac{1}{2}(X-\mu_i)^T \ \times \ [\dfrac{1}{\sigma^2}I] \ \times \ (X-\mu_i) \ + \ ln[P(\omega_i)]$,
+	- $=-\dfrac{(X-\mu_i)^T(X-\mu_i)}{2\sigma^2}+ln[P(\omega_i)]$,
+	- $= -\dfrac{(X^T-\mu_i^T)(X-\mu_i)}{2\sigma^2}+ln[P(\omega_i)]$,
+	- $=-\dfrac{X^TX-X^T\mu_i-\mu_i^TX+\mu_i^T\mu_i}{2\sigma^2}+ln[P(\omega_i)]$,
+	- $=-\dfrac{X^TX-2\mu_i^TX+\mu_i^T\mu_i}{2\sigma^2}+ln[P(\omega_i)]$, known that $a^Tb=b^Ta$
+		- $=-\dfrac{||X-\mu_i||^2}{2\sigma^2}+ln[P(\omega_i)]$, where $||\cdot||$ is the **Euclidean Distance**.
+
+- Here, we ignore $X^TX$ because it is the same for any class.
+  The discriminant function is finally defined as:
+	- $g_i(x)=-\dfrac{\mu_i^TX}{\sigma^2}+\dfrac{\mu_i^T\mu_i}{2\sigma^2}+ ln[P(\omega_i)]$, with $X^TX$ ignored.
+	- $=(-\dfrac{\mu_i}{\sigma^2})^TX + (\dfrac{\mu_i^T\mu_i}{2\sigma^2}+ ln[P(\omega_i)])$,
+	- $=w_i^TX+w_{i0}$, where
+		- $w_i=-\dfrac{\mu_i}{\sigma^2}=\begin{bmatrix} -\dfrac{\mu_{i1}}{\sigma^2} \\ -\dfrac{\mu_{i2}}{\sigma^2} \\ \vdots \\ -\dfrac{\mu_{in}}{\sigma^2} \end{bmatrix}$ is the weight vector, and
+		- $w_{i0}=(\dfrac{\mu_i^T\mu_i}{2\sigma^2}+ ln[P(\omega_i)])$ is the threshold/bias scalar.
+
+- Having the discriminant functions defined, we get the decision surface by:
+	- $g_i(x)-g_j(x)=0$
+	- $\implies w_iX+w_{i0}-(w_jX+w_{j0})=0$;
+
+## Case II: $\Sigma_i=\Sigma$
