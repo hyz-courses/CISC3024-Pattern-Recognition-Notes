@@ -1,4 +1,4 @@
-# 2.1 Bayes Decision Theory
+# 2.1 Bayes Decision Theory 贝叶斯决策理论
 Basic Assumptions
 - The decision problem is posed in probabilistic terms.
 - **ALL** relevant probability values are known.
@@ -48,7 +48,7 @@ MNIST database.
 		- The sum of the prior probabilities of all classes is $1$.
 
 # 2.2 Prior & Posterior Probabilities 先验与后验概率
-## 2.2.1 [DEF] Prior Probability 先验概率
+## 2.2.1 Definition of Prior Probability 先验概率
 - Decision **BEFORE** Observation (Naïve Decision Rule). 
 	- Don't care about test sample $x$.
 	- Given $x$, always choose the class that:
@@ -60,7 +60,7 @@ MNIST database.
 	3. Then, classify $x$ directly into $argmax_i[P(\omega_i)]$.
 - The decision is the same all the time obviously, and the prob. of a right guess is $\dfrac{1}{c}$. 
 
-## 2.2.2 [DEF] Posterior Probability 后验概率
+## 2.2.2 Definition of Posterior Probability 后验概率
 - Decision **WITH** Observation. 
 	- Cares about test sample $x$.
 	- Considering $x$, as well as the prior probabilities $P(\omega) = \{P(\omega_1),P(\omega_2),...,P(\omega_c)\}$, 
@@ -213,7 +213,7 @@ Do:
 	- $=\sum_{j\neq i}P(\omega_j|x)$
 	- $=1-P(\omega_i|x)$
 # 2.4 Discriminant Functions 判别函数
-**[DEF] Discriminant Function**
+## 2.4.1 Definition of Discriminant Function
 - If a function $f$ satisfies:
 	- If $f(\cdot)$ monotonically increases, and
 	- $\forall i\neq j, f(P(\omega_i|x))>f(P(\omega_j|x))$, then
@@ -222,115 +222,188 @@ Do:
 - That is, this function is able to "tell" a certain one $\omega_i$ from others on any input $x$. 给定一个测试样本$x$，判别函数能够从所有其它分类中挑选一个最可能的$\omega_j$。
 	- i.e., it separates $\omega_i$ and $\neg \omega_i$.
 
- **[PROP] Discriminant Function**
-- One function per class.
-	- A discriminant function is able to "tell" a certain one $\omega_i$ specifically for any input $x$.
-- Various discriminant functions $\rightarrow$ Identical classification results. 样式各异，结果相同。
-	- It is correct to say, the discriminant functions:
-		- **Preserves** the original monotonical-increase of its inputs.
-		- But only changes the changing rate by **processing** the inputs.
-	- i.e.,
-		- "$\forall i\neq j, f(g_i(x))>f(g_j(x))\land f\nearrow$ "and "$\forall i\neq j, g_i(x)>g_j(x)$" are equivalent in decision.
-		- Changing growth rate of input:
-			- $f(g_i(x))=k\cdot g_i(x)$, a linear change.
-			- $f(g_i(x))=\ln g_i(x)$, a log change, i.e., it grows, but slower as it proceed.
-		- Therefore, the discriminant function may vary, but the output is always the same.
-- Examples of discriminant functions:
-	- Minimum Risk: $g_i(x)=-R(\alpha_i|x) = -\lambda(\alpha_i|x)\times P(\omega_i|x)$, for $i\in[1,c]$
-	- Minimum Error Rate: $g_i(x)=P(\omega_i|x)$, for $i\in[1,c]$
+## 2.4.2 Property of Discriminant Function
+1. One function per class.
+	1. A discriminant function is able to "tell" a certain one $\omega_i$ specifically for any input $x$.
+2. Various discriminant functions $\rightarrow$ Identical classification results. 样式各异，结果相同。
+	1. It is correct to say, the discriminant functions:
+		1. **Preserves** the original monotonical-increase of its inputs.
+		2. But  changes the changing rate by **processing** the inputs.
+	2. i.e.,
+		1. "$\forall i\neq j, f(g_i(x))>f(g_j(x))\land f\nearrow$ "and "$\forall i\neq j, g_i(x)>g_j(x)$" are equivalent in decision.
+		2. Changing growth rate of input:
+			1. $f(g_i(x))=k\cdot g_i(x)$, a linear change.
+			2. $f(g_i(x))=\ln g_i(x)$, a log change, i.e., it grows, but slower as it proceed.
+		3. Therefore, the discriminant function may vary, but the output is always the same.
+3. Examples of discriminant functions:
+	1. Minimum Risk: $g_i(x)=-R(\alpha_i|x) = -\lambda(\alpha_i|x)\times P(\omega_i|x)$, for $i\in[1,c]$
+	2. Minimum Error Rate: $g_i(x)=P(\omega_i|x)$, for $i\in[1,c]$
 
-**[DEF] Decision Region 决策区域**
+## 2.4.3 Decision Region 决策区域
 - $c$ discriminant functions $\implies$ $c$ decision regions
 	- $g_i(x)\implies R_i\subset R^d,i\in[1,c]$
 - One function per decision region that is distinct and mutual-exclusive.
 	- $R_i=\{x|x\in R^d: \forall i\neq j, g_i(x)>g_j(x)\}$, where
 	- $\forall i\neq j, R_i\cap R_j=\emptyset$, and $\cap_{i=1}^{c}R_i=R^d$
 
-**[DEF] Decision Boundaries 决策边界**
+## 2.4.4 Decision Boundaries 决策边界
 - "Surface" in feature space, where ties occur among 2 or more largest discriminant functions.
+- $x_0$ is on the decision boundary/surface if and only if
+	- $\exists \omega_i, \omega_j \in \omega, g_i(x_0)=g_j(x_0)$.
 
 ![[Discriminant Functions.png]]
 # 2.5 Bayesian Classification for Normal Distributions
 ## 2.5.1 Multi-Dimensional Normal Distribution 高维正态分布
 
-**1-D Case**
-- $x\sim N(\mu,\sigma):$   $P(x)=\dfrac{1}{\sigma\sqrt{2\pi}}e^{-\dfrac{(x-\mu)^2}{2\sigma^2}}$, where
-	- $\mu$ is the mean value.
-		- $\mu = E[x]$
-	- $\sigma^2$ is the variance.
-		- $\sigma = E[(x-\mu)^2]$
+### 1-D Case 多类别，一维数据
+- There are several classes:
+	- Each class has its own distribution of data samples, i.e., each class has its own $\mu$ and $\sigma$.
+- For a specific class, there are plenty of data samples:
+	- Each sample is a **scalar**, that is a $1\times1$ "matrix", which is a "plain number".
+	- The samples follows a **Normal Distribution**. 
 
-**Multivariate Case**
-- $X\sim N(\mu,\Sigma):$   $P(X)=\dfrac{1}{|\Sigma|^{\dfrac{1}{2}}\times (2\pi)^{\dfrac{d}{2}}}e^{-\dfrac{1}{2}(X-\mu)^T \Sigma^{-1} (X-\mu)}$
+For a specific class $\omega_i$, suppose the data conforms a normal distribution. Here:
+- $x\sim N(\mu_i,\sigma_i):$   $P(x|\omega_i)=\dfrac{1}{\sigma_i\sqrt{2\pi}}e^{-\dfrac{(x-\mu_i)^2}{2\sigma_i^2}}$, where
+	- $\mu$ is the mean value.
+		- $\mu_i = E(x)$
+	- $\sigma^2$ is the variance.
+		- $\sigma_i = E[(x-\mu)^2]$
+
+### Multivariate Case 多类别，高维数据
+- There are several classes:
+	- Each class has its own distribution of data samples, i.e., each class has its own $\mu$ and $\sigma$.
+- For a specific class, there are plenty of data samples:
+	- Each sample is a **vector**, that is a $d\times 1$ matrix, where $d$ is the dimension of data.
+	- The samples follow a **$d$-dimensional Normal Distribution**.
+	
+Here, for a specific class $\omega_i$, suppose the multi-dimensional data $X$ conforms a normal distribution.
+- $X\sim N(\mu_i,\Sigma_i):$   $P(X|\omega_i)=\dfrac{1}{|\Sigma_i|^{\dfrac{1}{2}}\times (2\pi)^{\dfrac{d}{2}}}e^{-\dfrac{1}{2}(X-\mu_i)^\top \Sigma_i^{-1} (X-\mu_i)}$
 	- Regular Variables:
-		- $d$-dimensional random variables: $X=\begin{bmatrix}x_1\\x_2\\...\\x_d\end{bmatrix}$
-		- $d$-dimensional mean vector: $\mu=\begin{bmatrix}\mu_1\\\mu_2\\...\\\mu_d\end{bmatrix}=\begin{bmatrix}E(x_1)\\E(x_2)\\...\\E(x_d)\end{bmatrix}$
-		- $d\times d$ covariance matrix: $\Sigma = \begin{pmatrix} \sigma_{11} & \sigma_{12} & \cdots & \sigma_{1d} \\ \sigma_{21} & \sigma_{22} & \cdots & \sigma_{2d} \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{d1} & \sigma_{d2} & \cdots & \sigma_{dd} \end{pmatrix}=E[(X-\mu)(X-\mu)^T]$
-	- Explanations on $-\dfrac{1}{2}(X-\mu)^{T}\Sigma^{-1}(X-\mu)$
+		- $d$-dimensional random variables: $X=\begin{bmatrix}x_1\\x_2\\...\\x_d\end{bmatrix}$;
+		- $d$-dimensional mean vector: $\mu_i=\begin{bmatrix}\mu_{i1}\\\mu_{i2}\\...\\\mu_{id}\end{bmatrix}=\begin{bmatrix}E(x_{i1})\\E(x_{i2})\\...\\E(x_{id})\end{bmatrix}$, specifically for class $\omega_i$;
+		- $d\times d$ covariance matrix: $\Sigma_i = \begin{pmatrix} \sigma_{i11} & \sigma_{i12} & \cdots & \sigma_{i1d} \\ \sigma_{i21} & \sigma_{i22} & \cdots & \sigma_{i2d} \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{id1} & \sigma_{id2} & \cdots & \sigma_{idd} \end{pmatrix}=E[(X-\mu_i)(X-\mu_i)^\top]$, specifically for class $\omega_i$.
+	- Explanations on $-\dfrac{1}{2}(X-\mu_i)^\top\Sigma_i^{-1}(X-\mu_i)$
 		- Parts:
-			- $(X-\mu)^T=\begin{bmatrix}x_1-\mu_1\\x_2-\mu_2\\...\\x_d-\mu_d\end{bmatrix}^T=\begin{bmatrix}(x_1-\mu_1) & (x_2-\mu_2) & \cdots & (x_d-\mu_d)\end{bmatrix}$
-			- $\Sigma^{-1} = \begin{pmatrix} \sigma_{11}' & \sigma_{12}' & \cdots & \sigma_{1d}' \\ \sigma_{21}' & \sigma_{22}' & \cdots & \sigma_{2d}' \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{d1}' & \sigma_{d2}' & \cdots & \sigma_{dd}' \end{pmatrix}$
-			- $(X-\mu)=\begin{bmatrix}x_1-\mu_1\\x_2-\mu_2\\...\\x_d-\mu_d\end{bmatrix}$
+			- $(X-\mu_i)^\top=\begin{bmatrix}x_1-\mu_{i1}\\x_2-\mu_{i2}\\...\\x_d-\mu_{id}\end{bmatrix}^\top=\begin{bmatrix}(x_1-\mu_{i1}) & (x_2-\mu_{i2}) & \cdots & (x_d-\mu_{id})\end{bmatrix}$
+			- $\Sigma_i^{-1} = \begin{pmatrix} \sigma_{i11}' & \sigma_{i12}' & \cdots & \sigma_{i1d}' \\ \sigma_{i21}' & \sigma_{i22}' & \cdots & \sigma_{i2d}' \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{id1}' & \sigma_{id2}' & \cdots & \sigma_{idd}' \end{pmatrix}$, the inverse of the covariance matrix.
+			- $(X-\mu_i)=\begin{bmatrix}x_1-\mu_{i1}\\x_2-\mu_{i2}\\...\\x_d-\mu_{id}\end{bmatrix}$
 		- Whole:
-			- $-\dfrac{1}{2}(X-\mu)^{T}\Sigma^{-1}(X-\mu)$
-			- $=-\dfrac{1}{2}\begin{bmatrix}(x_1-\mu_1) & (x_2-\mu_2) & \cdots & (x_d-\mu_d)\end{bmatrix}\begin{pmatrix} \sigma_{11}' & \sigma_{12}' & \cdots & \sigma_{1d}' \\ \sigma_{21}' & \sigma_{22}' & \cdots & \sigma_{2d}' \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{d1}' & \sigma_{d2}' & \cdots & \sigma_{dd}' \end{pmatrix}\begin{bmatrix}x_1-\mu_1\\x_2-\mu_2\\...\\x_d-\mu_d\end{bmatrix}$
-			- $=-\dfrac{1}{2}\begin{bmatrix}a_1 & a_2 & \cdots a_d\end{bmatrix}\begin{bmatrix}x_1-\mu_1\\x_2-\mu_2\\...\\x_d-\mu_d\end{bmatrix}$
+			- $-\dfrac{1}{2}(X-\mu_i)^\top\Sigma_i^{-1}(X-\mu_i)$
+			- $=-\dfrac{1}{2}\begin{bmatrix}(x_1-\mu_{i1}) & (x_2-\mu_{i2}) & \cdots & (x_d-\mu_{id})\end{bmatrix}\begin{pmatrix} \sigma_{i11}' & \sigma_{i12}' & \cdots & \sigma_{i1d}' \\ \sigma_{i21}' & \sigma_{i22}' & \cdots & \sigma_{i2d}' \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{id1}' & \sigma_{id2}' & \cdots & \sigma_{idd}' \end{pmatrix}\begin{bmatrix}x_1-\mu_{i1}\\x_2-\mu_{i2}\\...\\x_d-\mu_{id}\end{bmatrix}$
+			- $=-\dfrac{1}{2}\begin{bmatrix}a_1 & a_2 & \cdots a_d\end{bmatrix}\begin{bmatrix}x_1-\mu_{i1}\\x_2-\mu_{i2}\\...\\x_d-\mu_{id}\end{bmatrix}$
 			- $=y\geq 0$
 
 **Example: 2-D Case**
-- $X\sim N(\mu,\Sigma):$   $P(X)=\dfrac{1}{|\Sigma|^{\dfrac{1}{2}}\times (2\pi)}e^{-\dfrac{1}{2}\begin{bmatrix}(x_1-\mu_1) & (x_2-\mu_2)\end{bmatrix} \Sigma^{-1} \begin{bmatrix}(x_1-\mu_1) \\ (x_2-\mu_2)\end{bmatrix}}$
+- $X\sim N(\mu,\Sigma):$   $P(X)=\dfrac{1}{|\Sigma_i|^{\dfrac{1}{2}}\times (2\pi)}e^{-\dfrac{1}{2}\begin{bmatrix}(x_1-\mu_{i1}) & (x_2-\mu_{i2})\end{bmatrix} \Sigma_i^{-1} \begin{bmatrix}(x_1-\mu_{i1}) \\ (x_2-\mu_{2})\end{bmatrix}}$
 	- $2$ - dimensional random variable $X$: $X=\begin{bmatrix}x_1\\x_2\end{bmatrix}$
-	- $2$ - dimensional mean vector $\mu$: $\mu=\begin{bmatrix}\mu_1\\\mu_2\end{bmatrix}=\begin{bmatrix}E[x_1]\\E[x_2]\end{bmatrix}$
-	- $2\times2$ covariant matrix $\Sigma$:
-		- $\Sigma=E[(X-\mu)(X-\mu)^T]$
-		- $=E(\begin{bmatrix}x_1-\mu_1 \\ x_2-\mu_2\end{bmatrix}\begin{bmatrix}x_1-\mu_1 & x_2-\mu_2\end{bmatrix})$
-		- $=\begin{bmatrix}(x_1-\mu_1)^2 & (x_1-\mu_1)(x_2-\mu_2) \\ (x_2-\mu_2)(x_1-\mu_1) & (x_2-\mu_2)^2 \end{bmatrix}$
+	- $2$ - dimensional mean vector: $\mu_i=\begin{bmatrix}\mu_{i1}\\\mu_{i2}\end{bmatrix}=\begin{bmatrix}E(x_{i1})\\E(x_{i2})\end{bmatrix}$
+	- $2\times2$ covariant matrix $\Sigma_i$:
+		- $\Sigma_i=E[(X-\mu_i)(X-\mu_i)^\top]$
+		- $=E(\begin{bmatrix}x_1-\mu_{i1} \\ x_2-\mu_{i2}\end{bmatrix}\begin{bmatrix}x_1-\mu_{i1} & x_2-\mu_{i2}\end{bmatrix})$
+		- $=\begin{bmatrix}(x_1-\mu_{i1})^2 & (x_1-\mu_{i1})(x_2-\mu_{i2}) \\ (x_2-\mu_{i2})(x_1-\mu_{i1}) & (x_2-\mu_{i2})^2 \end{bmatrix}$
 		- $=\begin{bmatrix}\sigma_1^2 & \sigma \\ \sigma & \sigma_2^2\end{bmatrix}$
-
-## 2.5.2 Minimum-error-rate classification:
+## 2.5.2 Minimum-error-rate classification
 **Recall:** 
 - Minimum-error-rate means that we ignore the "cost" of each decision. 
 - In other words, we only select the classes based on probabilities.
 
 ### Pattern of Discriminant Function
-- Discriminant Function: $g_i(x)=P(\omega_i|x), i\in[1,c]$
-- Let: $g_i(x)=ln[P(\omega_i|x)]$
-	- $\implies g_i(x)=ln[P(X|\omega_i)P(\omega_i)]$
-	- $\implies g_i(x)=ln[P(X|\omega_i)]+ln[P(\omega_i)]$
-	- $\implies g_i(x)=ln[\dfrac{1}{|\Sigma|^{\dfrac{1}{2}}\times (2\pi)^{\dfrac{d}{2}}}e^{-\dfrac{1}{2}(X-\mu)^T \Sigma^{-1} (X-\mu)}]+ln[P(\omega_i)]$
+- Discriminant Function: $g_i(x)=\ln P(\omega_i|x), \forall i\in[1,c]\cap\mathbb{N}^+$
+	-  $g_i(x)=\ln[P(\omega_i|x)]$
+	- $\implies g_i(x)=\ln[P(X|\omega_i)\times P(\omega_i)]$
+	- $\implies g_i(x)=\ln[P(X|\omega_i)]+\ln[P(\omega_i)]$
+	- $\implies g_i(x)=\ln[\dfrac{1}{|\Sigma|^{\dfrac{1}{2}}\times (2\pi)^{\dfrac{d}{2}}}e^{-\dfrac{1}{2}(X-\mu)^T \Sigma^{-1} (X-\mu)}]+\ln[P(\omega_i)]$
 	- $\implies g_i(x)=$
-		- $-\dfrac{d}{2}ln(2\pi)-\dfrac{1}{2}|\Sigma_i| \ +$
-		- $-\dfrac{1}{2}(X-\mu_i)^T\Sigma_i^{-1}(X-\mu_i) \ +$
-		- $ln[P(\omega_i)]$
-- here, $-\dfrac{d}{2}ln(2\pi)$ is a constant, which can be ignored.
+		- $-\dfrac{d}{2}\ln(2\pi)$ 
+		- $-\dfrac{1}{2}|\Sigma_i|$
+		- $-\dfrac{1}{2}(X-\mu_i)^T\Sigma_i^{-1}(X-\mu_i)$
+		- $+\ln[P(\omega_i)]$
+- Here, $-\dfrac{d}{2}\ln(2\pi)$ is a constant, which can be ignored. The discriminant function is then updated as:
+	- $g_i(x)=$
+		- $-\dfrac{1}{2}\ln|\Sigma_i|$
+		- $-\dfrac{1}{2}(X-\mu_i)^\top\Sigma_i^{-1}(X-\mu_i)$
+		- $+\ln[P(\omega_i)]$
 
 ### Case I: $\Sigma_i=\sigma^2I$
-- That is, $\Sigma_i=\sigma^2I=\begin{bmatrix} \sigma^2 & 0 & \cdots & 0 \\ 0 & \sigma ^2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \sigma^2 & \end{bmatrix}$
-- This suggests that the distribution is **isotropic** (各向同性的). 
-	- That is, the variance or spread is the same in all directions. 
-	- In other words, there is no directional preference in the spread of the distribution.
+- That is, $\Sigma_1=\Sigma_2=\cdots=\Sigma_{|\omega|}=\sigma^2I=\begin{bmatrix} \sigma^2 & 0 & \cdots & 0 \\ 0 & \sigma ^2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \sigma^2 & \end{bmatrix}$
+	- All the classes have a common covariance matrix $\sigma^2I$.
+	- A diagonal matrix suggests that the distribution of data in is **isotropic** (各向同性的), with respect to any specific class.
+		- That is, the variance or spread is the same in all directions. 
+		- In other words, there is no directional preference in the spread of the distribution.
 
 - Therefore, we have:
 	- $|\Sigma_i|=\sigma^{2d}$
 	- $\Sigma_i^{-1}=\dfrac{1}{\sigma^2}I$
-- Thus, $g_i(x)=-\dfrac{1}{2}(X-\mu_i)^T\Sigma_i^{-1}(X-\mu_i) \ + \ ln[P(\omega_i)]$
-	- $=-\dfrac{1}{2}(X-\mu_i)^T \ \times \ [\dfrac{1}{\sigma^2}I] \ \times \ (X-\mu_i) \ + \ ln[P(\omega_i)]$,
-	- $=-\dfrac{(X-\mu_i)^T(X-\mu_i)}{2\sigma^2}+ln[P(\omega_i)]$,
-	- $= -\dfrac{(X^T-\mu_i^T)(X-\mu_i)}{2\sigma^2}+ln[P(\omega_i)]$,
-	- $=-\dfrac{X^TX-X^T\mu_i-\mu_i^TX+\mu_i^T\mu_i}{2\sigma^2}+ln[P(\omega_i)]$,
-	- $=-\dfrac{X^TX-2\mu_i^TX+\mu_i^T\mu_i}{2\sigma^2}+ln[P(\omega_i)]$, known that $a^Tb=b^Ta$
-		- $=-\dfrac{||X-\mu_i||^2}{2\sigma^2}+ln[P(\omega_i)]$, where $||\cdot||$ is the **Euclidean Distance**.
+- And the discriminant function $g_i(x)$ is:
+	- $g_i(x)=$
+		- $-\dfrac{1}{2}|\Sigma_i|$
+		- $-\dfrac{1}{2}(X-\mu_i)^T\Sigma_i^{-1}(X-\mu_i)$
+		- $+\ln[P(\omega_i)]$
+ - Here, as $|\Sigma_i|=\sigma^{2d}$ is a constant, it is ignored. Therefore,
+	 - $g_i(x)=$
+		- $-\dfrac{1}{2}(X-\mu_i)^\top\Sigma_i^{-1}(X-\mu_i)$
+		- $+\ln[P(\omega_i)]$
+	- $=-\dfrac{1}{2}(X-\mu_i)^\top \ \times \ [\dfrac{1}{\sigma^2}I] \ \times \ (X-\mu_i) \ + \ \ln[P(\omega_i)]$,
+	- $=-\dfrac{(X-\mu_i)^\top(X-\mu_i)}{2\sigma^2}+\ln[P(\omega_i)]$,
+	- $= -\dfrac{(X^\top-\mu_i^\top)(X-\mu_i)}{2\sigma^2}+\ln[P(\omega_i)]$,
+	- $=-\dfrac{X^\top X-X^\top\mu_i-\mu_i^\top X+\mu_i^\top\mu_i}{2\sigma^2}+\ln[P(\omega_i)]$,
+	- $=-\dfrac{X^\top X-2\mu_i^\top X+\mu_i^\top\mu_i}{2\sigma^2}+\ln[P(\omega_i)]$, known that $a^\top b=b^\top a$
+		- $=-\dfrac{||X-\mu_i||^2}{2\sigma^2}+\ln[P(\omega_i)]$, where $||\cdot||$ is the **Euclidean Distance**.
 
-- Here, we ignore $X^TX$ because it is the same for any class.
-  The discriminant function is finally defined as:
-	- $g_i(x)=-\dfrac{\mu_i^TX}{\sigma^2}+\dfrac{\mu_i^T\mu_i}{2\sigma^2}+ ln[P(\omega_i)]$, with $X^TX$ ignored.
-	- $=(-\dfrac{\mu_i}{\sigma^2})^TX + (\dfrac{\mu_i^T\mu_i}{2\sigma^2}+ ln[P(\omega_i)])$,
+- Here, we ignore $X^\top X$ because it is the same for any class. (Remember $X$ is just the random variable that needs us to classify.)
+	- $g_i(x)=-\dfrac{-2\mu_i^\top X+\mu_i^\top\mu_i}{2\sigma^2}+\ln[P(\omega_i)]$, with $X^\top X$ ignored.
+	- $=\dfrac{\mu_i^\top X}{\sigma^2}-\dfrac{\mu_i^\top\mu_i}{2\sigma^2}+ \ln[P(\omega_i)]$
+	- $=(\dfrac{\mu_i}{\sigma^2})^\top X + (-\dfrac{\mu_i^\top\mu_i}{2\sigma^2}+ \ln[P(\omega_i)])$
 	- $=w_i^TX+w_{i0}$, where
-		- $w_i=-\dfrac{\mu_i}{\sigma^2}=\begin{bmatrix} -\dfrac{\mu_{i1}}{\sigma^2} \\ -\dfrac{\mu_{i2}}{\sigma^2} \\ \vdots \\ -\dfrac{\mu_{in}}{\sigma^2} \end{bmatrix}$ is the weight vector, and
-		- $w_{i0}=(\dfrac{\mu_i^T\mu_i}{2\sigma^2}+ ln[P(\omega_i)])$ is the threshold/bias scalar.
+		- $w_i=\dfrac{\mu_i}{\sigma^2}=\begin{bmatrix} \dfrac{\mu_{i1}}{\sigma^2} \\ \dfrac{\mu_{i2}}{\sigma^2} \\ \vdots \\ \dfrac{\mu_{id}}{\sigma^2} \end{bmatrix}$ is the weight vector, and
+		- $w_{i0}=(-\dfrac{\mu_i^\top\mu_i}{2\sigma^2}+ \ln[P(\omega_i)])$ is the threshold/bias scalar.
+- We have got a **Linear Discriminant Function**.
 
 - Having the discriminant functions defined, we get the decision surface by:
-	- $g_i(x)-g_j(x)=0$
-	- $\implies w_iX+w_{i0}-(w_jX+w_{j0})=0$;
+	- $g_i(X)-g_j(X)=0$
+	- $\implies w_iX+w_{i0}-(w_jX+w_{j0})=0$
+	- $\implies \dfrac{\mu_i}{\sigma^2}X+w_{i0}-(\dfrac{\mu_j}{\sigma^2}X+w_{jo})=0$
+	- $\implies (\dfrac{\mu_i-\mu_j}{\sigma^2})X+(w_{i0}-w_{j0})=0$
+	- $\implies (\mu_i-\mu_j)X+\sigma^2(w_{i0}-w_{j0})=0$
+### Case II: $\Sigma_i=\Sigma$
+- That is, $\Sigma_1=\Sigma_2=\cdots=\Sigma_{|\omega|}=\Sigma$
+	- All the classes have a common covariance matrix $\Sigma$.
+	- More general than Case I.
+	  
+- And the discriminant function $g_i(x)$ is:
+	- $g_i(x)=$
+		- $-\dfrac{1}{2}|\Sigma_i|$
+		- $-\dfrac{1}{2}(X-\mu_i)^\top\Sigma_i^{-1}(X-\mu_i)$
+		- $+\ln[P(\omega_i)]$
+ - Here, as $|\Sigma_i|=|\Sigma|$ is a constant, it is ignored. Therefore,
+	 - $g_i(x)=-\dfrac{1}{2}(X-\mu_i)^\top\Sigma^{-1}(X-\mu_i)+\ln P(\omega_i)$
+		 - where $(X-\mu_i)^\top\Sigma^{-1}(X-\mu_i)$ is the **Squared Mahalanobis Distance**.
+		 - When $\Sigma=I$, it reduces to **Euclidean Distance**.
+	- $=-\dfrac{1}{2}(X-\mu_i)^\top(\Sigma^{-1}X-\Sigma^{-1}\mu_i)+\ln P(\omega_i)$
+	- $=-\dfrac{1}{2}(X^\top-\mu_i^\top)(\Sigma^{-1}X-\Sigma^{-1}\mu_i)+\ln P(\omega_i)$
+	- $=-\dfrac{1}{2}(X^\top\Sigma^{-1}X-X^\top\Sigma^{-1}\mu_i-\mu_i^\top\Sigma^{-1}X+\mu_i^\top\Sigma^{-1}\mu_i)+\ln P(\omega_i)$
+	- $=-\dfrac{1}{2}(X^\top\Sigma^{-1}X-2\mu_i^\top\Sigma^{-1}X+\mu_i^\top\Sigma^{-1}\mu_i)+\ln P(\omega_i)$
 
-## Case II: $\Sigma_i=\Sigma$
+- Here, $X^\top\Sigma^{-1}X$ is the same for all class, thus can be ignored.
+	- $g_i(x)=(\mu_i^\top\Sigma^{-1})X+(-\dfrac{\mu_i^\top\Sigma^{-1}\mu_i}{2}+\ln P(\omega_i))$
+### Case III: $\Sigma_i=arbitrary$
+In most cases, for each class $\omega_i$, $\Sigma_i$, the covariance/spread of data in this class is arbitrary.
+
+- $g_i(x)=-\dfrac{1}{2}(X-\mu_i)^\top\Sigma_i^{-1}(X-\mu_i)-\dfrac{1}{2}\ln|\Sigma_i|+\ln P(\omega_i)$
+- $=-\dfrac{1}{2}(X-\mu_i)^\top(\Sigma_i^{-1}X-\Sigma_i^{-1}\mu_i)-\dfrac{1}{2}\ln|\Sigma_i|+\ln P(\omega_i)$
+- $=-\dfrac{1}{2}(X^\top-\mu_i^\top)(\Sigma_i^{-1}X-\Sigma_i^{-1}\mu_i)-\dfrac{1}{2}\ln|\Sigma_i|+\ln P(\omega_i)$
+- $=-\dfrac{1}{2}(X^\top\Sigma_i^{-1}X-X^\top\Sigma_i^{-1}\mu_i-\mu_i^\top\Sigma_i^{-1}X+\mu_i^\top\Sigma_i^{-1}\mu_i)-\dfrac{1}{2}\ln|\Sigma_i|+\ln P(\omega_i)$
+- $=-\dfrac{1}{2}(X^\top\Sigma_i^{-1}X-2\mu_i^\top\Sigma_i^{-1}X+\mu_i^\top\Sigma_i^{-1}\mu_i)-\dfrac{1}{2}\ln|\Sigma_i|+\ln P(\omega_i)$
+- $=X^\top(-\dfrac{1}{2}\Sigma_i^{-1})X+(\mu_i^\top\Sigma_i^{-1})X+(-\dfrac{\mu_i^\top\Sigma^{-1}\mu_i}{2}-\dfrac{\ln|\Sigma_i|}{2}+\ln P(\omega_i))$
+Thus,
+- $g_i(X)=X^\top W_i X + w_i^\top X + w_{i0}$, where
+	- $W_i=-\dfrac{1}{2}\Sigma_i^{-1}$ is the Quadratic matrix.
+	- $w_i=\mu_i^\top\Sigma_i^{-1}$ is the Weight Vector
+	- $w_{i0}=-\dfrac{\mu_i^\top\Sigma^{-1}\mu_i}{2}-\dfrac{\ln|\Sigma_i|}{2}+\ln P(\omega_i)$ is the Threshold/Bias.
+
+Again, for special covariance matrices:
+- $\Sigma_i=\sigma^2I$:
+	- Assign $x$ to $\omega_i$ if there is a smaller **Euclidean Distance:** $d_{Euclidean}=\|X-\mu_i\|$
+- $\Sigma_i=\Sigma$:
+	- Assign $x$ to $\omega_i$ if there is a smaller **Mahalanobis Distance:** $d_{Mahalanobis}=\sqrt{(X-\mu_i)^\top\Sigma^{-1}(X-\mu_i)}$
+![[Euclidean_and_Mahalanobis.png]]
