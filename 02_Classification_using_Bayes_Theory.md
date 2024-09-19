@@ -407,3 +407,81 @@ Again, for special covariance matrices:
 - $\Sigma_i=\Sigma$:
 	- Assign $x$ to $\omega_i$ if there is a smaller **Mahalanobis Distance:** $d_{Mahalanobis}=\sqrt{(X-\mu_i)^\top\Sigma^{-1}(X-\mu_i)}$
 ![[Euclidean_and_Mahalanobis.png]]
+
+
+# 2.6 (Additional) Geometric Description of Covariance Matrix
+## 2.6.1 Meta Matrices
+Take the 2-D case as an example. Geometrically, the covariance matrix tells how the original Euclidean Space could be transformed into a Mahalanobis space.
+
+The transformation info of a 2-D covariance matrix could be described as:
+- Scale factor: Multiplication
+- Skew factor: Addition
+$$
+\begin{bmatrix} {x_1 \ scale \ factor} & {x_1 \ skew \ factor} \\ {x_2 \ skew \ factor} & {x_2 \ scale \ factor} \end{bmatrix} 
+$$
+### 1. Identity Matrix
+In the trivial case, $I^2$ as the covariance matrix does no effect on the original Euclidean space. The inverse of the identity matrix is itself.
+
+$\Sigma=\Sigma^{-1}=\begin{bmatrix} 1 & 0 \\ 0 & 1\end{bmatrix}$
+![[Matrix_1.png]]
+
+### 2. Scales $x_1$
+By setting the $x_1$ scale factor non-1, the matrix scales the Euclidean space on the $x_1$ axis. The inverse of covariance matrix does the opposite, that is to scale a coordinate back. 
+$\Sigma=\begin{bmatrix} 1.2 & 0 \\ 0 & 1\end{bmatrix}$ $\Sigma^{-1}=\begin{bmatrix} \dfrac{1}{1.2} & 0 \\ 0 & 1\end{bmatrix}$
+
+For $v=\begin{bmatrix} v_1 \\ v_2\end{bmatrix}$, $\Sigma\times v=\begin{bmatrix} 1.2 & 0 \\ 0 & 1\end{bmatrix}\begin{bmatrix}v_1 \\ v_2\end{bmatrix}=\begin{bmatrix}1.2v_1 \\ v_2\end{bmatrix}$
+
+![[Matrix_2.png]]
+### 3. Scales $x_2$
+By setting the $x_2$ scale factor non-1, the matrix scales the Euclidean space on the $x_2$ axis. The inverse of covariance matrix does the opposite, that is to scale a coordinate back. 
+$\Sigma=\begin{bmatrix} 1 & 0 \\ 0 & 0.8\end{bmatrix}$ $\Sigma^{-1}=\begin{bmatrix} \dfrac{1}{0.8} & 0 \\ 0 & 1\end{bmatrix}$
+
+For $v=\begin{bmatrix} v_1 \\ v_2\end{bmatrix}$, $\Sigma\times v=\begin{bmatrix} 1 & 0 \\ 0 & 0.8\end{bmatrix}\begin{bmatrix}v_1 \\ v_2\end{bmatrix}=\begin{bmatrix}v_1 \\ 0.8v_2\end{bmatrix}$
+![[Matrix_3.png]]
+### 4. Skews $x_1$
+By setting the $x_1$ skewing factor non-zero, the matrix pans (平移) the $x_1$ coordinate of a vector by the multiplication of:
+- The factor
+- And the $x_2$ coordinate of that vector.
+
+Therefore, the larger $x_2$ coordinate the vector has, the more it is panned.
+
+$\Sigma=\begin{bmatrix} 1 & 0.2 \\ 0 & 1\end{bmatrix}$ $\Sigma^{-1}=\begin{bmatrix} 1 & -0.2 \\ 0 & 1\end{bmatrix}$
+
+For $v=\begin{bmatrix} v_1 \\ v_2\end{bmatrix}$, $\Sigma\times v=\begin{bmatrix} 1 & 0.2 \\ 0 & 1\end{bmatrix}\begin{bmatrix}v_1 \\ v_2\end{bmatrix}=\begin{bmatrix}v_1+0.2v_2 \\ v_2\end{bmatrix}$
+
+![[Matrix_4.png]]
+
+### 5. Skews $x_2$
+By setting the $x_2$ skewing factor non-zero, the matrix pans (平移) the $x_2$ coordinate of a vector by the multiplication of:
+- The factor
+- And the $x_1$ coordinate of that vector.
+
+Therefore, the larger $x_1$ coordinate the vector has, the more it is panned.
+
+$\Sigma=\begin{bmatrix} 1 & 0 \\ 0.2 & 1\end{bmatrix}$ $\Sigma^{-1}=\begin{bmatrix} 1 & 0 \\ -0.2 & 1\end{bmatrix}$
+
+For $v=\begin{bmatrix} v_1 \\ v_2\end{bmatrix}$, $\Sigma\times v=\begin{bmatrix} 1 & 0 \\ 0.2 & 1\end{bmatrix}\begin{bmatrix}v_1 \\ v_2\end{bmatrix}=\begin{bmatrix}v_1 \\ 0.2v_1+v_2\end{bmatrix}$
+
+![[Matrix_5.png]]
+
+
+## 2.6.2 Combined Matrices
+Several meta matrices could be combined to a single covariance matrix, performing batch operations.
+$$
+\begin{bmatrix}1.2 & 0 \\ 0 & 1\end{bmatrix}
+\begin{bmatrix}1 & 0 \\ 0 & 0.8\end{bmatrix}
+\begin{bmatrix}1 & 0.2 \\ 0 & 1\end{bmatrix}
+\begin{bmatrix}1 & 0 \\ 0.2 & 1\end{bmatrix}
+$$
+$=\begin{bmatrix}1.2 & 0 \\ 0 & 0.8\end{bmatrix} \begin{bmatrix}1 & 0.2 \\ 0 & 1\end{bmatrix} \begin{bmatrix}1 & 0 \\ 0.2 & 1\end{bmatrix}$
+
+$=\begin{bmatrix}1.2 & 0.24 \\ 0 & 0.8\end{bmatrix} \begin{bmatrix}1 & 0 \\ 0.2 & 1\end{bmatrix}$
+
+$=\begin{bmatrix}1.2 & 0.24 \\ 0 & 0.8\end{bmatrix} \begin{bmatrix}1 & 0 \\ 0.2 & 1\end{bmatrix}$
+
+$=\begin{bmatrix}1.248 & 0.24 \\ 0.16 & 0.8\end{bmatrix}$
+
+ **Calculation of Squared Mahalanobis Distance**
+ $d_{M}^2=(X-\mu_i)^\top\Sigma^{-1}(X-\mu_i)=(X-\mu_i)^\top[\Sigma^{-1}(X-\mu_i)]$
+ The inverse of the covariance matrix $\Sigma^{-1}$ reverses the transformed space back to its original Euclidean Space to compute the Mahalanobis distance.
+ ![[Matrix_6.png]]
