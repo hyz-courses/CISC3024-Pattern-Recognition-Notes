@@ -89,6 +89,10 @@ For $\lambda_{1} = \sqrt{7}$:
 - $\implies \begin{pmatrix}5-\sqrt{7} & -2 \\ -2 & 5-\sqrt{7}\end{pmatrix}x=0$
 - 
 # 4.2 Principle Component Analysis (PCA) 主成分分析
+- Project data from higher dimension to lower dimension, while preserving a low projection error.
+- Maximizes data variance in low-dimensional representation.
+- Simple & Non-parametric method of extracting relevant information from confusing data.
+- Reduce a complicate dataset to a lower dimension.
 ### Problem Setup
 **Given**
 - An $m\times n$ training data set $X=\begin{pmatrix}x^{(1)} & x^{(2)} & \cdots & x^{(m)}\end{pmatrix}$
@@ -121,7 +125,7 @@ What we eventually get is:
 - Since different features may have their own range of values, which could vary, we need to normalize all features into a unified range of values.
 	- E.g.: House Size is around 200 squared meters, while the price could be around 30,000.
 
-## 4.2.2 Compute Covariance Matrix
+## 4.2.2 Reduce Data Dimension
 **Given**
 - The normalized version of dataset $X$.
 **Do**
@@ -133,8 +137,117 @@ $$
 $$
 U_{n\times n}S_{n\times n}V_{n\times n}=svd(\Sigma)
 $$
+3. Take the first $k$ columns from $U$.
+$$
+U=\begin{pmatrix}
+| & | &  & | &  & |\\ 
+u^{(1)} & u^{(2)} & \cdots & u^{(k)} & \cdots & u^{(n)} \\
+| & | &  & | & & | \\ 
+\end{pmatrix}
+$$
+$$
+\implies
+U_{reduce}=\begin{pmatrix}
+| & | &  & | \\ 
+u^{(1)} & u^{(2)} & \cdots & u^{(k)}\\
+| & | &  & |  \\ 
+\end{pmatrix}\in\mathbb{R}^{n\times k}
+$$
+4. We want to reduce $x^{(i)}\in\mathbb{R}^n\rightarrow z^{(i)}\in\mathbb{R}^k$ by:
+$$
+z^{(i)}=U_{reduce}^\top x^{(i)}
+$$
+Namely,
+$$
+\begin{pmatrix}
+- & (u^{(1)})^\top & - \\
+- & (u^{(2)})^\top & - \\
+  & \vdots & \\
+- & (u^{(k)})^\top & - \\
+\end{pmatrix}
+\begin{pmatrix}
+x_1^{(1)} \\ x_2^{(1)} \\ \vdots \\ x_k^{(1)} \\ \vdots \\ x_n^{(1)}
+\end{pmatrix}
+=
+\begin{pmatrix}
+z_1^{(i)} \\ z_2^{(i)} \\ \vdots \\ z_k^{(i)}
+\end{pmatrix}
+$$
+## 4.2.3 Choosing $k$
+### Reconstruct Original Data
+After PCA, we obtain $z^{(i)}=U_{reduce}^\top x^{(i)}$. We can reconstruct the original data from $z^{(i)}$ by:
+$$
+\widetilde{x}^{(i)}=U_{reduce}z^{(i)}
+$$
+The reconstruction comes with information loss. We will choose $k$ based on the information loss.
+### Choosing $k$ - Slow
+- Average Squared Projection Error:
+	- $\frac{1}{m}\sum_{i=1}^{m}\|x^{(i)}-\widetilde{x}^{(i)}\|^2$
+	- $=\frac{1}{m}\sum_{i=1}^{m}(x^{(i)}-\widetilde{x}^{(i)})^\top(x^{(i)}-\widetilde{x}^{(i)})$
+- Total Variation of Data:
+	- $\frac{1}{m}\sum_{i=1}^{m}\|x^{(i)}\|^2$
+	- $=\frac{1}{m}\sum_{i=1}^{m}{x^{(i)}}^\top x^{(i)}$
 
-## 4.2.3 Dimension Reduction on $U$
-
-
-# 4.3 Linear Discriminant Analysis (LDA)
+Choose the target dimension number $k$ to be the smallest value so that:
+$$
+\dfrac{\frac{1}{m}\sum_{i=1}^{m}\|x^{(i)}-\widetilde{x}^{(i)}\|^2}{\frac{1}{m}\sum_{i=1}^{m}\|x^{(i)}\|^2}\leq 0.01
+$$
+i.e., $99\%$ of the variance is retained.
+### Choosing $k$ - Fast
+After performing SVD on $\Sigma=\frac{1}{m}XX^\top$, we have obtained $U$, $S$, and $V$.
+Focusing on $S$, we pick the smallest $k$ for:
+$$
+\dfrac{\sum_{i=1}^{k}s_{ii}}{\sum_{i=1}^{k}s_{ii}} \geq 0.99
+$$
+i.e., $99\%$ of the variance is retained.
+# 4.3 Linear Discriminant Analysis (LDA) 线性判别分析
+## 4.3.0 Problems of PCA
+## 4.3.1 LDA
+**Given**
+- A set of $d$-dimensional samples $\mathbf{X}=\{\mathbf{x}_1,\mathbf{x}_2,\cdots,\mathbf{x}_N\}$. From which,
+	- $N_1$ samples belong to class $\omega_1$.
+	- $N_2$ samples belong to class $\omega_2$.
+**Do**
+- We seek a set of scalar $\mathbf{y}=\{y_1,y_2,\cdots,y_N\}\subset\mathbb{R}$ by projecting the $N$ samples in $x$ onto a line.
+$$
+y_i=\mathbf{w}^\top \mathbf{x}_i
+$$
+- Namely,
+$$
+y_i=
+\begin{pmatrix}
+w_1 & w_2 & \cdots & w_d
+\end{pmatrix}
+\begin{pmatrix}
+x_{i1} \\ x_{i2} \\ \vdots \\ x_{id}
+\end{pmatrix}
+$$
+LDA selects the line that maximizes the *separability* of the scalars.
+## 4.3.2 Measure of Separation
+Sample Means of each class in $x$-space:
+$$
+\mathbf{\mu}_i=\dfrac{1}{N_i}\sum_{\mathbf{x}\in\omega_i}\mathbf{x}
+$$
+Sample Means of each class in $y$-space:
+$$
+\widetilde{\mathbf{\mu}}=\dfrac{1}{N_i}\sum_{y\in\omega_i}y
+$$
+$$
+=\dfrac{1}{N_i}\sum_{\mathbf{x}\in\omega_i}\mathbf{w}^\top \mathbf{x}
+$$
+$$
+=\mathbf{w}^\top\mathbf{\mu}_i
+$$
+The distance between the project mean is:
+$$
+|\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2|=|\mathbf{w}^\top(\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2)|
+$$
+Ignoring the standard deviation within classes.
+### Scatter
+Fisher's solution is to maximize the difference between the means of each class. The means of each class is normalized by a measure of the **within-class scatter**.
+The scatter is equivalent of the variance of each class.$$
+\widetilde{s}_i^2=\sum_{y\in\omega_i}(y-\widetilde{\mathbf{\mu}}_i)^2
+$$The total within-class scatter of all the project samples would be
+$$(\widetilde{s}_1^2+\widetilde{s}_1^2)$$
+The criterion function would be 
+## 4.3.3
