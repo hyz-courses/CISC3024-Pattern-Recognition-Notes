@@ -12,22 +12,51 @@ Dimension Reduction:
 - Data Interpretation
 
 # 4.1 Singular Value Decomposition (SVD) 奇异值分解
+## 4.1.0 Why SVD?
+- *Redundancy* within dimensions of a single data sample. 多维间存在冗余信息
+	- In a set of high-dimensional data samples, not all dimensions are useful.
+	- There may be redundancies among some dimensions.
+		- That is, some dimensions are highly related.
+		- e.g., Suppose in a data set, for most data samples, $x_2=2x_1+3$. Therefore we only need $x_1$ since it could already describe $x_2$ with itself. This creates a redundancy.
+	- SVD picks out main features, and project data into lower dimensions to remove redundancies.
+- Existence of *noise* samples. 存在噪声数据
+	- Among data, smaller eigenvalues always comes with unimportant features.
+	- By ignoring these data, we could reduce the noise when we are reducing data dimension.
+	- That's why, during the process of SVD, we need to *sort* the eigenvalues.
 ## 4.1.1 Definition
-- [i] The Singular Value Decomposition process could be described as follows.
+- [i] Suppose that matrix $A\in \mathbb{R}^{m\times n}$ contains a set of training data.
+	- $m$: Dimensions within a data sample. 
+		- That is, a column vector of $A$ represents a data sample.
+	- $n$: The number of data samples.
+	- In fact, the role of $m\times n$ could be reversed. 
+		- In the current version, $A$ is a "fat" matrix; In the reversed version, $A$ is a "tall" matrix.
+- The Singular Value Decomposition process could be described as follows.
 $$
 A_{m\times n}=U_{m\times m}S_{m\times n}V_{n\times n}^\top
 $$
 where,
 - $A$ is any $m\times n$ matrix.
-- $U$ is any $m\times m$ orthogonal matrix. 正交矩阵
+- $U$ is any $m\times m$ orthogonal matrix. 酉矩阵、正交矩阵
 	- $U^\top=U^{-1}$
 	- $UU^\top=U^\top U=I$
-- $S$ is any $m\times n$ diagonal matrix. 对角矩阵
-	- Singular values $\sigma_1>\sigma_2>\cdots>\sigma_{\min(m,n)}>0$ is the main diagnal of $S$.
+- $S$ is any $m\times n$ diagonal matrix. 酉矩阵、正交矩阵
+	- Singular values $\sigma_1>\sigma_2>\cdots>\sigma_{\min(m,n)}>0$ is the main diagonal of $S$.
 		- $S=\begin{bmatrix}\sigma_1 & 0 & \cdots & 0 & \cdots & 0 \\ 0 & \sigma_2 & \cdots & 0 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots & \ddots & \vdots\\ 0 & 0 & \cdots & \sigma_m & \cdots & 0\end{bmatrix}$
 	- $\sigma_1^2>\sigma_2^2>\cdots>\sigma_{\min(m,n)^2}$ are the **eigenvalues** of $AA^\top$ and $A^\top A$.
-- $V$ is any $n\times n$ orthogonal matrix.
+- $V$ is any $n\times n$ orthogonal matrix. 酉矩阵
+![[SVD.png]]
 
+### Left Singular Matrix $U$
+- [i] When we look at the Left Singular Matrix $U$, we pay attention to its *Column Vectors*.
+	- Since $U\in\mathbb{R}^{m\times m}$, it has $m$ column vectors. They are the **Left Singular Vectors**.
+	- These column vectors represents the *Main Directions* of the *Row Space* of matrix $A$.
+		- Row space: The space of Row Vectors, consider the row number, i.e. the height of the matrix.
+	- In other words, $U$ denotes the relationships among the dimensions in data samples.
+
+- [i] How exactly?
+	- Each column vector of $U$ is a unit vector, and $U$'s column vectors are all orthogonal to each other.
+	- Each column vector of $U$ represents a *co-tendency* among all the features within a data sample.
+	- The more left the column vector is located, the more important it is.
 ## 4.1.2 Calculation Procedures
 
 ### Problem Setup
@@ -100,14 +129,14 @@ For $\lambda_{1} = \sqrt{7}$:
 	- that is, $X=\begin{pmatrix}x_{1}^{(1)} & x_{1}^{(2)} & \cdots & x_{1}^{(m)} \\ x_{2}^{(1)} & x_{2}^{(2)} & \cdots & x_{2}^{(m)} \\ \vdots & \vdots & \ddots & \vdots \\ x_{n}^{(1)} & x_{n}^{(2)} & \cdots & x_{n}^{(m)}\end{pmatrix}$
 	- Structural Analysis:
 		- $n$ is the *dimension* of a data sample. Each row is a feature.
-		- $m$ is the *amount* of data sample. Each column is a dataset.
+		- $m$ is the *amount* of data sample. Each column is a data sample.
 
 **Do**
 - Reduces the dataset from $n$-dimensions to $k$-dimensions.
 	- That is, to convert each feature from a $n$-d vector to a $k$-d vector;
 	- Namely, to convert $X$ from an $n\times m$ matrix into a $k\times m$ matrix.
 
-## 4.2.1 Data Preprocessing: Mean Normalization
+## 4.2.1 Data Pre-processing: Mean Normalization
 **Given**
 - The $m\times n$ training dataset $X=\begin{pmatrix}x^{(1)} & x^{(2)} & \cdots & x^{(m)}\end{pmatrix}$.
 **Do**
