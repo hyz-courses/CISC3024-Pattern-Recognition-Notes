@@ -95,28 +95,84 @@ $$
 AA^\top = \lambda I
 $$
 where $\lambda$ is the eigenvalue of $AA^\top$.
-- $\implies |AA^\top-\lambda I| = 0$
-- $\implies \Biggl|\begin{pmatrix}5 & -2 \\ -2 & 5\end{pmatrix}-\lambda\begin{pmatrix}1 & 0 \\ 0 & 1\end{pmatrix}\Biggr|=0$
-- $\implies \begin{vmatrix}5-\lambda & -2 \\ -2 & 5-\lambda\end{vmatrix}=0$
-- $\implies (5-\lambda)^2-4=0$
-- $\implies \lambda^2-10\lambda+21=0$
-- $\implies (\lambda-3)(\lambda-7)=0$
-- $\implies \begin{cases}\lambda_1=7 \\ \lambda_2=3\end{cases}, \ \begin{cases}\sigma_1=\sqrt{\lambda_1}=\sqrt{7}\\ \sigma_2=\sqrt{\lambda_2}=\sqrt{3}\end{cases}$
+$\implies |AA^\top-\lambda I| = 0$
+
+$\implies \Biggl|\begin{pmatrix}5 & -2 \\ -2 & 5\end{pmatrix}-\lambda\begin{pmatrix}1 & 0 \\ 0 & 1\end{pmatrix}\Biggr|=0$
+
+$\implies \begin{vmatrix}5-\lambda & -2 \\ -2 & 5-\lambda\end{vmatrix}=0$
+
+$\implies (5-\lambda)^2-4=0$
+
+$\implies \lambda^2-10\lambda+21=0$
+
+$\implies (\lambda-3)(\lambda-7)=0$
+
+$\implies \begin{cases}\lambda_1=7 \\ \lambda_2=3\end{cases}, \ \begin{cases}\sigma_1=\sqrt{\lambda_1}=\sqrt{7}\\ \sigma_2=\sqrt{\lambda_2}=\sqrt{3}\end{cases}$
 
 Therefore, the diagonal matrix $S$ would be:
 $$
-S=\begin{pmatrix}\sigma_1 & 0 \\ 0 & \sigma_2\end{pmatrix}=\begin{pmatrix}\sqrt{7} & 0 \\ 0 & \sqrt{3}\end{pmatrix}
+S=\begin{pmatrix}\sigma_1 & 0 \\ 0 & \sigma_2\end{pmatrix}=\begin{pmatrix}\sqrt{7} & 0 & 0\\ 0 & \sqrt{3} & 0\end{pmatrix}
 $$
 ### Step 3. Find $U$
 We need to find $U$ using the eigenvalues we obtained from Step 2. Again, by the property of eigenvalues of a matrix:
 $$
 \forall x\in \mathbb{R}^m, \ (AA^\top-\lambda I)x=0
 $$
-For $\lambda_{1} = \sqrt{7}$:
-- $(AA^\top-\lambda I)x_1 = 0$
-- $\implies \Biggl(\begin{pmatrix}5 & -2 \\ -2 & 5\end{pmatrix}-\sqrt{7}\begin{pmatrix}1 & 0 \\ 0 & 1\end{pmatrix}\Biggr)x=0$
-- $\implies \begin{pmatrix}5-\sqrt{7} & -2 \\ -2 & 5-\sqrt{7}\end{pmatrix}x=0$
-- 
+For $\lambda_{1} = 7$:
+$(AA^\top-\lambda I)x_1 = 0$
+
+$\implies \Biggl(\begin{pmatrix}5 & -2 \\ -2 & 5\end{pmatrix}-7\begin{pmatrix}1 & 0 \\ 0 & 1\end{pmatrix}\Biggr)x_1=0$
+
+$\implies \begin{pmatrix}-2 & -2 \\ -2 & -2\end{pmatrix}x_1=0$
+
+$\implies x_1=\begin{pmatrix}a \\ a\end{pmatrix}$
+
+$\implies u_1=\frac{x_1}{\|x_1\|}=\frac{1}{x_1^\top x_1}x_1=\begin{pmatrix}\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}}\end{pmatrix}$
+
+For $\lambda_2=3$:
+$(AA^\top -\lambda I)x_2=0$
+
+$\implies \biggl(\begin{pmatrix}5 & -2 \\ -2 & 5\end{pmatrix}-3\begin{pmatrix}1 & 0 \\ 0 & 1\end{pmatrix}\biggr)x_2=0$
+
+$\implies \begin{pmatrix}2 & -2 \\ -2 & 2\end{pmatrix}x_2=0$
+
+$\implies x_2=\begin{pmatrix}a \\ -a\end{pmatrix}$
+
+$\implies u_2=\frac{x_2}{\|x_2\|}=\frac{1}{x_2^\top x_2}x_2=\begin{pmatrix}\frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}}\end{pmatrix}$
+
+Construct matrix $U$:
+$$U=\begin{pmatrix}u_1 & u_2\end{pmatrix}=\begin{pmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}\end{pmatrix}$$
+### Step 4. Finding $V$
+For $\lambda_{1} = 7$:
+$(A^\top A-\lambda_1 I)x_3=0$
+
+$\implies \Biggl(\begin{pmatrix}5 & -2 & 2\\ -2 & 4 & 0 \\ 2 & 0 & 1\end{pmatrix}-7\begin{pmatrix}1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{pmatrix}\Biggr)x_3=0$
+
+$\implies \begin{pmatrix}-2 & -2 & 2\\ -2 & -3 & 0 \\ 2 & 0 & -6\end{pmatrix}x_3=0$
+
+$\implies \begin{pmatrix}1 & 0 & -3\\ 0 & 1 & -2 \\ 0 & 0 & 0\end{pmatrix}x_3=0$ 
+
+$\implies x_3=\begin{pmatrix}3 \\ -2 \\ 1\end{pmatrix}$
+
+$\implies v_1=\frac{x_3}{\|x_3\|}=\begin{pmatrix}\frac{3}{\sqrt{14}} \\ \frac{-2}{\sqrt{14}} \\ \frac{1}{\sqrt{14}}\end{pmatrix}$
+
+For $\lambda_2=3$:
+$(A^\top A-\lambda_2 I)x_4=0$
+
+$\implies \Biggl(\begin{pmatrix}5 & -2 & 2\\ -2 & 4 & 0 \\ 2 & 0 & 1\end{pmatrix}-3\begin{pmatrix}1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{pmatrix}\Biggr)x_4=0$
+
+$\implies \begin{pmatrix}2 & -2 & 2\\ -2 & 1 & 0 \\ 2 & 0 & -2\end{pmatrix}x_4=0$
+
+$\implies x_4=\begin{pmatrix}1 \\ -2 \\ 1\end{pmatrix}$
+
+$\implies v_2=\frac{x_4}{\|x_4\|}=\begin{pmatrix}\frac{1}{\sqrt{6}} \\ \frac{-2}{\sqrt{6}} \\ \frac{1}{\sqrt{6}}\end{pmatrix}$
+
+Construct matrix $V$:
+$$
+V=\begin{pmatrix}v_1 & v_2\end{pmatrix}= \begin{pmatrix}\frac{3}{\sqrt{14}} & \frac{1}{\sqrt{6}} \\ \frac{-2}{\sqrt{14}} & \frac{-2}{\sqrt{6}}\\ \frac{1}{\sqrt{14}} & \frac{1}{\sqrt{6}}\end{pmatrix}
+$$
+### Step 5. Complete SVD
+$$A=\begin{bmatrix}2 & 0 & 1 \\ -1 & 2 & 0\end{bmatrix}=\begin{pmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}\end{pmatrix}\begin{pmatrix}\sqrt{7} & 0 & 0\\ 0 & \sqrt{3} & 0\end{pmatrix}\begin{pmatrix}\frac{3}{\sqrt{14}} & \frac{1}{\sqrt{6}} \\ \frac{-2}{\sqrt{14}} & \frac{-2}{\sqrt{6}}\\ \frac{1}{\sqrt{14}} & \frac{1}{\sqrt{6}}\end{pmatrix}$$
 # 4.2 Principle Component Analysis (PCA) 主成分分析
 - Project data from higher dimension to lower dimension, while preserving a low projection error.
 - Maximizes data variance in low-dimensional representation.
