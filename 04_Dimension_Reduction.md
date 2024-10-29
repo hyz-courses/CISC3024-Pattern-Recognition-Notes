@@ -89,12 +89,15 @@ $$
 A^\top A=\begin{bmatrix}2 & -1 \\ 0 & 2 \\ 1 & 0\end{bmatrix}\begin{bmatrix}2 & 0 & 1 \\ -1 & 2 & 0\end{bmatrix}=\begin{bmatrix}5 & -2 & 2 \\ -2 & 4 & 0 \\ 2 & 0 & 1\end{bmatrix}
 $$
 ### Step 2. Eigenvalues and $S$
-As we obtained $AA^\top$ and $A^\top A$, we can get their eigenvalues, and construct $S$ matrix.
+As we obtained $AA^\top$ and $A^\top A$, we can get their common eigenvalues, and construct $S$ matrix.
+- The eigenvalues $AA^\top$ and $A^\top A$ are essentially the same, except for the zero-eigenvalue.
 From the definition of Eigen Values:
 $$
 AA^\top = \lambda I
 $$
 where $\lambda$ is the eigenvalue of $AA^\top$.
+
+Calculate Eigenvalues for $AA^\top$
 $\implies |AA^\top-\lambda I| = 0$
 
 $\implies \Biggl|\begin{pmatrix}5 & -2 \\ -2 & 5\end{pmatrix}-\lambda\begin{pmatrix}1 & 0 \\ 0 & 1\end{pmatrix}\Biggr|=0$
@@ -109,9 +112,32 @@ $\implies (\lambda-3)(\lambda-7)=0$
 
 $\implies \begin{cases}\lambda_1=7 \\ \lambda_2=3\end{cases}, \ \begin{cases}\sigma_1=\sqrt{\lambda_1}=\sqrt{7}\\ \sigma_2=\sqrt{\lambda_2}=\sqrt{3}\end{cases}$
 
+Calculate Eigenvalues for $A^\top A$:
+$|A^\top A-\lambda I|=0$
+
+$\implies \biggl|\begin{pmatrix}5 & -2 & 2 \\ -2 & 4 & 0 \\ 2 & 0 & 1\end{pmatrix}-\lambda\begin{pmatrix}1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{pmatrix}\biggr|=0$
+
+$\implies \begin{vmatrix}5-\lambda & -2 & 2 \\ -2 & 4-\lambda & 0 \\ 2 & 0 & 1-\lambda\end{vmatrix}=0$
+
+$\implies (5-\lambda)\Bigl[(4-\lambda)(1-\lambda)\Bigr]-(-2)\Bigl[-2(1-\lambda)\Bigr]+2\Bigl[-2(4-\lambda)\Bigr]=0$
+
+$\implies (5-\lambda)(\lambda^2-5\lambda+4)-4(1-\lambda)-4(4-\lambda)=0$
+
+$\implies (5-\lambda)(\lambda^2-5\lambda+4)+8\lambda-20=0$
+
+$\implies (5\lambda^2-25\lambda+20-\lambda^3+5\lambda^2-4\lambda)+8\lambda-20=0$
+
+$\implies (-\lambda^3+10\lambda^2-29\lambda+20)+8\lambda-20=0$
+
+$\implies -\lambda^3+10\lambda^2-21\lambda=0$
+
+$\implies \lambda^2-10\lambda+21=0, \ \text{for} \ \lambda\neq 0$
+
+$\implies (\lambda-3)(\lambda-7)(\lambda-0)=0$
+
 Therefore, the diagonal matrix $S$ would be:
 $$
-S=\begin{pmatrix}\sigma_1 & 0 \\ 0 & \sigma_2\end{pmatrix}=\begin{pmatrix}\sqrt{7} & 0 & 0\\ 0 & \sqrt{3} & 0\end{pmatrix}
+S=\begin{pmatrix}\sigma_1 & 0 & 0\\ 0 & \sigma_2 & 0\end{pmatrix}=\begin{pmatrix}\sqrt{7} & 0 & 0\\ 0 & \sqrt{3} & 0\end{pmatrix}
 $$
 ### Step 3. Find $U$
 We need to find $U$ using the eigenvalues we obtained from Step 2. Again, by the property of eigenvalues of a matrix:
@@ -125,9 +151,11 @@ $\implies \Biggl(\begin{pmatrix}5 & -2 \\ -2 & 5\end{pmatrix}-7\begin{pmatrix}1 
 
 $\implies \begin{pmatrix}-2 & -2 \\ -2 & -2\end{pmatrix}x_1=0$
 
+$\implies \begin{pmatrix}1 & 1 \\ 0 & 0\end{pmatrix}x_1=0$
+
 $\implies x_1=\begin{pmatrix}a \\ a\end{pmatrix}$
 
-$\implies u_1=\frac{x_1}{\|x_1\|}=\frac{1}{x_1^\top x_1}x_1=\begin{pmatrix}\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}}\end{pmatrix}$
+$\implies u_1=\frac{x_1}{\|x_1\|}=\frac{1}{\sqrt{x_1^\top x_1}}x_1=\begin{pmatrix}\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}}\end{pmatrix}$
 
 For $\lambda_2=3$:
 $(AA^\top -\lambda I)x_2=0$
@@ -138,11 +166,14 @@ $\implies \begin{pmatrix}2 & -2 \\ -2 & 2\end{pmatrix}x_2=0$
 
 $\implies x_2=\begin{pmatrix}a \\ -a\end{pmatrix}$
 
-$\implies u_2=\frac{x_2}{\|x_2\|}=\frac{1}{x_2^\top x_2}x_2=\begin{pmatrix}\frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}}\end{pmatrix}$
+$\implies u_2=\frac{x_2}{\|x_2\|}=\frac{1}{\sqrt{x_2^\top x_2}}x_2=\begin{pmatrix}\frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}}\end{pmatrix}$
 
 Construct matrix $U$:
 $$U=\begin{pmatrix}u_1 & u_2\end{pmatrix}=\begin{pmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}\end{pmatrix}$$
+For $\lambda_3=0$
+
 ### Step 4. Finding $V$
+
 For $\lambda_{1} = 7$:
 $(A^\top A-\lambda_1 I)x_3=0$
 
@@ -167,12 +198,20 @@ $\implies x_4=\begin{pmatrix}1 \\ -2 \\ 1\end{pmatrix}$
 
 $\implies v_2=\frac{x_4}{\|x_4\|}=\begin{pmatrix}\frac{1}{\sqrt{6}} \\ \frac{-2}{\sqrt{6}} \\ \frac{1}{\sqrt{6}}\end{pmatrix}$
 
+For $\lambda_3=0$:
+$(A^\top A-0I)x_5=0$
+
+$\implies \begin{pmatrix}5 & -2 & 2\\ -2 & 4 & 0 \\ 2 & 0 & 1\end{pmatrix}x_5=0$
+
+$\implies x_5=\begin{pmatrix}2 \\ 1 \\ -4\end{pmatrix}$
+
+$\implies u_5=\frac{x_5}{\|x_5\|}=\begin{pmatrix}\frac{2}{\sqrt{21}} \\ \frac{1}{\sqrt{21}} \\ \frac{-4}{\sqrt{21}}\end{pmatrix}$
 Construct matrix $V$:
 $$
-V=\begin{pmatrix}v_1 & v_2\end{pmatrix}= \begin{pmatrix}\frac{3}{\sqrt{14}} & \frac{1}{\sqrt{6}} \\ \frac{-2}{\sqrt{14}} & \frac{-2}{\sqrt{6}}\\ \frac{1}{\sqrt{14}} & \frac{1}{\sqrt{6}}\end{pmatrix}
+V=\begin{pmatrix}v_1 & v_2\end{pmatrix}= \begin{pmatrix}\frac{3}{\sqrt{14}} & \frac{1}{\sqrt{6}} & \frac{2}{\sqrt{21}} \\ \frac{-2}{\sqrt{14}} & \frac{-2}{\sqrt{6}} & \frac{1}{\sqrt{21}}\\ \frac{1}{\sqrt{14}} & \frac{1}{\sqrt{6}} & \frac{-4}{\sqrt{21}}\end{pmatrix}
 $$
 ### Step 5. Complete SVD
-$$A=\begin{bmatrix}2 & 0 & 1 \\ -1 & 2 & 0\end{bmatrix}=\begin{pmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}\end{pmatrix}\begin{pmatrix}\sqrt{7} & 0 & 0\\ 0 & \sqrt{3} & 0\end{pmatrix}\begin{pmatrix}\frac{3}{\sqrt{14}} & \frac{1}{\sqrt{6}} \\ \frac{-2}{\sqrt{14}} & \frac{-2}{\sqrt{6}}\\ \frac{1}{\sqrt{14}} & \frac{1}{\sqrt{6}}\end{pmatrix}$$
+$$A=\begin{bmatrix}2 & 0 & 1 \\ -1 & 2 & 0\end{bmatrix}=\begin{pmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}\end{pmatrix}\begin{pmatrix}\sqrt{7} & 0 & 0\\ 0 & \sqrt{3} & 0\end{pmatrix}\begin{pmatrix}\frac{3}{\sqrt{14}} & \frac{-2}{\sqrt{14}} & \frac{1}{\sqrt{14}} \\ \frac{1}{\sqrt{6}} & \frac{-2}{\sqrt{6}} & \frac{1}{\sqrt{6}} \\ \frac{2}{\sqrt{21}} & \frac{1}{\sqrt{21}} & \frac{-4}{\sqrt{21}}\end{pmatrix}$$
 # 4.2 Principle Component Analysis (PCA) 主成分分析
 - Project data from higher dimension to lower dimension, while preserving a low projection error.
 - Maximizes data variance in low-dimensional representation.
