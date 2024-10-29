@@ -252,6 +252,7 @@ x_{i1} \\ x_{i2} \\ \vdots \\ x_{id}
 \end{pmatrix}
 $$
 LDA selects the line that maximizes the *separability* of the scalars.
+LDA selects the line that maximizes the *separability* of the scalars.
 ## 4.3.2 Measure of Separation
 Sample Means of each class in $x$-space:
 $$
@@ -269,14 +270,46 @@ $$
 $$
 The distance between the project mean is:
 $$
-|\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2|=|\mathbf{w}^\top(\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2)|
+|\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2|=|\mathbf{w}^\top(\mathbf{\mu}_1-\mathbf{\mu}_2)|
 $$
 Ignoring the standard deviation within classes.
 ### Scatter
 Fisher's solution is to maximize the difference between the means of each class. The means of each class is normalized by a measure of the **within-class scatter**.
-The scatter is equivalent of the variance of each class.$$
+The scatter is equivalent of the *variance* of each class.$$
 \widetilde{s}_i^2=\sum_{y\in\omega_i}(y-\widetilde{\mathbf{\mu}}_i)^2
 $$The total within-class scatter of all the project samples would be
 $$(\widetilde{s}_1^2+\widetilde{s}_1^2)$$
-The criterion function would be 
-## 4.3.3
+The criterion function would be:
+$$
+\mathcal{J}(\mathbf{w})=\frac{|\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2|^2}{s_1^2+s_2^2}
+$$
+We need to find the optimal $\mathbf{w}$ that maximizes the criterion function $\mathcal{J}(\mathbf{w})$.
+## 4.3.3 Find the Optimal $\mathbf{w}$
+### Within-Class Scatter
+The scatter in $x$-space:
+$$
+S_i=\sum_{\mathbf{x}\in\omega_i}(\mathbf{x}-\mathbf{\mu}_i)(\mathbf{x}-\mathbf{\mu}_i)^\top
+$$
+The within-class scatter matrix:
+$$
+S_W=S_1+S_2
+$$
+To express the scatter in $y$-space with $\mathbf{w}$:
+$$
+\widetilde{s}_i=\sum_{y\in\omega_i}(y-\widetilde{\mu}_i)^2
+$$
+$$
+=\sum_{\mathbf{x}\in\omega_i}(\mathbf{w}^\top\mathbf{x}-\mathbf{w}^\top\mu_i)^2
+$$
+$$
+=\sum_{\mathbf{x}\in\omega_i}\mathbf{w}^\top S_i\mathbf{w}
+$$
+That is,
+$$
+\widetilde{s}_1^2+\widetilde{s}_1^2=\mathbf{w}^\top S_W\mathbf{w}
+$$
+### Between-Class Scatter
+The between-class scatter:
+$$
+S_B=|\mu_1-\mu_2|^2=(\mu_1-\mu_2)(\mu_1-\mu_2)^\top
+$$
