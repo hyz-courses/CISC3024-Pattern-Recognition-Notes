@@ -213,13 +213,15 @@ $$
 ### Step 5. Complete SVD
 $$A=\begin{bmatrix}2 & 0 & 1 \\ -1 & 2 & 0\end{bmatrix}=\begin{pmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}\end{pmatrix}\begin{pmatrix}\sqrt{7} & 0 & 0\\ 0 & \sqrt{3} & 0\end{pmatrix}\begin{pmatrix}\frac{3}{\sqrt{14}} & \frac{-2}{\sqrt{14}} & \frac{1}{\sqrt{14}} \\ \frac{1}{\sqrt{6}} & \frac{-2}{\sqrt{6}} & \frac{1}{\sqrt{6}} \\ \frac{2}{\sqrt{21}} & \frac{1}{\sqrt{21}} & \frac{-4}{\sqrt{21}}\end{pmatrix}$$
 # 4.2 Principle Component Analysis (PCA) 主成分分析
+
+## 4.2.0 Why PCA?
 - Project data from higher dimension to lower dimension, while preserving a low projection error.
-- Maximizes data variance in low-dimensional representation.
+- Maximizes *data variance* in low-dimensional representation.
 - Simple & Non-parametric method of extracting relevant information from confusing data.
 - Reduce a complicate dataset to a lower dimension.
 ### Problem Setup
 **Given**
-- An $m\times n$ training data set $X=\begin{pmatrix}x^{(1)} & x^{(2)} & \cdots & x^{(m)}\end{pmatrix}$
+- An $n\times m$ training data set $X=\begin{pmatrix}x^{(1)} & x^{(2)} & \cdots & x^{(m)}\end{pmatrix}$
 	- where $x^{(i)}\in\mathbb{R}^n$
 	- that is, $X=\begin{pmatrix}x_{1}^{(1)} & x_{1}^{(2)} & \cdots & x_{1}^{(m)} \\ x_{2}^{(1)} & x_{2}^{(2)} & \cdots & x_{2}^{(m)} \\ \vdots & \vdots & \ddots & \vdots \\ x_{n}^{(1)} & x_{n}^{(2)} & \cdots & x_{n}^{(m)}\end{pmatrix}$
 	- Structural Analysis:
@@ -233,7 +235,7 @@ $$A=\begin{bmatrix}2 & 0 & 1 \\ -1 & 2 & 0\end{bmatrix}=\begin{pmatrix}\frac{1}{
 
 ## 4.2.1 Data Pre-processing: Mean Normalization
 **Given**
-- The $m\times n$ training dataset $X=\begin{pmatrix}x^{(1)} & x^{(2)} & \cdots & x^{(m)}\end{pmatrix}$.
+- The $n\times m$ training dataset $X=\begin{pmatrix}x^{(1)} & x^{(2)} & \cdots & x^{(m)}\end{pmatrix}$.
 **Do**
 1. Calculate feature mean for each vectors:
 	- $\mu=\begin{pmatrix}\mu_1 \\ \mu_2 \\ \cdots \\ \mu_m\end{pmatrix}$
@@ -259,7 +261,7 @@ $$
 $$
 2. Compute eigenvectors using *Singular Value Decomposition*.
 $$
-U_{n\times n}S_{n\times n}V_{n\times n}=svd(\Sigma)
+U_{n\times n}S_{n\times m}V_{m\times m}=svd(\Sigma)
 $$
 3. Take the first $k$ columns from $U$.
 $$
@@ -288,14 +290,14 @@ $$
 - & (u^{(2)})^\top & - \\
   & \vdots & \\
 - & (u^{(k)})^\top & - \\
-\end{pmatrix}
+\end{pmatrix}_{k\times n}
 \begin{pmatrix}
 x_1^{(1)} \\ x_2^{(1)} \\ \vdots \\ x_k^{(1)} \\ \vdots \\ x_n^{(1)}
-\end{pmatrix}
+\end{pmatrix}_{n\times 1}
 =
 \begin{pmatrix}
 z_1^{(i)} \\ z_2^{(i)} \\ \vdots \\ z_k^{(i)}
-\end{pmatrix}
+\end{pmatrix}_{k\times 1}
 $$
 ## 4.2.3 Choosing $k$
 ### Reconstruct Original Data
@@ -326,6 +328,8 @@ $$
 i.e., $99\%$ of the variance is retained.
 # 4.3 Linear Discriminant Analysis (LDA) 线性判别分析
 ## 4.3.0 Problems of PCA
+- The *directions* of maximum variance may be useless for classification.
+- LDA solves this problem by not seeking the best variance, but the best separability.
 ## 4.3.1 LDA
 **Given**
 - A set of $d$-dimensional samples $\mathbf{X}=\{\mathbf{x}_1,\mathbf{x}_2,\cdots,\mathbf{x}_N\}$. From which,
@@ -334,7 +338,7 @@ i.e., $99\%$ of the variance is retained.
 **Do**
 - We seek a set of scalar $\mathbf{y}=\{y_1,y_2,\cdots,y_N\}\subset\mathbb{R}$ by projecting the $N$ samples in $x$ onto a line.
 $$
-y_i=\mathbf{w}^\top \mathbf{x}_i
+y_i=\mathbf{w}^\top \mathbf{x}_i\subset\mathbb{R}
 $$
 - Namely,
 $$
@@ -347,15 +351,15 @@ x_{i1} \\ x_{i2} \\ \vdots \\ x_{id}
 \end{pmatrix}
 $$
 LDA selects the line that maximizes the *separability* of the scalars.
-LDA selects the line that maximizes the *separability* of the scalars.
 ## 4.3.2 Measure of Separation
+Supposed that we have a obtained such a line.
 Sample Means of each class in $x$-space:
 $$
-\mathbf{\mu}_i=\dfrac{1}{N_i}\sum_{\mathbf{x}\in\omega_i}\mathbf{x}
+\mathbf{\mu}_i=\dfrac{1}{N_i}\sum_{\mathbf{x}\in\omega_i}\mathbf{x}\in\mathbb{R}^d
 $$
 Sample Means of each class in $y$-space:
 $$
-\widetilde{\mathbf{\mu}}=\dfrac{1}{N_i}\sum_{y\in\omega_i}y
+\widetilde{\mathbf{\mu}}_i=\dfrac{1}{N_i}\sum_{y\in\omega_i}y
 $$
 $$
 =\dfrac{1}{N_i}\sum_{\mathbf{x}\in\omega_i}\mathbf{w}^\top \mathbf{x}
@@ -365,25 +369,32 @@ $$
 $$
 The distance between the project mean is:
 $$
-|\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2|=|\mathbf{w}^\top(\mathbf{\mu}_1-\mathbf{\mu}_2)|
+|\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2|=|\mathbf{w}^\top(\mathbf{\mu}_1-\mathbf{\mu}_2)|\in\mathbb{R}
 $$
 Ignoring the standard deviation within classes.
 ### Scatter
-Fisher's solution is to maximize the difference between the means of each class. The means of each class is normalized by a measure of the **within-class scatter**.
-The scatter is equivalent of the *variance* of each class.$$
+Fisher's solution is to *maximize* the difference between the means of each class. 
+- The means of each class is normalized by a measure of the **within-class scatter**.
+- The scatter is equivalent to the *variance* of each class.
+
+The within-class scatter of a class $\omega_i$:
+$$
 \widetilde{s}_i^2=\sum_{y\in\omega_i}(y-\widetilde{\mathbf{\mu}}_i)^2
 $$The total within-class scatter of all the project samples would be
 $$(\widetilde{s}_1^2+\widetilde{s}_1^2)$$
-The criterion function would be:
+- [*] The criterion function would be:
 $$
 \mathcal{J}(\mathbf{w})=\frac{|\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2|^2}{s_1^2+s_2^2}
 $$
 We need to find the optimal $\mathbf{w}$ that maximizes the criterion function $\mathcal{J}(\mathbf{w})$.
-## 4.3.3 Find the Optimal $\mathbf{w}$
+## 4.3.3 Represent $\mathcal{J}(\mathbf{w})$ with $\mathbf{w}$
+We want to find the optimal $\mathbf{w}$ such that the criterion function $\mathcal{J}(\mathbf{w})$ is maximized. 
+- Given that $\mathcal{J}(\mathbf{w})=\frac{|\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2|^2}{s_1^2+s_2^2}$,
+- we need to use $\mathbf{w}$ to represent the scatters.
 ### Within-Class Scatter
-The scatter in $x$-space:
+The scatter/variance in $x$-space:
 $$
-S_i=\sum_{\mathbf{x}\in\omega_i}(\mathbf{x}-\mathbf{\mu}_i)(\mathbf{x}-\mathbf{\mu}_i)^\top
+S_i=\sum_{\mathbf{x}\in\omega_i}(\mathbf{x}-\mathbf{\mu}_i)(\mathbf{x}-\mathbf{\mu}_i)^\top\in\mathbb{R}^d\times\mathbb{R}^d
 $$
 The within-class scatter matrix:
 $$
@@ -397,9 +408,12 @@ $$
 =\sum_{\mathbf{x}\in\omega_i}(\mathbf{w}^\top\mathbf{x}-\mathbf{w}^\top\mu_i)^2
 $$
 $$
+=\sum_{\mathbf{x}\in\omega_i}\mathbf{w}^\top(\mathbf{x}-\mathbf{\mu}_i)(\mathbf{x}-\mathbf{\mu}_i)^\top\mathbf{w}
+$$
+$$
 =\sum_{\mathbf{x}\in\omega_i}\mathbf{w}^\top S_i\mathbf{w}
 $$
-That is,
+- [*] That is,
 $$
 \widetilde{s}_1^2+\widetilde{s}_1^2=\mathbf{w}^\top S_W\mathbf{w}
 $$
@@ -408,3 +422,52 @@ The between-class scatter:
 $$
 S_B=|\mu_1-\mu_2|^2=(\mu_1-\mu_2)(\mu_1-\mu_2)^\top
 $$
+The difference between the projected means:
+$$
+(\widetilde{\mu}_1-\widetilde{\mu}_2)^2=(\mathbf{w}^\top\mathbf{\mu}_1-\mathbf{w}^\top\mathbf{\mu}_2)^2
+$$
+$$
+=\mathbf{w}^\top(\mathbf{\mu}_1-\mathbf{\mu}_2)(\mathbf{\mu}_1-\mathbf{\mu}_2)^\top\mathbf{w}
+$$
+$$
+=\mathbf{w}^\top S_B \mathbf{w}
+$$
+### The optimal $\mathbf{w}$
+The optimal $\mathbf{w}$ will be:
+$$
+\mathbf{w}^*=\text{argmax}_{\mathbf{w}}\mathcal{J}(\mathbf{w})=\text{argmax}_\mathbf{w}\frac{\mathbf{w}^\top S_B\mathbf{w}}{\mathbf{w}^\top S_W\mathbf{w}}
+$$
+## 4.3.4 Find the optimal $\mathbf{w}$
+To find the optimal $\mathbf{w}$, we find that:
+$$
+\dfrac{d}{d\mathbf{w}}\mathcal{J}(\mathbf{w})=0
+$$
+$\implies \dfrac{d}{d\mathbf{w}}\Bigl(\dfrac{\mathbf{w}^\top S_B\mathbf{w}}{\mathbf{w}^\top S_W\mathbf{w}}\Bigr)=0$
+
+$\implies\dfrac{1}{(\mathbf{w}^\top S_W\mathbf{w})^2}\cdot\biggl(\mathbf{w}^\top S_W\mathbf{w}\dfrac{d}{d\mathbf{w}}(\mathbf{w}^\top S_B \mathbf{w}) - \mathbf{w}^\top S_B\mathbf{w}\dfrac{d}{d\mathbf{w}}(\mathbf{w}^\top S_W\mathbf{w})\biggr)=0$
+- 上导下不导-上不导下导
+
+$\implies \dfrac{1}{(\mathbf{w}^\top S_W \mathbf{w})^2}\biggl(\mathbf{w}^\top S_W \mathbf{w}(2S_B\mathbf{w})-\mathbf{w}^\top S_B\mathbf{w}(2S_W\mathbf{w})\biggr)=0$
+
+$\implies \mathbf{w}^\top S_W \mathbf{w}(2S_B\mathbf{w})-\mathbf{w}^\top S_B\mathbf{w}(2S_W\mathbf{w})=0$
+
+$\implies S_B\mathbf{w}-\dfrac{\mathbf{w}^\top S_B\mathbf{w}}{\mathbf{w}^\top   S_W\mathbf{w}}(S_W\mathbf{w})=0$
+
+$\implies S_B\mathbf{w}-\mathcal{J}_{\text{max}}S_W\mathbf{w}=0$
+
+Set constant $\lambda=\mathcal{J}_{\text{max}}=\dfrac{\mathbf{w}^\top S_B\mathbf{w}}{\mathbf{w}^\top   S_W\mathbf{w}}$
+
+$\implies S_B\mathbf{w}=\lambda S_W\mathbf{w}$
+
+$\implies S_W^{-1}S_B\mathbf{w}=\lambda\mathbf{w}$
+
+Know that $S_B=(\mathbf{\mu}_1-\mathbf{\mu}_2)(\mathbf{\mu}_1-\mathbf{\mu}_2)^\top$ is the between-class scatter matrix.
+- Therefore, $S_B\mathbf{w}=(\mathbf{\mu}_1-\mathbf{\mu}_2)(\mathbf{\mu}_1-\mathbf{\mu}_2)^\top\mathbf{w}=\alpha(\mathbf{\mu_1}-\mathbf{\mu}_2)$ 
+- where $\alpha=(\mathbf{\mu}_1-\mathbf{\mu}_2)^\top\mathbf{w}\in\mathbb{R}$, that is $\alpha$ is a scalar. 
+- i.e., $S_B\mathbf{w}$ points to the same direction as $\mathbf{\mu}_1-\mathbf{\mu}_2$
+
+$\implies S_W^{-1}(\mu_1-\mu_2)=\lambda\mathbf{w}$
+
+$\implies \mathbf{w}=S_W^{-1}(\mu_1-\mu_2)$
+
+
