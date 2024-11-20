@@ -18,7 +18,7 @@ Dimension Reduction:
 	- There may be redundancies among some dimensions.
 		- That is, some dimensions are highly related.
 		- e.g., Suppose in a data set, for most data samples, $x_2=2x_1+3$. Therefore we only need $x_1$ since it could already describe $x_2$ with itself. This creates a redundancy.
-	- SVD picks out main features, and project data into lower dimensions to remove redundancies.
+	- SVD picks out main features, and project data into lower dimensions to remove such redundancies.
 - Existence of *noise* samples. 存在噪声数据
 	- Among data, smaller eigenvalues always comes with unimportant features.
 	- By ignoring these data, we could reduce the noise when we are reducing data dimension.
@@ -39,8 +39,8 @@ where,
 - $U$ is any $m\times m$ orthogonal matrix. 酉矩阵、正交矩阵
 	- $U^\top=U^{-1}$
 	- $UU^\top=U^\top U=I$
-- $S$ is any $m\times n$ diagonal matrix. 酉矩阵、正交矩阵
-	- Singular values $\sigma_1>\sigma_2>\cdots>\sigma_{\min(m,n)}>0$ is the main diagonal of $S$.
+- $S$ is any $m\times n$ diagonal matrix. 对角矩阵
+	- Singular values $\sigma_1>\sigma_2>\cdots>\sigma_{\min(m,n)}>0$ is the *main* diagonal of $S$.
 		- $S=\begin{bmatrix}\sigma_1 & 0 & \cdots & 0 & \cdots & 0 \\ 0 & \sigma_2 & \cdots & 0 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots & \ddots & \vdots\\ 0 & 0 & \cdots & \sigma_m & \cdots & 0\end{bmatrix}$
 	- $\sigma_1^2>\sigma_2^2>\cdots>\sigma_{\min(m,n)^2}$ are the **eigenvalues** of $AA^\top$ and $A^\top A$.
 - $V$ is any $n\times n$ orthogonal matrix. 酉矩阵
@@ -54,7 +54,7 @@ where,
 	- In other words, $U$ denotes the relationships among the dimensions in data samples.
 
 - [i] How exactly?
-	- Each column vector of $U$ is a unit vector, and $U$'s column vectors are all orthogonal to each other.
+	- Each column vector of $U$ is a unit vector, and $U$'s column vectors are all perpendicular 垂直 to each other, with dot product of $0$.
 	- Each column vector of $U$ represents a *co-tendency* among all the features within a data sample.
 	- The more left the column vector is located, the more important it is.
 ## 4.1.2 Calculation Procedures
@@ -65,17 +65,22 @@ where,
 **Do**
 - Find $U$, $S$, and $V$ for Singular Value Decomposition.
 ### Basic Knowledge
-- $AA^\top$
-	- $=\Bigl(USV^\top\Bigr)\Bigl(USV^\top\Bigr)^\top$
-	- $=\Bigl(USV^\top\Bigr)\Bigl(VS^\top U^\top\Bigr)$
-	- $=US\Bigl(V^\top V\Bigr) S^\top U^\top$
-	- $=U\Bigl(SS^\top\Bigr)U^\top$
-
-- $A^\top A$
-	- $=\Bigl(USV^\top\Bigr)^\top\Bigl(USV^\top\Bigr)$
-	- $=\Bigl(VS^\top U^\top\Bigr)\Bigl(USV^\top\Bigr)$
-	- $=VS^\top\Bigl(U^\top U\Bigr)SV^\top$
-	- $=VS^\top SV^\top$
+$$
+\begin{align}
+AA^\top &= \Bigl(USV^\top\Bigr)\Bigl(USV^\top\Bigr)^\top \\
+&= \Bigl(USV^\top\Bigr)\Bigl(VS^\top U^\top\Bigr) \\
+&= US\Bigl(V^\top V\Bigr)S^\top U^\top \\
+&= USS^\top U
+\end{align}
+$$
+$$
+\begin{align}
+A^\top A &= \Bigl( USV^\top\Bigr)^\top\Bigl(USV^\top\Bigr) \\
+&= \Bigl(VS^\top U^\top\Bigr)\Bigl(USV^\top\Bigr) \\
+&= VS^\top \Bigl(U^\top U\Bigr)SV^\top \\
+&= VS^\top SV^\top
+\end{align}
+$$
 ### Step 1. Calculate $AA^\top$ and $A^\top A$
 Known that:
 $$
@@ -91,13 +96,12 @@ $$
 ### Step 2. Eigenvalues and $S$
 As we obtained $AA^\top$ and $A^\top A$, we can get their common eigenvalues, and construct $S$ matrix.
 - The eigenvalues $AA^\top$ and $A^\top A$ are essentially the same, except for the zero-eigenvalue.
+
 From the definition of Eigen Values:
 $$
 AA^\top = \lambda I
 $$
-where $\lambda$ is the eigenvalue of $AA^\top$.
-
-Calculate Eigenvalues for $AA^\top$
+where $\lambda$ is the eigenvalue of $AA^\top$. Calculate the eigen values:
 $\implies |AA^\top-\lambda I| = 0$
 
 $\implies \Biggl|\begin{pmatrix}5 & -2 \\ -2 & 5\end{pmatrix}-\lambda\begin{pmatrix}1 & 0 \\ 0 & 1\end{pmatrix}\Biggr|=0$
@@ -131,7 +135,7 @@ $\implies (-\lambda^3+10\lambda^2-29\lambda+20)+8\lambda-20=0$
 
 $\implies -\lambda^3+10\lambda^2-21\lambda=0$
 
-$\implies \lambda^2-10\lambda+21=0, \ \text{for} \ \lambda\neq 0$
+$\implies (\lambda^2-10\lambda+21)\lambda=0$
 
 $\implies (\lambda-3)(\lambda-7)(\lambda-0)=0$
 
