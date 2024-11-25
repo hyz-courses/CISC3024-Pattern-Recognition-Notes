@@ -139,6 +139,8 @@ $\implies (\lambda^2-10\lambda+21)\lambda=0$
 
 $\implies (\lambda-3)(\lambda-7)(\lambda-0)=0$
 
+$\implies \begin{cases}\lambda_1=7 \\ \lambda_2=3 \\ \lambda_3=0\end{cases}, \ \begin{cases}\sigma_1=\sqrt{\lambda_1}=\sqrt{7}\\ \sigma_2=\sqrt{\lambda_2}=\sqrt{3} \\ \sigma_3 = \sqrt{\lambda_3} = 0\end{cases}$
+
 Therefore, the diagonal matrix $S$ would be:
 $$
 S=\begin{pmatrix}\sigma_1 & 0 & 0\\ 0 & \sigma_2 & 0\end{pmatrix}=\begin{pmatrix}\sqrt{7} & 0 & 0\\ 0 & \sqrt{3} & 0\end{pmatrix}
@@ -155,25 +157,27 @@ $\implies \Biggl(\begin{pmatrix}5 & -2 \\ -2 & 5\end{pmatrix}-7\begin{pmatrix}1 
 
 $\implies \begin{pmatrix}-2 & -2 \\ -2 & -2\end{pmatrix}x_1=0$
 
-$\implies \begin{pmatrix}1 & 1 \\ 0 & 0\end{pmatrix}x_1=0$
+$\implies \begin{pmatrix}1 & 1 \\ 0 & 0\end{pmatrix}x_1=0$   *(row 2 - row 1)*
 
-$\implies x_1=\begin{pmatrix}a \\ a\end{pmatrix}$
+$\implies x_1=\begin{pmatrix}a \\ -a\end{pmatrix}$
 
-$\implies u_1=\frac{x_1}{\|x_1\|}=\frac{1}{\sqrt{x_1^\top x_1}}x_1=\begin{pmatrix}\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}}\end{pmatrix}$
+$\implies u_1=\frac{x_1}{\|x_1\|}=\frac{1}{\sqrt{x_1^\top x_1}}x_1=\begin{pmatrix}\frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}}\end{pmatrix}$
 
 For $\lambda_2=3$:
 $(AA^\top -\lambda I)x_2=0$
 
 $\implies \biggl(\begin{pmatrix}5 & -2 \\ -2 & 5\end{pmatrix}-3\begin{pmatrix}1 & 0 \\ 0 & 1\end{pmatrix}\biggr)x_2=0$
 
-$\implies \begin{pmatrix}2 & -2 \\ -2 & 2\end{pmatrix}x_2=0$
+$\implies \begin{pmatrix}2 & -2 \\ -2 & 2\end{pmatrix}x_2=0$  *(row 2 + row 1)*
 
-$\implies x_2=\begin{pmatrix}a \\ -a\end{pmatrix}$
+$\implies \begin{pmatrix}1 & -1 \\ 0 & 0\end{pmatrix}x_2=0$
 
-$\implies u_2=\frac{x_2}{\|x_2\|}=\frac{1}{\sqrt{x_2^\top x_2}}x_2=\begin{pmatrix}\frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}}\end{pmatrix}$
+$\implies x_2=\begin{pmatrix}a \\ a\end{pmatrix}$
+
+$\implies u_2=\frac{x_2}{\|x_2\|}=\frac{1}{\sqrt{x_2^\top x_2}}x_2=\begin{pmatrix}\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}}\end{pmatrix}$
 
 Construct matrix $U$:
-$$U=\begin{pmatrix}u_1 & u_2\end{pmatrix}=\begin{pmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}\end{pmatrix}$$
+$$U=\begin{pmatrix} | & | \\ u_1 & u_2 \\ | & | \end{pmatrix}=\begin{pmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}}\end{pmatrix}$$
 For $\lambda_3=0$
 
 ### Step 4. Finding $V$
@@ -185,9 +189,11 @@ $\implies \Biggl(\begin{pmatrix}5 & -2 & 2\\ -2 & 4 & 0 \\ 2 & 0 & 1\end{pmatrix
 
 $\implies \begin{pmatrix}-2 & -2 & 2\\ -2 & -3 & 0 \\ 2 & 0 & -6\end{pmatrix}x_3=0$
 
-$\implies \begin{pmatrix}1 & 0 & -3\\ 0 & 1 & -2 \\ 0 & 0 & 0\end{pmatrix}x_3=0$ 
+$\implies \begin{cases} -2x_{31}-3x_{32}=0 \\ 2x_{31}-6x_{33}=0\end{cases}$
 
-$\implies x_3=\begin{pmatrix}3 \\ -2 \\ 1\end{pmatrix}$
+$\implies \begin{cases}x_{32}=-\frac{2}{3}x_{31} \\ x_{33}=\frac{1}{3}x_{31}\end{cases}$
+
+$\implies x_3=\begin{pmatrix}x_{31} \\ -\frac{2}{3}x_{31} \\ \frac{1}{3}x_{31}\end{pmatrix} = \begin{pmatrix}3a \\ -2a \\ a\end{pmatrix}$, $||x_3||=a\sqrt{3^2+(-2)^2+1^2}=\sqrt{14}\cdot a$
 
 $\implies v_1=\frac{x_3}{\|x_3\|}=\begin{pmatrix}\frac{3}{\sqrt{14}} \\ \frac{-2}{\sqrt{14}} \\ \frac{1}{\sqrt{14}}\end{pmatrix}$
 
@@ -198,26 +204,42 @@ $\implies \Biggl(\begin{pmatrix}5 & -2 & 2\\ -2 & 4 & 0 \\ 2 & 0 & 1\end{pmatrix
 
 $\implies \begin{pmatrix}2 & -2 & 2\\ -2 & 1 & 0 \\ 2 & 0 & -2\end{pmatrix}x_4=0$
 
-$\implies x_4=\begin{pmatrix}1 \\ -2 \\ 1\end{pmatrix}$
+$\implies \begin{cases}-2x_{41}+x_{42}=0 \\ 2x_{41}-2x_{43}=0\end{cases}$
 
-$\implies v_2=\frac{x_4}{\|x_4\|}=\begin{pmatrix}\frac{1}{\sqrt{6}} \\ \frac{-2}{\sqrt{6}} \\ \frac{1}{\sqrt{6}}\end{pmatrix}$
+$\implies \begin{cases} x_{42}=2x_{41} \\ x_{43}=x_{41} \end{cases}$
+
+$\implies x_4=\begin{pmatrix}x_{41} \\ 2x_{41} \\ x_{41}\end{pmatrix}=\begin{pmatrix}a \\ 2a \\ a\end{pmatrix}$, $||x_4||=a\sqrt{1^2+2^2+1^2}=\sqrt{6}\cdot a$
+
+$\implies v_2=\frac{x_4}{\|x_4\|}=\begin{pmatrix}\frac{1}{\sqrt{6}} \\ \frac{2}{\sqrt{6}} \\ \frac{1}{\sqrt{6}}\end{pmatrix}$
 
 For $\lambda_3=0$:
 $(A^\top A-0I)x_5=0$
 
 $\implies \begin{pmatrix}5 & -2 & 2\\ -2 & 4 & 0 \\ 2 & 0 & 1\end{pmatrix}x_5=0$
 
-$\implies x_5=\begin{pmatrix}2 \\ 1 \\ -4\end{pmatrix}$
+$\implies \begin{cases}-2x_{51}+4x_{52}=0 \\ 2x_{51}+x_{53}=0\end{cases}$
 
-$\implies u_5=\frac{x_5}{\|x_5\|}=\begin{pmatrix}\frac{2}{\sqrt{21}} \\ \frac{1}{\sqrt{21}} \\ \frac{-4}{\sqrt{21}}\end{pmatrix}$
+$\implies \begin{cases}x_{52}=\frac{1}{2}x_{51} \\ x_{53}=-2x_{51}\end{cases}$
+
+$\implies x_5=\begin{pmatrix}x_{51} \\ \frac{1}{2}x_{51} \\ -2x_{51}\end{pmatrix}=\begin{pmatrix}a \\ \frac{1}{2}a \\ -2a\end{pmatrix}$, $||x_5||=a\sqrt{1^2+(\frac{1}{2})^2+(-2)^2}=\frac{\sqrt{21}}{2}$
+
+$\implies v_3=\frac{x_5}{\|x_5\|}=\begin{pmatrix}\frac{2}{\sqrt{21}} \\ \frac{1}{\sqrt{21}} \\ \frac{-4}{\sqrt{21}}\end{pmatrix}$
+
 Construct matrix $V$:
 $$
-V=\begin{pmatrix}v_1 & v_2\end{pmatrix}= \begin{pmatrix}\frac{3}{\sqrt{14}} & \frac{1}{\sqrt{6}} & \frac{2}{\sqrt{21}} \\ \frac{-2}{\sqrt{14}} & \frac{-2}{\sqrt{6}} & \frac{1}{\sqrt{21}}\\ \frac{1}{\sqrt{14}} & \frac{1}{\sqrt{6}} & \frac{-4}{\sqrt{21}}\end{pmatrix}
+V=\begin{pmatrix}| & | & |  \\ v_1 & v_2 & v_3 \\ | & | & |  \end{pmatrix}= \begin{pmatrix}\frac{3}{\sqrt{14}} & \frac{1}{\sqrt{6}} & \frac{2}{\sqrt{21}} \\ \frac{-2}{\sqrt{14}} & \frac{2}{\sqrt{6}} & \frac{1}{\sqrt{21}}\\ \frac{1}{\sqrt{14}} & \frac{1}{\sqrt{6}} & \frac{-4}{\sqrt{21}}\end{pmatrix}
 $$
-### Step 5. Complete SVD
-$$A=\begin{bmatrix}2 & 0 & 1 \\ -1 & 2 & 0\end{bmatrix}=\begin{pmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}\end{pmatrix}\begin{pmatrix}\sqrt{7} & 0 & 0\\ 0 & \sqrt{3} & 0\end{pmatrix}\begin{pmatrix}\frac{3}{\sqrt{14}} & \frac{-2}{\sqrt{14}} & \frac{1}{\sqrt{14}} \\ \frac{1}{\sqrt{6}} & \frac{-2}{\sqrt{6}} & \frac{1}{\sqrt{6}} \\ \frac{2}{\sqrt{21}} & \frac{1}{\sqrt{21}} & \frac{-4}{\sqrt{21}}\end{pmatrix}$$
-# 4.2 Principle Component Analysis (PCA) 主成分分析
+Transpose matrix $V$:
 
+$$
+V^\top=\begin{pmatrix} - & v_1^\top & - \\ - & v_2^\top & - \\ - & v_3^\top & -\end{pmatrix}=\begin{pmatrix}\frac{3}{\sqrt{14}} & \frac{-2}{\sqrt{14}} & \frac{1}{\sqrt{14}} \\ \frac{1}{\sqrt{6}} & \frac{2}{\sqrt{6}} & \frac{1}{\sqrt{6}}  \\ \frac{2}{\sqrt{21}} & \frac{1}{\sqrt{21}} & \frac{-4}{\sqrt{21}}  \end{pmatrix}
+$$
+
+### Step 5. Complete SVD
+$$A=\begin{bmatrix}2 & 0 & 1 \\ -1 & 2 & 0\end{bmatrix}=\begin{pmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}\end{pmatrix}\begin{pmatrix}\sqrt{7} & 0 & 0\\ 0 & \sqrt{3} & 0\end{pmatrix}\begin{pmatrix}\frac{3}{\sqrt{14}} & \frac{-2}{\sqrt{14}} & \frac{1}{\sqrt{14}} \\ \frac{1}{\sqrt{6}} & \frac{2}{\sqrt{6}} & \frac{1}{\sqrt{6}} \\ \frac{2}{\sqrt{21}} & \frac{1}{\sqrt{21}} & \frac{-4}{\sqrt{21}}\end{pmatrix}$$
+
+# 4.2 Principle Component Analysis (PCA) 主成分分析
+![[PCA.png]]
 ## 4.2.0 Why PCA?
 - Project data from higher dimension to lower dimension, while preserving a low projection error.
 - Maximizes *data variance* in low-dimensional representation.
@@ -225,7 +247,7 @@ $$A=\begin{bmatrix}2 & 0 & 1 \\ -1 & 2 & 0\end{bmatrix}=\begin{pmatrix}\frac{1}{
 - Reduce a complicate dataset to a lower dimension.
 ### Problem Setup
 **Given**
-- An $n\times m$ training data set $X=\begin{pmatrix}x^{(1)} & x^{(2)} & \cdots & x^{(m)}\end{pmatrix}$
+- An $n\times m$ training data set $X=\begin{pmatrix}| & | & & | \\ x^{(1)} & x^{(2)} & \cdots & x^{(m)} \\ | & | & & | \end{pmatrix}$
 	- where $x^{(i)}\in\mathbb{R}^n$
 	- that is, $X=\begin{pmatrix}x_{1}^{(1)} & x_{1}^{(2)} & \cdots & x_{1}^{(m)} \\ x_{2}^{(1)} & x_{2}^{(2)} & \cdots & x_{2}^{(m)} \\ \vdots & \vdots & \ddots & \vdots \\ x_{n}^{(1)} & x_{n}^{(2)} & \cdots & x_{n}^{(m)}\end{pmatrix}$
 	- Structural Analysis:
@@ -239,9 +261,9 @@ $$A=\begin{bmatrix}2 & 0 & 1 \\ -1 & 2 & 0\end{bmatrix}=\begin{pmatrix}\frac{1}{
 
 ## 4.2.1 Data Pre-processing: Mean Normalization
 **Given**
-- The $n\times m$ training dataset $X=\begin{pmatrix}x^{(1)} & x^{(2)} & \cdots & x^{(m)}\end{pmatrix}$.
+- The $n\times m$ training data set $X=\begin{pmatrix}| & | & & | \\ x^{(1)} & x^{(2)} & \cdots & x^{(m)} \\ | & | & & | \end{pmatrix}$
 **Do**
-1. Calculate feature mean for each vectors:
+1. Calculate feature mean for all the vectors:
 	- $\mu=\begin{pmatrix}\mu_1 \\ \mu_2 \\ \cdots \\ \mu_m\end{pmatrix}$
 	- where $\mu_j=\sum_{i=1}^{n}x_{j}^{(i)}$.
 	- A mean of a feature with respect to all the data samples.
@@ -261,9 +283,9 @@ What we eventually get is:
 **Do**
 1. Compute the covariance matrix by:
 $$
-\Sigma = \dfrac{1}{m}\sum_{i=1}^m x^{(i)}(x^{(i)})^\top=\dfrac{1}{m}XX^\top
+\Sigma_{n\times n} = \dfrac{1}{m}\sum_{i=1}^m x^{(i)}(x^{(i)})^\top=\dfrac{1}{m}XX^\top
 $$
-2. Compute eigenvectors using *Singular Value Decomposition*.
+2. Compute eigenvectors using *Singular Value Decomposition* on the covariate matrix $\Sigma$.
 $$
 U_{n\times n}S_{n\times m}V_{m\times m}=svd(\Sigma)
 $$
@@ -273,7 +295,7 @@ U=\begin{pmatrix}
 | & | &  & | &  & |\\ 
 u^{(1)} & u^{(2)} & \cdots & u^{(k)} & \cdots & u^{(n)} \\
 | & | &  & | & & | \\ 
-\end{pmatrix}
+\end{pmatrix} \in \mathbb{R}^{n\times n}
 $$
 $$
 \implies
@@ -311,13 +333,20 @@ $$
 $$
 The reconstruction comes with information loss. We will choose $k$ based on the information loss.
 ### Choosing $k$ - Slow
-- Average Squared Projection Error:
-	- $\frac{1}{m}\sum_{i=1}^{m}\|x^{(i)}-\widetilde{x}^{(i)}\|^2$
-	- $=\frac{1}{m}\sum_{i=1}^{m}(x^{(i)}-\widetilde{x}^{(i)})^\top(x^{(i)}-\widetilde{x}^{(i)})$
-- Total Variation of Data:
-	- $\frac{1}{m}\sum_{i=1}^{m}\|x^{(i)}\|^2$
-	- $=\frac{1}{m}\sum_{i=1}^{m}{x^{(i)}}^\top x^{(i)}$
-
+Average Squared Projection Error:
+$$
+\begin{align}
+& \frac{1}{m} \sum_{i=1}^{m}||x^{(i)}-\widetilde{x}^{(i)}||^2 \\
+&=\frac{1}{m} \sum_{i=1}^{m}(x^{(i)}-\widetilde{x}^{(i)})^\top(x^{(i)}-\widetilde{x}^{(i)})
+\end{align}
+$$
+Total variation of data:
+$$
+\begin{align}
+& \frac{1}{m}\sum_{i=1}^{m}||x^{(i)}||^2 \\
+&= \frac{1}{m}\sum_{i=1}^{m}{x^{(i)}}^\top x^{(i)}
+\end{align}
+$$
 Choose the target dimension number $k$ to be the smallest value so that:
 $$
 \dfrac{\frac{1}{m}\sum_{i=1}^{m}\|x^{(i)}-\widetilde{x}^{(i)}\|^2}{\frac{1}{m}\sum_{i=1}^{m}\|x^{(i)}\|^2}\leq 0.01
@@ -330,10 +359,30 @@ $$
 \dfrac{\sum_{i=1}^{k}s_{ii}}{\sum_{i=1}^{k}s_{ii}} \geq 0.99
 $$
 i.e., $99\%$ of the variance is retained.
+
+## 4.2.4 Results
+![[PCA_res.png]]
+
+In this example, the training data $X$ is of shape $2\times m$, thus the covariate matrix $C=\frac{1}{m}XX^\top$ is of shape $2\times 2$. Performing SVD on $C$:
+$$
+C_{2\times 2}=U_{2\times 2}S_{2\times 2}V_{2\times 2}^{\top}
+$$
+There are $2$ eigenvalues, with 2 principle vectors. The reduced $U$ would be of shape $2\times 1$.
+### Red Line: 1st Principal Vector
+Corresponds to the *largest* eigenvalue, indicating the most significant direction the data variates.
+- That is, on this line, the projected data varies the most.
+### Blue Line: 2nd Principal Vector
+Corresponds to the *second largest* eigenvalue, being *perpendicular* to the first one.
+
 # 4.3 Linear Discriminant Analysis (LDA) 线性判别分析
 ## 4.3.0 Problems of PCA
 - The *directions* of maximum variance may be useless for classification.
-- LDA solves this problem by not seeking the best variance, but the best separability.
+	- I may indeed variates, but the classes could be completely mixed together.
+- LDA solves this problem by:
+	- not seeking the best variance, 
+	- but seeking the **best separability.**
+- LDA projects data to the direction *useful for classification*.
+![[LDA.png]]
 ## 4.3.1 LDA
 **Given**
 - A set of $d$-dimensional samples $\mathbf{X}=\{\mathbf{x}_1,\mathbf{x}_2,\cdots,\mathbf{x}_N\}$. From which,
@@ -354,14 +403,18 @@ w_1 & w_2 & \cdots & w_d
 x_{i1} \\ x_{i2} \\ \vdots \\ x_{id}
 \end{pmatrix}
 $$
-LDA selects the line that maximizes the *separability* of the scalars.
+$y_i$ is the projected value of $\mathbf{x}_i$ in the new space. 
+- LDA selects the line that maximizes the *separability* of the scalars.
+- In this new space, values of $y$ could be easily separated.
+
 ## 4.3.2 Measure of Separation
 Supposed that we have a obtained such a line.
+
 Sample Means of each class in $x$-space:
 $$
 \mathbf{\mu}_i=\dfrac{1}{N_i}\sum_{\mathbf{x}\in\omega_i}\mathbf{x}\in\mathbb{R}^d
 $$
-Sample Means of each class in $y$-space:
+Sample Means of each class in $y$-space (projected mean):
 $$
 \widetilde{\mathbf{\mu}}_i=\dfrac{1}{N_i}\sum_{y\in\omega_i}y
 $$
@@ -371,6 +424,7 @@ $$
 $$
 =\mathbf{w}^\top\mathbf{\mu}_i
 $$
+### Distance of Means
 The distance between the project mean is:
 $$
 |\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2|=|\mathbf{w}^\top(\mathbf{\mu}_1-\mathbf{\mu}_2)|\in\mathbb{R}
@@ -391,6 +445,7 @@ $$
 \mathcal{J}(\mathbf{w})=\frac{|\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2|^2}{s_1^2+s_2^2}
 $$
 We need to find the optimal $\mathbf{w}$ that maximizes the criterion function $\mathcal{J}(\mathbf{w})$.
+
 ## 4.3.3 Represent $\mathcal{J}(\mathbf{w})$ with $\mathbf{w}$
 We want to find the optimal $\mathbf{w}$ such that the criterion function $\mathcal{J}(\mathbf{w})$ is maximized. 
 - Given that $\mathcal{J}(\mathbf{w})=\frac{|\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2|^2}{s_1^2+s_2^2}$,
@@ -398,7 +453,7 @@ We want to find the optimal $\mathbf{w}$ such that the criterion function $\math
 ### Within-Class Scatter
 The scatter/variance in $x$-space:
 $$
-S_i=\sum_{\mathbf{x}\in\omega_i}(\mathbf{x}-\mathbf{\mu}_i)(\mathbf{x}-\mathbf{\mu}_i)^\top\in\mathbb{R}^d\times\mathbb{R}^d
+S_i=\frac{1}{N_i}\sum_{\mathbf{x}\in\omega_i}(\mathbf{x}-\mathbf{\mu}_i)(\mathbf{x}-\mathbf{\mu}_i)^\top\in\mathbb{R}^d\times\mathbb{R}^d
 $$
 The within-class scatter matrix:
 $$
@@ -406,16 +461,12 @@ S_W=S_1+S_2
 $$
 To express the scatter in $y$-space with $\mathbf{w}$:
 $$
-\widetilde{s}_i=\sum_{y\in\omega_i}(y-\widetilde{\mu}_i)^2
-$$
-$$
-=\sum_{\mathbf{x}\in\omega_i}(\mathbf{w}^\top\mathbf{x}-\mathbf{w}^\top\mu_i)^2
-$$
-$$
-=\sum_{\mathbf{x}\in\omega_i}\mathbf{w}^\top(\mathbf{x}-\mathbf{\mu}_i)(\mathbf{x}-\mathbf{\mu}_i)^\top\mathbf{w}
-$$
-$$
-=\sum_{\mathbf{x}\in\omega_i}\mathbf{w}^\top S_i\mathbf{w}
+\begin{align}
+\widetilde{s}_i^2 &= \frac{1}{N_i}\sum_{y\in\omega_i}(y-\widetilde{\mu}_i)^2 \\
+&= \frac{1}{N_i}\sum_{\mathbf{x}\in\omega_i}(\mathbf{w}^\top\mathbf{x}-\mathbf{w}^\top\mathbf{\mu}_i)^2 \\
+&= \frac{1}{N_i}\sum_{\mathbf{x}\in\omega_i}\mathbf{w}^\top(\mathbf{x}-\mathbf{\mu}_i)(\mathbf{x}-\mathbf{\mu}_i)^\top\mathbf{w} \\
+&= \mathbf{w}^\top S_i \mathbf{w}
+\end{align}
 $$
 - [*] That is,
 $$
@@ -428,19 +479,21 @@ S_B=|\mu_1-\mu_2|^2=(\mu_1-\mu_2)(\mu_1-\mu_2)^\top
 $$
 The difference between the projected means:
 $$
-(\widetilde{\mu}_1-\widetilde{\mu}_2)^2=(\mathbf{w}^\top\mathbf{\mu}_1-\mathbf{w}^\top\mathbf{\mu}_2)^2
-$$
-$$
-=\mathbf{w}^\top(\mathbf{\mu}_1-\mathbf{\mu}_2)(\mathbf{\mu}_1-\mathbf{\mu}_2)^\top\mathbf{w}
-$$
-$$
-=\mathbf{w}^\top S_B \mathbf{w}
+\begin{align}
+(\widetilde{\mu}_1-\widetilde{\mu}_2) &= (\mathbf{w}^\top\mathbf{\mu_1}-\mathbf{w}^\top\mathbf{\mu_2})^2 \\
+&= \mathbf{w}^\top(\mathbf{\mu}_1-\mathbf{\mu}_2)(\mathbf{\mu}_1-\mathbf{\mu}_2)^\top\mathbf{w} \\
+&= \mathbf{w}^\top S_B \mathbf{w}
+\end{align}
 $$
 ### The optimal $\mathbf{w}$
 The optimal $\mathbf{w}$ will be:
 $$
-\mathbf{w}^*=\text{argmax}_{\mathbf{w}}\mathcal{J}(\mathbf{w})=\text{argmax}_\mathbf{w}\frac{\mathbf{w}^\top S_B\mathbf{w}}{\mathbf{w}^\top S_W\mathbf{w}}
+\begin{align}
+\mathbf{w}^{*} &= \text{argmax}_{\mathbf{w}}\mathcal{J}(\mathbf{w}) \\
+&= \text{argmax}_{\mathbf{w}}\frac{\mathbf{w}^\top S_B\mathbf{w}}{\mathbf{w}^\top S_W\mathbf{w}}
+\end{align}
 $$
+
 ## 4.3.4 Find the optimal $\mathbf{w}$
 To find the optimal $\mathbf{w}$, we find that:
 $$
@@ -472,6 +525,95 @@ Know that $S_B=(\mathbf{\mu}_1-\mathbf{\mu}_2)(\mathbf{\mu}_1-\mathbf{\mu}_2)^\t
 
 $\implies S_W^{-1}(\mu_1-\mu_2)=\lambda\mathbf{w}$
 
-$\implies \mathbf{w}=S_W^{-1}(\mu_1-\mu_2)$
+- [*] $\implies \mathbf{w}=S_W^{-1}(\mu_1-\mu_2)$
 
+## Example:
+Compute LDA projection of the following 2D dataset.
+- $X_1=\{(4,1), (2,4), (2,3), (3,6), (4,4)\}$
+- $X_2=\{(9, 10), (6,8), (9,5), (8,7), (10,8)\}$
 
+LDA Solution:
+### Step 1: Data Arrangements
+Arrange data into 2 separate matrices
+$$
+\begin{align}
+X_1 &= \begin{pmatrix} 4 & 2 & 2 & 3 & 4 \\ 1 & 4 & 3 & 6 & 4\end{pmatrix} \\
+X_2 &= \begin{pmatrix}9 & 6 & 9 & 8 & 10 \\ 10 & 8 & 5 & 7 & 8\end{pmatrix}
+\end{align}
+$$
+### Step 2: Class Statistics
+Sample means:
+$$
+\begin{align}
+\mathbf{\mu}_1 &=\begin{pmatrix}\frac{4+2+2+3+4}{5} \\ \frac{1+4+3+6+4}{5}\end{pmatrix} = \begin{pmatrix}3.0 \\ 3.6\end{pmatrix} \\ 
+\mathbf{\mu}_2 &=\begin{pmatrix}\frac{9+6+9+8+10}{5} \\ \frac{10+8+5+7+8}{5}\end{pmatrix}=\begin{pmatrix}8.4 \\ 7.6\end{pmatrix} \\ 
+\end{align}
+$$
+Sample Variants:
+$$
+\begin{align}
+S_1 =& \frac{1}{5}\Bigl(\begin{bmatrix}1 \\ -2.6\end{bmatrix}\begin{bmatrix}1 & -2.6\end{bmatrix}+ \\
+& \begin{bmatrix}-1 \\ 0.4\end{bmatrix}\begin{bmatrix}-1 & 0.4\end{bmatrix}+ \\
+& \begin{bmatrix}-1 \\ -0.6\end{bmatrix}\begin{bmatrix}-1 & -0.6\end{bmatrix}+ \\
+& \begin{bmatrix}0 \\ 2.4\end{bmatrix}\begin{bmatrix}0 & 2.4\end{bmatrix}+ \\
+& \begin{bmatrix}1 \\ 0.4\end{bmatrix}\begin{bmatrix}1 & 0.4\end{bmatrix}\Bigr) \\
+=& \frac{1}{5}\begin{pmatrix}1 & -1 & -1 & 0 & 1 \\ -2.6 & 0.4 & -0.6 & 2.4 & 0.4\end{pmatrix}\begin{pmatrix}1 & -2.6 \\ -1 & 0.4 \\ -1 & -0.6 \\ 0 & 2.4 \\ 1 & 0.4\end{pmatrix} \\
+=& \frac{1}{5}\begin{pmatrix}4 & -2 \\ -2 & 13.2 \end{pmatrix} \\
+=& \begin{pmatrix}0.8 & -0.4 \\ -0.4 & 2.64\end{pmatrix}
+\end{align}
+$$
+$$
+\begin{align}
+S_2 &= \frac{1}{5}\begin{pmatrix}0.6 & -2.4 & 0.6 & -0.4 & 1.6 \\ 2.4 & 0.4 & -2.6 & -0.6 & 0.4 \end{pmatrix}\begin{pmatrix}0.6 & 2.4 \\ -2.4 & 0.4 \\ 0.6 & -2.6 \\ -0.4 & -0.6 \\1.6 & 0.4\end{pmatrix} \\
+&= \frac{1}{5}\begin{pmatrix}9.2 & -0.2 \\ -0.2 & 13.2\end{pmatrix} \\
+&= \begin{pmatrix}1.84 & -0.04 \\ -0.04 & 2.64\end{pmatrix}
+\end{align}
+$$
+### Step 3: Between & Within Class Scatters
+Within-class scatters:
+$$
+\begin{align}
+S_W &= S_1+S_2 \\
+&= \begin{pmatrix}
+0.8 & -0.4 \\ 
+-0.4 & 2.64 
+\end{pmatrix}+
+\begin{pmatrix}
+1.84 & -0.04 \\ 
+-0.04 & 2.64 
+\end{pmatrix} \\
+&= \begin{pmatrix}
+2.64 & -0.44 \\
+-0.44 & 5.28
+\end{pmatrix}
+\end{align}
+$$
+Between-class Scatter:
+$$
+\begin{align}
+S_B &= (\mathbf{\mu}_1-\mathbf{\mu}_2)(\mathbf{\mu}_1-\mathbf{\mu}_2)^\top \\
+&= \begin{pmatrix}-5.4 \\ -4\end{pmatrix} \begin{pmatrix}-5.4 & -4\end{pmatrix} \\
+&= \begin{pmatrix}29.16 & 21.6 \\ 21.6 & 16\end{pmatrix}
+\end{align}
+$$
+### Step 4: Calculate LDA Projection
+Inverse of the between-class scatter matrix:
+$$
+\begin{align}
+S_W^{-1} &= \begin{pmatrix}2.64 & -0.44 \\ -0.44 & 5.28\end{pmatrix}^{-1} \\
+&= \frac{1}{5.28\times 2.64 - 0.44^2}\begin{pmatrix}5.28 & 0.44 \\ 0.44 & 2.64\end{pmatrix} \\
+&= \begin{pmatrix}0.3841 & 0.0320 \\ 0.0320 & 0.1921\end{pmatrix}
+\end{align}
+$$
+The LDA projection $\mathbf{w}$
+$$
+\begin{align}
+\mathbf{w} &= S_W^{-1}(\mathbf{\mu}_1-\mathbf{\mu}_2) \\
+&= \begin{pmatrix}0.3841 & 0.0320 \\ 0.0320 & 0.1921\end{pmatrix}\begin{pmatrix}-5.4 \\ -4\end{pmatrix} \\
+&= \begin{pmatrix}-2.2021 \\-0.9412 \end{pmatrix}
+\end{align}
+$$
+Therefore, the LDA projection line would be:  
+$$
+y= \begin{pmatrix}-2.2021 & -0.9412 \end{pmatrix} \mathbf{x}
+$$
