@@ -310,6 +310,7 @@ $$
 z^{(i)}=U_{reduce}^\top x^{(i)}
 $$
 Namely,
+
 $$
 \begin{pmatrix}
 - & (u^{(1)})^\top & - \\
@@ -325,6 +326,7 @@ x_1^{(1)} \\ x_2^{(1)} \\ \vdots \\ x_k^{(1)} \\ \vdots \\ x_n^{(1)}
 z_1^{(i)} \\ z_2^{(i)} \\ \vdots \\ z_k^{(i)}
 \end{pmatrix}_{k\times 1}
 $$
+
 ## 4.2.3 Choosing $k$
 ### Reconstruct Original Data
 After PCA, we obtain $z^{(i)}=U_{reduce}^\top x^{(i)}$. We can reconstruct the original data from $z^{(i)}$ by:
@@ -435,15 +437,18 @@ Fisher's solution is to *maximize* the difference between the means of each clas
 - The means of each class is normalized by a measure of the **within-class scatter**.
 - The scatter is equivalent to the *variance* of each class.
 
-The within-class scatter of a class $\omega_i$:
+The within-class scatter of a class $\omega_i$
 $$
 \widetilde{s}_i^2=\sum_{y\in\omega_i}(y-\widetilde{\mathbf{\mu}}_i)^2
-$$The total within-class scatter of all the project samples would be
+$$
+The total within-class scatter of all the project samples would be
 $$(\widetilde{s}_1^2+\widetilde{s}_1^2)$$
+
 - [*] The criterion function would be:
 $$
 \mathcal{J}(\mathbf{w})=\frac{|\widetilde{\mathbf{\mu}}_1-\widetilde{\mathbf{\mu}}_2|^2}{s_1^2+s_2^2}
 $$
+
 We need to find the optimal $\mathbf{w}$ that maximizes the criterion function $\mathcal{J}(\mathbf{w})$.
 
 ## 4.3.3 Represent $\mathcal{J}(\mathbf{w})$ with $\mathbf{w}$
@@ -472,6 +477,7 @@ $$
 $$
 \widetilde{s}_1^2+\widetilde{s}_1^2=\mathbf{w}^\top S_W\mathbf{w}
 $$
+
 ### Between-Class Scatter
 The between-class scatter:
 $$
