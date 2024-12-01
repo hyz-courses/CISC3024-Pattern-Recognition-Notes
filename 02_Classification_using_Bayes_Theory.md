@@ -5,8 +5,8 @@ Basic Assumptions
 
 ## 2.1.1 Process
 - **Given:**
-	1. A test sample $x$.
-		- Contains features $x=[x_1,x_2,...x_l]^T$.
+	1. A test sample $\mathbf{x}$.
+		- Contains features $\mathbf{x}=\begin{bmatrix}x_1\\x_2\\\vdots\\x_l\end{bmatrix}$.
 		- Often reduced, removed some non-discriminative (un-useful) features.
 	2. A list of classes/patterns $\omega=\{\omega_1,\omega_2,...\omega_c\}$.
 		- Defined by human-being.
@@ -14,11 +14,11 @@ Basic Assumptions
 		- A **database** storing multiple samples with the same type of $x$.
 		- Each sample is assigned to an arbitrary class $\omega_{any}\in\{\omega_1,\omega_2,...\omega_c\}$.
 - **Do:**
-	- $\{P(\omega_1|x),...,P(\omega_c|x)\}\leftarrow classify(M,x,\omega)$
+	- $\{P(\omega_1|\mathbf{x}),\cdots,P(\omega_c|\mathbf{x})\}\leftarrow classify(M,\mathbf{x},\omega)$
 	- That is, for all the possible classes, find:
 		- The probability that the given $x$ belongs to that class.
 - **Get:**
-	-  $\omega_{target}(x)=argmax_i[P(\omega_i|x)], i\in[1,c]$.
+	-  $\omega_{target}(\mathbf{x})=\text{argmax}_{i}\Bigl[P(\omega_i|x)\Bigr], i\in[1,c]$.
 	- That is, assign $x$ a class/pattern from $\omega$ with the **most probable** one.
 
 **Example**
@@ -34,9 +34,9 @@ MNIST database.
 	- Select the $\omega_i$ with the largest probability $P(\omega_i)$, that is $selected=argmax[P(\omega_i)]$.
 
 ## 2.1.2 Properties of Variables.
-- The set of all classes $\omega$ :
+- [i] The set of all classes $\omega$ :
 	- $c$ available classes: $\omega = \{\omega_1, \omega_2, ..., \omega_c\}$
-- Prior Probabilities $P(\omega)=\{P(\omega_1),P(\omega_2),...,P(\omega_c)\}$ :
+- [i] Prior Probabilities $P(\omega)=\{P(\omega_1),P(\omega_2),...,P(\omega_c)\}$ :
 	- Probability Distribution of random variable $\omega_j$ in the database.
 		- The fraction of samples in the database that belongs to class $\omega_j$.
 		- $P(\omega)$ is the prior knowledge on $\omega=\{\omega_1,\omega_2,...,\omega_c\}$.
@@ -49,7 +49,7 @@ MNIST database.
 
 # 2.2 Prior & Posterior Probabilities 先验与后验概率
 ## 2.2.1 Definition of Prior Probability 先验概率
-- Decision **BEFORE** Observation (Naïve Decision Rule). 
+- [i] Decision *BEFORE* Observation (Naïve Decision Rule). 
 	- Don't care about test sample $x$.
 	- Given $x$, always choose the class that:
 		- has the most member in the database.
@@ -57,38 +57,53 @@ MNIST database.
 - Classification Process:
 	1. $\omega=\{\omega_1,\omega_2,...,\omega_c\}$.
 	2. By counting the number of members $Num(\omega_i)$ for each class $\omega_i\in\omega,i\in[1,c]$, we get the prior probabilities $P(\omega) = \{P(\omega_1),P(\omega_2),...,P(\omega_c)\}$.
-	3. Then, classify $x$ directly into $argmax_i[P(\omega_i)]$.
+	3. Then, classify $x$ directly into $\text{argmax}_{i}[P(\omega_i)]$.
 - The decision is the same all the time obviously, and the prob. of a right guess is $\dfrac{1}{c}$. 
 
 ## 2.2.2 Definition of Posterior Probability 后验概率
-- Decision **WITH** Observation. 
-	- Cares about test sample $x$.
-	- Considering $x$, as well as the prior probabilities $P(\omega) = \{P(\omega_1),P(\omega_2),...,P(\omega_c)\}$, 
-		- and give $x$ the class with the biggest posterior probability.
-- **Posterior Probability:**
-	- [DEF] Posterior Probability of a class $\omega_j$ on test sample $x$:
-		- Given test sample $x$, how possible does $x$ could be classified into class $\omega_j$.
-	- $P(\omega_j|x)=\dfrac{p(x|\omega_j)P(\omega_j)}{p(x)}$, $Posterior=\dfrac{Likelihood\times Prior}{Evidence}$.
-		- $p(x|\omega_j)$: **Likelihood (KNOWN)** 
-			- The fraction of samples stored in the database that
-				- is same to $x$, and
-				- belongs to class $\omega_j$.
-		- $P(\omega_j)$: **Prior probability of class $\omega_j$ (KNOWN)** 
-			- The fraction of samples stored in the database that
-				- belongs to class $\omega_j$.
-		- $p(x)$: **Evidence (IRRELEVANT)**
-			- Unconditional density of $x$. 
-			- That is, $p(x)=\sum_{j=1}^{c}p(x|\omega_j)P(\omega_j)$.
-- **Special Cases:**
-	1. Equal Prior Probability.
-		-  $P(\omega_1)=P(\omega_2)=...=P(\omega_c)=\dfrac{1}{c}$.
-		- The amount of members in each class are same.
-		- Here, posterior probs. $\forall j\in[1,c], P(\omega_j|x)$ is dependent on the likelihoods $P(x|\omega_j)$ only.
-	 2. Equal Likelihood.
-		 - $P(x|\omega_1)=P(x|\omega_2)=...=P(x|\omega_c)$.
-		 - The amount of members that's same to $x$ in each class are the same.
-		 - Here, posterior probs. $\forall j\in[1,c], P(\omega_j|x)$ is dependent on the prior probabilities $P(\omega_j)$ only. 
-		 - Back to Naïve Decision Rule.
+- [i] Decision *WITH* Observation. 
+	- Cares about test sample $\mathbf{x}$.
+	- Considering $\mathbf{x}$, as well as the prior probabilities $P(\omega) = \{P(\omega_1),P(\omega_2),...,P(\omega_c)\}$, 
+		- and give $\mathbf{x}$ the class with the biggest posterior probability.
+- [i] Posterior Probability of a class $\omega_j$ on test sample $\mathbf{x}$:
+	- Given test sample $x$,
+	- how possible does $x$ could be classified into class $\omega_j$.
+$$
+\begin{align}
+P(\omega_{j}|\mathbf{x})&=\frac{p(\mathbf{x}|\omega_j)P(\omega_j)}{P(\mathbf{x})} \\ \\
+\text{Posterior}&=\frac{\text{Likelihood}\times\text{Pior}}{\text{Evidence}}
+\end{align}
+$$
+where:
+- [i] Likelihood - $p(\mathbf{x}|\omega_j)$:
+	- *Known*
+	- The fraction of samples stored in the database that
+		- is same to $\mathbf{x}$, and
+		- is labeled to class $\omega_j$.
+- [i] Prior probability of class $\omega_j$ - $P(\omega_j)$:
+	- *Known*
+	- The fraction of samples stored in the database that
+		- is not necessarily same to $\mathbf{x}$, and
+		- is labeled to class $\omega_j$.
+- [i] Evidence - $P(\mathbf{x})$:
+	- *Irrelevant*
+	- Unconditional density of $\mathbf{x}$.
+	- $P(\mathbf{x})=\sum_{j=1}^{N}p(\mathbf{x}|\omega_j)\cdot P(\omega_j)$
+### Special Cases
+1. Equal Prior Probability
+$$
+P(\omega_1)=P(\omega_2)=\cdots=P(\omega_c)=\frac{1}{c}
+$$
+	- The amount of members in each class is same.
+	- Posterior probabilities $P(\omega_j|\mathbf{x})$ only depend on likelihoods $P(\mathbf{x}|\omega_j)$.
+
+2. Equal Likelihood
+$$
+P(\mathbf{x}|\omega_1)=P(\mathbf{x}|\omega_2)=\cdots=P(\mathbf{x}|\omega_c)
+$$
+	- The amount of members *that's same to $\mathbf{x}$* in each class is same.
+	- Posterior probabilities $P(\omega_j|\mathbf{x})$ only depend on priors $P(\omega_j)$.
+	- Back to Naïve Decision Rule.
 
 ## 2.2.3 Classification Examples
 **Given:**
@@ -130,105 +145,135 @@ For only two classes:
 - If $P(\omega_1|x)>P(\omega_2|x)$, $x\leftarrow\omega_1$. Prob. of error: $P(\omega_2|x)$.
 -  If $P(\omega_1|x)<P(\omega_2|x)$, $x\leftarrow\omega_2$. Prob. of error: $P(\omega_1|x)$.
 ## 2.3.2 Loss Function (i.e., "Cost Function")
-**Problem**
-- Take action $\alpha_i$ for a given $x$.
-	- The action $\alpha_i$: To assign the test pattern $x$ the class $\omega_i$.
-- Introduce the loss/cost $\lambda(\alpha_i|\omega_j)$, for the true class $\omega_j$ and action $\alpha_i$ on $x$. 
-	- That is, $\lambda(\alpha_i|\omega_j)$ is the cost of classifying **any** sample into class $\omega_i$ when the true class of that sample is $\omega_j$.
-	- For instance, $\lambda(\alpha_{cancer}|\omega_{no\_cancer})$ is the cost of diagnosing a patient that actually doesn't have cancer as "having cancer". 
-		- (Which by intuition is not as serious as its reverse, therefore the value of this $\lambda$ should also be lower than its reverse.)
-- We don't actually know the true class $\omega_j$ for a random sample $x$, so we use the Expected Loss.
-	- That is, we consider the "average loss" of classifying $x$ into $\omega_i$ by considering:
-		- The loss of classifying $x$ into $\omega_j$ for all $\omega_j \in \omega$.
-		- The probability that $x\in\omega_j$, i.e., $P(\omega_j|x)$. 
+### Basics
+- [i] An action $\alpha_i$ for a given $\mathbf{x}$ is:
+	- To assign the test pattern $\mathbf{x}$ with the class $\omega_i$
 
-**[DEF]Expected Loss (Average Loss, Conditional Risk) 期望成本:**
-- The expected loss of classifying $x$ into $\omega_i$.
-- $R(\alpha_i|x)=\sum_{j=1}^{c}{\lambda(\alpha_i|\omega_j)\times P(\omega_j|x)}$ , where
-	- $\lambda(\alpha_i|\omega_j)$: The cost of classifying $x$ into $\omega_i$ under the true class $\omega_j$.
-	- $P(\omega_j|x)$: The posterior probability that $x$ belongs to class $\omega_j$.
-		- Computed during the Naïve Bayes Classification with $P(\omega_j)$ and $P(x|\omega_j)$. 
+- [i] The loss $\lambda(\alpha_i|\omega_j)$ denotes the cost of:
+	- Assigning a random test sample as $\omega_i$,
+	- while the actual class of the sample is $\omega_j$.
+	- For instance, $\lambda(\alpha_{\text{cancer}}|\omega_{\text{no\_cancer}})$ is the cost of diagnosing a patient without cancer as "having cancer".
+### Expected Loss & Bayes Risk
+- [i] Expected Loss (Average Loss, Conditional Risk) 期望成本
+	- We don't actually know the true class of $\omega_j$ for a random sample $\mathbf{x}$, so we use the **Expected Loss**, i.e., the "average loss".
+	- We consider the average loss of classifying a random sample into $\omega_i$ by considering:
+		- For all class $\omega_j\in\omega$, the loss of classifying $\omega_i$ into $\omega_j$, and
+		- The probability that the random sample $\mathbf{x}\in\omega_j$, i.e., $P(\omega_j|\mathbf{x})$.
 
-**[DEF]Bayes Risk 贝叶斯风险**:
-- The modified measurement of the original Bayes Rule.
-	- Consider the importance of each error.
-	- Consider minimum loss, instead of maximum probability.
-- Bayes Risk finds the action that gives the minimum expected loss of $x$.
-	- $\alpha(x)=argmin_{\alpha_i\in A}R(\alpha_i|x)$
-		- $=argmin_{\alpha_i\in A}\sum_{j=1}^{c}\lambda(\alpha_i|\omega_j)P(\omega_j|x)$
+The expected loss of classifying a random sample $\mathbf{x}$ into $\omega_i$ is:
+$$
+R(\alpha_i|\mathbf{x})=\sum_{j=1}^{c}\lambda(\alpha_i|\omega_j)\cdot P(\omega_j|\mathbf{x})
+$$
+where:
+- $\lambda(\alpha_i|\omega_j)$ is the cost of classifying $\mathbf{x}$ into $\omega_i$ with $\mathbf{x}$ belonging to $\omega_j$ actually.
+- $P(\omega_i|\mathbf{x})$ is the (posterior) probability that $\mathbf{x}$ belongs to class $\omega_j$.
+	- Computed during Naïve Bayes Classification with $P(\omega_j)$ and $P(\mathbf{x}|\omega_j)$.
 
-**Derivation: For a 2-class problem**
-- Known:
-	- Test sample $x$.
-	- Classes $\omega = \{\omega_1,\omega_2\}$.
-	- The calculated posterior probabilities:
-		- $P(\omega_1|x)$, $P(\omega_2|x)$.
-	- Loss Matrix:$\begin{bmatrix}  \lambda_{11} & \lambda_{12} \\  \lambda_{21} & \lambda_{22}  \end{bmatrix}$, where $\lambda_{ij}=\lambda(\alpha_i|\omega_j)$.
-		- $\lambda_{ij}$: The cost of classifying $x$ into $\omega_i$ when the true class of $x$ is $\omega_j$. 
-- $\omega_{target}=argmin_{\alpha_i\in A}R(\alpha_i|x)$
-- If we choose $\omega_1$, we have:
-	- $R(\alpha_1|x)<R(\alpha_2|x)$
-	- $\iff \lambda_{11}P(\omega_1|x)+\lambda_{12}P(\omega_2|x)<\lambda_{21}P(\omega_1|x)+\lambda_{22}P(\omega_2|x)$
-	- $\iff (\lambda_{21}-\lambda_{11})P(\omega_1|x)>(\lambda_{12}-\lambda_{22})P(\omega_2|x)$
-	- $\iff \dfrac{P(\omega_1|x)}{P(\omega_2|x)}>\dfrac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}}$
-	- $\iff \dfrac{P(x|\omega_1)P(\omega_1)}{P(x|\omega_2)P(\omega_2)}>\dfrac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}}$
-	- $\iff \dfrac{P(x|\omega_1)}{P(x|\omega_2)}>\dfrac{(\lambda_{12}-\lambda_{22})P(\omega_2)}{(\lambda_{21}-\lambda_{11})P(\omega_1)}$
-	- $\iff \dfrac{P(x|\omega_1)}{P(x|\omega_2)}>\theta_t$
+- [i] Bayes Risk 贝叶斯风险
+	- The modified measurement of the original Bayes Rule.
+		- Consider the importance of each error.
+		- Consider minimum loss, instead of maximum probability.
+	- Bayes Risk finds the action that gives the *minimum expected loss* classifying $\mathbf{x}$.
+$$
+\begin{align}
+\alpha(\mathbf{x}) &= \text{argmin}_{\alpha_i\in A} R(\alpha_i|\mathbf{x}) \\
+&= \text{argmin}_{\alpha\in A} \sum_{j=1}^{c}\lambda(\alpha_i|\omega_j)\cdot P(\omega_j|\mathbf{x})
+\end{align}
+$$
+### Derivation: A 2-class problem.
+**Given**
+- The test sample $\mathbf{x}$.
+- Two classes: $\omega=\{\omega_1, \omega_2\}$
+- Calculated posterior probabilities during Naive Bayes:
+	- $P(\omega_1|\mathbf{x})$, $P(\omega_2|\mathbf{x})$
+- Loss Matrix:
+	- $\begin{pmatrix}\lambda_{11} & \lambda_{12} \\ \lambda_{21} & \lambda_{22}\end{pmatrix}$
+	- where $\lambda_{ij}=\lambda(\alpha_i|\omega_j)$
+**Do**
+- $\omega^{*}=\text{argmin}_{\alpha_i\in A}R(\alpha_i|\mathbf{x})$
+- The condition of choosing $\alpha_1$ is:
+$$
+\begin{align}
+& R(\alpha_1|\mathbf{x}) < R(\alpha_2|\mathbf{x}) \\ \\
+\iff& \lambda_{11}P(\omega_1|\mathbf{x})+\lambda_{12}P(\omega_2|\mathbf{x}) < 
+\lambda_{21}P(\omega_1|\mathbf{x})+\lambda_{22}P(\omega_2|\mathbf{x}) \\ \\
+\iff& (\lambda_{21}-\lambda_{11})\cdot P(\omega_1|\mathbf{x}) > (\lambda_{12}-\lambda_{22})\cdot P(\omega_2|\mathbf{x}) \\ \\
+\iff& \frac{P(\omega_1|\mathbf{x})}{P(\omega_2|\mathbf{x})} > \frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}} \\ \\
+\iff& \frac{P(\mathbf{x}|\omega_1)\cdot P(\omega_1)}{P(\mathbf{x}|\omega_{2})\cdot P(\omega_2)} > \frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}} \\ \\
+\iff& \frac{P(\mathbf{x}|\omega_1)}{P(\mathbf{x}|\omega_2)} > \frac{(\lambda_{12}-\lambda_{22})\cdot P(\omega_2)}{(\lambda_{21}-\lambda_{11})\cdot P(\omega_1)} = \theta
+\end{align}
+$$
+
 ## 2.3.3 Examples
 ### Minimum Prob. Error and Minimum Risk
+Remark: The Gaussian Distribution.
+$$
+x\in\mathbb{R} \sim Gaussian(\mu,\sigma): \ P(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+$$
+**Given:**
+- Random distributions of samples in 2 classes $\omega_1$ and $\omega_2$ respectively.
+	- $\omega_1$: $\mu=0$, $\sigma=\frac{1}{\sqrt{2}} \implies P(x|\omega_1)=\frac{1}{\sqrt{\pi}}e^{-x^2}$
+	- $\omega_2$: $\mu=1$, $\sigma=\frac{1}{\sqrt{2}} \implies P(x|\omega_2)=\frac{1}{\sqrt{\pi}}e^{-(x-1)^2}$
+- Loss Matrix:
+	- $\begin{pmatrix}\lambda_{11} & \lambda_{12} \\ \lambda_{21} & \lambda_{22}\end{pmatrix}=\begin{pmatrix}0 & 1.0 \\ 0.5 & 0\end{pmatrix}$
+**Do:**
+#### Minimum Error
+The threshold value $x_0$ where the two distributions are equal
+- i.e., minimum probability of error
+$$
+\begin{align}
+&P(x_0|\omega_1)=P(x_0|\omega_2) \\ \\
+\implies& \frac{1}{\sqrt{\pi}}e^{-x_{0}^2} = \frac{1}{\sqrt{\pi}}e^{-(x_{0}-1)^2} \\ \\
+\implies& x_0=-x_0+1 \\ \\
+\implies& x_0=\frac{1}{2}
+\end{align}
+$$
+#### Minimum Risk
+The threshold $\hat{x}_0$ for minimum $R(\alpha_i|x)$.
+$$
+\begin{align}
+&R(\alpha_1|\hat{x}_0)=R(\alpha_2|\hat{x}_0) \\ \\
+\implies& \lambda_{11}\cdot P(\omega_1|\hat{x}_0)+\lambda_{12}\cdot P(\omega_2|\hat{x}_0) = 
+\lambda_{21}\cdot P(\omega_1|\hat{x}_0)+\lambda_{22}\cdot P(\omega_2|\hat{x}_0) \\ \\
+\implies& (\lambda_{21}-\lambda_{11})\cdot P(\omega_1|\hat{x}_0)=(\lambda_{12}-\lambda_{22})\cdot P(\omega_2|\hat{x}_0) \\ \\
+\implies& \frac{P(\omega_1|\hat{x}_0)}{P(\omega_2|\hat{x}_0)}=\frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}} \\ \\
+\implies& \frac{P(\hat{x}_0|\omega_1)\cdot P(\omega_1)}{P(\hat{x}_0|\omega_2)\cdot P(\omega_2)}=\frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}} \\ \\
+\implies& \frac{P(\hat{x}_0|\omega_1)}{P(\hat{x}_0|\omega_2)}=\frac{(\lambda_{12}-\lambda_{22})\cdot P(\omega_2)}{(\lambda_{21}-\lambda_{11})\cdot P(\omega_1)} \\ \\
+\implies& \frac{P(\hat{x}_0|\omega_1)}{P(\hat{x}_0|\omega_2)}=\frac{(1-0)\times\frac{1}{2}}{(0.5-0)\times\frac{1}{2}}=2  \\ \\
+\implies& P(\hat{x}_0|\omega_1)=2P(\hat{x}_0|\omega_2) \\ \\
+\implies& \frac{1}{\sqrt{\pi}}e^{-\hat{x}_0^2}=\frac{2}{\sqrt{\pi}}e^{-(\hat{x}_0-1)^2}\\ \\
+\implies& -\hat{x}_0^2=\ln2-\hat{x}_0^2+2\hat{x}_0-1\\ \\
+\implies& 2\hat{x}_0=1-\ln2 \\ \\
+\implies& \hat{x}_0=\frac{1-\ln2}{2}
+\end{align}
+$$
 
-Remark: Gaussian Distribution
-- $GD(x)=\dfrac{1}{\sigma\sqrt{2\pi}}e^{-\dfrac{(x-\mu)^2}{2\sigma^2}}$
 
-Given:
-- Two probability distributions of evidence $P(x|\omega_j)$ regarding $j\in\{1,2\}$.
-	- $P(x|\omega_1)=\dfrac{1}{\sqrt{\pi}}e^{-x^2}$, where $\mu=0, \sigma=\dfrac{1}{\sqrt{2}}$.
-	- $P(x|\omega_2)=\dfrac{1}{\sqrt{\pi}}e^{-(x-1)^2}$, where $\mu=1, \sigma=\dfrac{1}{\sqrt{2}}$.
-- Loss matrix:
-	- $\begin{bmatrix} \lambda_{11} & \lambda_{12} \\ \lambda_{21} & \lambda_{22} \end{bmatrix}= \begin{bmatrix} 0 & 1.0 \\ 0.5 & 0 \end{bmatrix}$
-Do:
-- The threshold $x_0$ for minimum $P_e$.
-	- $P(x_0|\omega_1)=P(x_0|\omega_2)$
-		- $\implies\dfrac{1}{\sqrt{\pi}}e^{-x_0^2}=\dfrac{1}{\sqrt{\pi}}e^{-(x_0-1)^2}$
-		- $\implies x_0=-x_0+1$,  omitting $x_0=x_0-1$ which is impossible;
-		- $\implies x_0=\dfrac{1}{2}$
-- The threshold $\hat{x_0}$ for minimum $R(\alpha_i|x)$.
-	- $R(\alpha_1|x)=R(\alpha_2|x)$
-		- $\implies \dfrac{P(\hat{x_0}|\omega_1)}{P(\hat{x_0}|\omega_2)}=\dfrac{(\lambda_{12}-\lambda_{22})P(\omega_2)}{(\lambda_{21}-\lambda_{11})P(\omega_1)}$
-		- $\implies \dfrac{P(\hat{x_0}|\omega_1)}{P(\hat{x_0}|\omega_2)}=\dfrac{(1-0)\times\dfrac{1}{2}}{(0.5-0)\times\dfrac{1}{2}}$
-		- $\implies P(\hat{x_0}|\omega_1)=2P(\hat{x_0}|\omega_2)$
-		- $\implies\dfrac{1}{\sqrt{\pi}}e^{\hat{-x_0}^2}=2\dfrac{1}{\sqrt{\pi}}e^{-(\hat{x_0}-1)^2}$
-		- $\implies-\hat{x_0}^2=\ln2-\hat{x_0}^2+2\hat{x_0}-1$
-		- $\implies \hat{x_0}=\dfrac{1-\ln2}{2}<\dfrac{1}{2}$
+![[Minimum Prob Error and Minimum Risk.png|300]]
 
-![[Minimum Prob Error and Minimum Risk.png]]
-#### Minimum Error Rate Classification
-- A zero-one loss function
-	- $\begin{bmatrix}0 & 1\\ 1 & 0\end{bmatrix}$
-	- All errors are equally costly.
-- Conditional Risk:
-	- $R(\alpha_i|x)=\sum_{j=1}^{c}\lambda(\alpha_i|x)P(\omega_j|x)$
-	- $=\lambda(\alpha_i|\omega_i)P(\omega_i|x)+\sum_{j\neq i}\lambda(\alpha_i|\omega_j)P(\omega_j|x)$
-	- $=0+\sum_{j\neq i}1\times P(\omega_j|x)$
-	- $=\sum_{j\neq i}P(\omega_j|x)$
-	- $=1-P(\omega_i|x)$
 # 2.4 Discriminant Functions 判别函数
 ## 2.4.1 Definition of Discriminant Function
-- If a function $f$ satisfies:
-	- If $f(\cdot)$ monotonically increases, and
-	- $\forall i\neq j, f(P(\omega_i|x))>f(P(\omega_j|x))$, then
-	- $x\rightarrow\omega_i$
-- Then, $g_i(x)=f(P(\omega_i|x))$ is a discriminant function.
-- That is, this function is able to "tell" a certain one $\omega_i$ from others on any input $x$. 给定一个测试样本$x$，判别函数能够从所有其它分类中挑选一个最可能的$\omega_j$。
-	- i.e., it separates $\omega_i$ and $\neg \omega_i$.
+- [i] A Discriminant Function is a  function $f$ that satisfies the following property:
+	- If:
+		- $f(\cdot)$ monotonically increases, and
+		- $\forall i\neq j, \ f\Bigl(P(\omega_i|\mathbf{x})\Bigr)>f\Bigl(P(\omega_j|\mathbf{x})\Bigr)$
+	- Then:
+		- $\mathbf{x}\leftarrow \omega_i$
+- That is, the function is able to "tell", or "discriminate" a certain $\omega_i$ from others.
+	- i.e., it separates $\omega_i$ and $\neg\omega_i$.
+
+A sample usage of a discriminant function: Given two classes $\omega_i$ and $\omega_j$, define $g(\mathbf{x})\equiv P(\omega_i|\mathbf{x})-P(\omega_j|\mathbf{x})=0$.
+- $g(\mathbf{x})=0$: Decision Surface;
+- $g(\mathbf{x})>0$: Region $R_i$ where $P(\omega_i|\mathbf{x})>P(\omega_j|\mathbf{x})$;
+- $g(\mathbf{x})<0$: Region $R_i$ where $P(\omega_i|\mathbf{x})<P(\omega_j|\mathbf{x})$;
 
 ## 2.4.2 Property of Discriminant Function
 1. One function per class.
 	1. A discriminant function is able to "tell" a certain one $\omega_i$ specifically for any input $x$.
 2. Various discriminant functions $\rightarrow$ Identical classification results. 样式各异，结果相同。
 	1. It is correct to say, the discriminant functions:
-		1. **Preserves** the original monotonical-increase of its inputs.
-		2. But  changes the changing rate by **processing** the inputs.
+		1. *Preserves* the original monotonically increase of its inputs.
+		2. But  changes the changing rate by *processing* the inputs.
 	2. i.e.,
 		1. "$\forall i\neq j, f(g_i(x))>f(g_j(x))\land f\nearrow$ "and "$\forall i\neq j, g_i(x)>g_j(x)$" are equivalent in decision.
 		2. Changing growth rate of input:
@@ -243,8 +288,8 @@ Do:
 - $c$ discriminant functions $\implies$ $c$ decision regions
 	- $g_i(x)\implies R_i\subset R^d,i\in[1,c]$
 - One function per decision region that is distinct and mutual-exclusive.
-	- $R_i=\{x|x\in R^d: \forall i\neq j, g_i(x)>g_j(x)\}$, where
-	- $\forall i\neq j, R_i\cap R_j=\emptyset$, and $\cap_{i=1}^{c}R_i=R^d$
+	- A decision region is defined as: $R_i=\{x|x\in R^d: \forall i\neq j, g_i(x)>g_j(x)\}$, where
+	- $\forall i\neq j, R_i\cap R_j=\emptyset$, and $\cup_{i=1}^{c}R_i=R^d$
 
 ## 2.4.4 Decision Boundaries 决策边界
 - "Surface" in feature space, where ties occur among 2 or more largest discriminant functions.
@@ -252,236 +297,276 @@ Do:
 	- $\exists \omega_i, \omega_j \in \omega, g_i(x_0)=g_j(x_0)$.
 
 ![[Discriminant Functions.png|300]]
+
 # 2.5 Bayesian Classification for Normal Distributions
 ## 2.5.1 Multi-Dimensional Normal Distribution 高维正态分布
 
 ### 1-D Case 多类别，一维数据
 - There are several classes:
-	- Each class has its own distribution of data samples, i.e., each class has its own $\mu$ and $\sigma$.
+	- Each class has its own distribution of data samples.
+	- i.e., each class has its own $\mu$ and $\sigma$.
 - For a specific class, there are plenty of data samples:
-	- Each sample is a **scalar**, that is a $1\times1$ "matrix", which is a "plain number".
+	- Each sample is a *scalar*, that is a $1\times1$ "matrix", which is a "plain number".
 	- The samples follows a **Normal Distribution**. 
 
-For a specific class $\omega_i$, suppose the data conforms a normal distribution. Here:
-- $x\sim N(\mu_i,\sigma_i):$   $P(x|\omega_i)=\dfrac{1}{\sigma_i\sqrt{2\pi}}e^{-\dfrac{(x-\mu_i)^2}{2\sigma_i^2}}$, where
-	- $\mu$ is the mean value.
-		- $\mu_i = E(x)$
-	- $\sigma^2$ is the variance.
-		- $\sigma_i = E[(x-\mu)^2]$
-
+Suppose data samples in a specific class $\omega_i$ conforms a normal distribution:
+$$
+x\sim N(\mu_i,\sigma_i): P(x|\omega_i)=\frac{1}{\sigma_i\sqrt{2\pi}}^{\frac{(x-\mu_i)^2}{2\sigma^2}}
+$$
+where:
+- $\mu_i$ is the mean value, $\mu_i=E(x)$
+- $\sigma_i^2$ is the variance, $\sigma_i^2=E\Bigl[(x-\mu)^2\Bigr]$
 ### Multivariate Case 多类别，高维数据
 - There are several classes:
-	- Each class has its own distribution of data samples, i.e., each class has its own $\mu$ and $\sigma$.
+	- Each class has its own distribution of data samples,
+	- i.e., each class has its own $\mu$ and $\sigma$.
 - For a specific class, there are plenty of data samples:
-	- Each sample is a **vector**, that is a $d\times 1$ matrix, where $d$ is the dimension of data.
+	- Each sample is a *vector*, that is a $d\times 1$ matrix, where $d$ is the dimension of data.
 	- The samples follow a **$d$-dimensional Normal Distribution**.
-	
-Here, for a specific class $\omega_i$, suppose the multi-dimensional data $X$ conforms a normal distribution.
-- $X\sim N(\mu_i,\Sigma_i):$   $P(X|\omega_i)=\dfrac{1}{|\Sigma_i|^{\dfrac{1}{2}}\times (2\pi)^{\dfrac{d}{2}}}e^{-\dfrac{1}{2}(X-\mu_i)^\top \Sigma_i^{-1} (X-\mu_i)}$
-	- Regular Variables:
-		- $d$-dimensional random variables: $X=\begin{bmatrix}x_1\\x_2\\...\\x_d\end{bmatrix}$;
-		- $d$-dimensional mean vector: $\mu_i=\begin{bmatrix}\mu_{i1}\\\mu_{i2}\\...\\\mu_{id}\end{bmatrix}=\begin{bmatrix}E(x_{i1})\\E(x_{i2})\\...\\E(x_{id})\end{bmatrix}$, specifically for class $\omega_i$;
-		- $d\times d$ covariance matrix: $\Sigma_i = \begin{pmatrix} \sigma_{i11} & \sigma_{i12} & \cdots & \sigma_{i1d} \\ \sigma_{i21} & \sigma_{i22} & \cdots & \sigma_{i2d} \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{id1} & \sigma_{id2} & \cdots & \sigma_{idd} \end{pmatrix}=E[(X-\mu_i)(X-\mu_i)^\top]$, specifically for class $\omega_i$.
-	- Explanations on $-\dfrac{1}{2}(X-\mu_i)^\top\Sigma_i^{-1}(X-\mu_i)$
-		- Parts:
-			- $(X-\mu_i)^\top=\begin{bmatrix}x_1-\mu_{i1}\\x_2-\mu_{i2}\\...\\x_d-\mu_{id}\end{bmatrix}^\top=\begin{bmatrix}(x_1-\mu_{i1}) & (x_2-\mu_{i2}) & \cdots & (x_d-\mu_{id})\end{bmatrix}$
-			- $\Sigma_i^{-1} = \begin{pmatrix} \sigma_{i11}' & \sigma_{i12}' & \cdots & \sigma_{i1d}' \\ \sigma_{i21}' & \sigma_{i22}' & \cdots & \sigma_{i2d}' \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{id1}' & \sigma_{id2}' & \cdots & \sigma_{idd}' \end{pmatrix}$, the inverse of the covariance matrix.
-			- $(X-\mu_i)=\begin{bmatrix}x_1-\mu_{i1}\\x_2-\mu_{i2}\\...\\x_d-\mu_{id}\end{bmatrix}$
-		- Whole:
-			- $-\dfrac{1}{2}(X-\mu_i)^\top\Sigma_i^{-1}(X-\mu_i)$
-			- $=-\dfrac{1}{2}\begin{bmatrix}(x_1-\mu_{i1}) & (x_2-\mu_{i2}) & \cdots & (x_d-\mu_{id})\end{bmatrix}\begin{pmatrix} \sigma_{i11}' & \sigma_{i12}' & \cdots & \sigma_{i1d}' \\ \sigma_{i21}' & \sigma_{i22}' & \cdots & \sigma_{i2d}' \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{id1}' & \sigma_{id2}' & \cdots & \sigma_{idd}' \end{pmatrix}\begin{bmatrix}x_1-\mu_{i1}\\x_2-\mu_{i2}\\...\\x_d-\mu_{id}\end{bmatrix}$
-			- $=-\dfrac{1}{2}\begin{bmatrix}a_1 & a_2 & \cdots a_d\end{bmatrix}\begin{bmatrix}x_1-\mu_{i1}\\x_2-\mu_{i2}\\...\\x_d-\mu_{id}\end{bmatrix}$
-			- $=y\geq 0$
+
+Suppose data samples in a specific class $\omega_i$ conforms a normal distribution:
+$$
+\mathbf{x}\sim N(\mu_i,\Sigma_i): \ P(\mathbf{x}|\omega_i)=\frac{1}{|\Sigma_i|^\frac{1}{2}\cdot(2\pi)^{\frac{1}{2}}}e^{-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_i)^\top\Sigma_i^{-1}(\mathbf{x}-\mathbf{\mu}_i)}
+$$
+Regular Variables:
+- $d$-dimensional random variable: $\mathbf{x}=\begin{bmatrix}x_1\\x_2\\\vdots\\x_d\end{bmatrix}$
+- $d$-dimensional mean vector: $\mu_i=\begin{bmatrix}\mu_{i1} \\ \mu_{i2} \\ \vdots \\\mu_{id}\end{bmatrix}=\begin{bmatrix}E(x_{i1})\\E(x_{i2})\\\vdots\\E(x_{id})\end{bmatrix}$
+- $d\times d$ covariate matrix: $\sigma_i=\begin{pmatrix}\sigma_{i11} & \sigma_{i12} & \cdots & \sigma_{i1d} \\ \sigma_{i21} & \sigma_{i22} & \cdots & \sigma_{i2d} \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{id1} & \sigma_{id2} & \cdots & \sigma_{idd}\end{pmatrix}=E\Bigl[(\mathbf{x}-\mathbf{\mu}_i)(\mathbf{x}-\mathbf{\mu}_i)^\top\Bigr]$
+
+Explanation of exponent $-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_i)^\top\Sigma_i^{-1}(\mathbf{x}-\mathbf{\mu}_i)$:
+- $(X-\mu_i)^\top=\begin{bmatrix}(x_1-\mu_{i1}) & (x_2-\mu_{i2}) & \cdots & (x_d-\mu_{id})\end{bmatrix}$
+
+- $\Sigma_i^{-1} = \begin{pmatrix} \sigma_{i11}' & \sigma_{i12}' & \cdots & \sigma_{i1d}' \\ \sigma_{i21}' & \sigma_{i22}' & \cdots & \sigma_{i2d}' \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{id1}' & \sigma_{id2}' & \cdots & \sigma_{idd}' \end{pmatrix}$, the inverse of the covariance matrix.
+
+- $(X-\mu_i)=\begin{bmatrix}x_1-\mu_{i1}\\x_2-\mu_{i2}\\...\\x_d-\mu_{id}\end{bmatrix}$
+
+The exponent as a whole:
+$$
+\begin{align}
+& -\dfrac{1}{2}(X-\mu_i)^\top\Sigma_i^{-1}(X-\mu_i) \\
+&= -\dfrac{1}{2}\begin{bmatrix}(x_1-\mu_{i1}) & (x_2-\mu_{i2}) & \cdots & (x_d-\mu_{id})\end{bmatrix}\begin{pmatrix} \sigma_{i11}' & \sigma_{i12}' & \cdots & \sigma_{i1d}' \\ \sigma_{i21}' & \sigma_{i22}' & \cdots & \sigma_{i2d}' \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{id1}' & \sigma_{id2}' & \cdots & \sigma_{idd}' \end{pmatrix}\begin{bmatrix}x_1-\mu_{i1}\\x_2-\mu_{i2}\\...\\x_d-\mu_{id}\end{bmatrix} \\ 
+&=-\dfrac{1}{2}\begin{bmatrix}a_1 & a_2 & \cdots a_d\end{bmatrix}\begin{bmatrix}x_1-\mu_{i1}\\x_2-\mu_{i2}\\...\\x_d-\mu_{id}\end{bmatrix} \\ \\
+&=y\geq 0
+\end{align}
+$$
 
 **Example: 2-D Case**
-- $X\sim N(\mu,\Sigma):$   $P(X)=\dfrac{1}{|\Sigma_i|^{\dfrac{1}{2}}\times (2\pi)}e^{-\dfrac{1}{2}\begin{bmatrix}(x_1-\mu_{i1}) & (x_2-\mu_{i2})\end{bmatrix} \Sigma_i^{-1} \begin{bmatrix}(x_1-\mu_{i1}) \\ (x_2-\mu_{2})\end{bmatrix}}$
-	- $2$ - dimensional random variable $X$: $X=\begin{bmatrix}x_1\\x_2\end{bmatrix}$
-	- $2$ - dimensional mean vector: $\mu_i=\begin{bmatrix}\mu_{i1}\\\mu_{i2}\end{bmatrix}=\begin{bmatrix}E(x_{i1})\\E(x_{i2})\end{bmatrix}$
-	- $2\times2$ covariant matrix $\Sigma_i$:
-		- $\Sigma_i=E[(X-\mu_i)(X-\mu_i)^\top]$
-		- $=E(\begin{bmatrix}x_1-\mu_{i1} \\ x_2-\mu_{i2}\end{bmatrix}\begin{bmatrix}x_1-\mu_{i1} & x_2-\mu_{i2}\end{bmatrix})$
-		- $=\begin{bmatrix}(x_1-\mu_{i1})^2 & (x_1-\mu_{i1})(x_2-\mu_{i2}) \\ (x_2-\mu_{i2})(x_1-\mu_{i1}) & (x_2-\mu_{i2})^2 \end{bmatrix}$
-		- $=\begin{bmatrix}\sigma_1^2 & \sigma \\ \sigma & \sigma_2^2\end{bmatrix}$
+$$
+\mathbf{x}\sim N(\mu_i, \sigma_i): P(\mathbf{x}|\omega_i=\frac{1}{|\Sigma_i|^\frac{1}{2}\cdot(2\pi)}e^{-\frac{1}{2}\begin{pmatrix}x_1-\mu_{i1} & x_2-\mu_{i2}\end{pmatrix}\Sigma_i^{-1}\begin{pmatrix}x_1-\mu_{i1} \\ x_2-\mu_{i2} \end{pmatrix}}
+$$
+where:
+- $2$-dimensional random variable: $\mathbf{x}=\begin{pmatrix}x_1 \\ x_2\end{pmatrix}$.
+- $2$-dimensional mean vector: $\mathbf{\mu}_i=\begin{pmatrix}\mu_{i1} \\ \mu_{i2}\end{pmatrix}$
+- $2\times 2$ covariate matrix $\Sigma_i$:
+$$
+\begin{align}
+\Sigma_i &= E\Bigl[(\mathbf{x}-\mathbf{\mu}_i)(\mathbf{x}-\mathbf{\mu}_i)^\top\Bigr] \\ \\
+&=E\Bigl[\begin{pmatrix}x_1-\mu_{i1} \\ x_2-\mu_{i2}\end{pmatrix}\begin{pmatrix}x_1-\mu_{i1} & x_2-\mu_{i2}\end{pmatrix}\Bigr] \\ \\
+&=E(\begin{bmatrix}
+(x_1-\mu_{i1})^2 & (x_1-\mu_{i1})(x_2-\mu_{i2}) \\ 
+(x_1-\mu_{i1})(x_2-\mu_{i2}) & (x_2-\mu_{i2})^2 \\ 
+\end{bmatrix}) \\ \\
+&=\begin{bmatrix}
+E\Bigl[(x_1-\mu_{i1})^2\Bigr] & E\Bigl[(x_1-\mu_{i1})(x_2-\mu_{i2})\Bigr]\ \\ 
+E\Bigl[(x_1-\mu_{i1})(x_2-\mu_{i2})\Bigr] & E\Bigl[(x_2-\mu_{i2})^2\Bigr] \\ 
+\end{bmatrix} \\ \\
+&= \begin{bmatrix}
+\sigma_1^2 & \sigma \\ \sigma & \sigma_2^2
+\end{bmatrix}
+\end{align}
+$$
+
 ## 2.5.2 Minimum-error-rate classification
 **Recall:** 
 - Minimum-error-rate means that we ignore the "cost" of each decision. 
 - In other words, we only select the classes based on probabilities.
-
 ### Pattern of Discriminant Function
-- Discriminant Function: $g_i(x)=\ln P(\omega_i|x), \forall i\in[1,c]\cap\mathbb{N}^+$
-	-  $g_i(x)=\ln[P(\omega_i|x)]$
-	- $\implies g_i(x)=\ln[P(X|\omega_i)\times P(\omega_i)]$
-	- $\implies g_i(x)=\ln[P(X|\omega_i)]+\ln[P(\omega_i)]$
-	- $\implies g_i(x)=\ln[\dfrac{1}{|\Sigma|^{\dfrac{1}{2}}\times (2\pi)^{\dfrac{d}{2}}}e^{-\dfrac{1}{2}(X-\mu)^T \Sigma^{-1} (X-\mu)}]+\ln[P(\omega_i)]$
-	- $\implies g_i(x)=$
-		- $-\dfrac{d}{2}\ln(2\pi)$ 
-		- $-\dfrac{1}{2}|\Sigma_i|$
-		- $-\dfrac{1}{2}(X-\mu_i)^T\Sigma_i^{-1}(X-\mu_i)$
-		- $+\ln[P(\omega_i)]$
-- Here, $-\dfrac{d}{2}\ln(2\pi)$ is a constant, which can be ignored. The discriminant function is then updated as:
-	- $g_i(x)=$
-		- $-\dfrac{1}{2}\ln|\Sigma_i|$
-		- $-\dfrac{1}{2}(X-\mu_i)^\top\Sigma_i^{-1}(X-\mu_i)$
-		- $+\ln[P(\omega_i)]$
-
+The discriminant function of MER classification could be given by:
+$$
+\forall i\in[1,c]\cap\mathbb{N}^{+}, \ g_i(\mathbf{x})=\ln P(\omega_i|\mathbf{x})
+$$
+Namely,
+$$
+\begin{align}
+&g_i(\mathbf{x}) = \ln P(\omega_i|\mathbf{x}) \\ \\
+\implies& g_i(\mathbf{x})= \ln\Bigl[P(\mathbf{x|\omega_i})\cdot P(\omega_i)\Bigr] \\ \\
+\implies & g_i(\mathbf{x})=\ln\Bigl[P(\mathbf{x}|\omega_i)\Bigr]+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+\implies & g_i(\mathbf{x})=\ln\Bigl[\frac{1}{|\Sigma_i|^\frac{1}{2}\cdot (2\pi)^{\frac{d}{2}}}e^{-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_i)^\top\Sigma_i^{-1}(\mathbf{x}-\mathbf{\mu}_i)}\Bigr]+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+\implies & g_i(\mathbf{x})=\ln\Bigl[\frac{1}{|\Sigma_i|^\frac{1}{2}\cdot(2\pi)^\frac{d}{2}}\Bigr]-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_i)^\top\Sigma_{i}^{-1}(\mathbf{x}-\mathbf{\mu}_i)+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+\implies & g_i(\mathbf{x})= \Bigl(-\frac{d}{2}\ln(2\pi)-\frac{1}{2}\ln|\Sigma_i|\Bigr)-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_i)^\top\Sigma_i^{-1}(\mathbf{x}-\mathbf{\mu}_i)+\ln\Bigl[P(\omega_i)\Bigr]
+\end{align}
+$$
+Here, $-\frac{d}{2}\ln(2\pi)$ is a constant, which could be ignored. 
+- [*] The discriminant function is then updated as:
+$$
+g_i(\mathbf{x})=-\frac{1}{2}\ln|\Sigma_i|-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_i)^\top\Sigma_i^{-1}(\mathbf{x}-\mathbf{\mu}_i)+\ln\Bigl[P(\omega_i)\Bigr]
+$$
 ### Case I: $\Sigma_i=\sigma^2I$
-- That is, $\Sigma_1=\Sigma_2=\cdots=\Sigma_{|\omega|}=\sigma^2I=\begin{bmatrix} \sigma^2 & 0 & \cdots & 0 \\ 0 & \sigma ^2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \sigma^2 & \end{bmatrix}$
-	- All the classes have a common covariance matrix $\sigma^2I$.
-	- A diagonal matrix suggests that the distribution of data in is **isotropic** (各向同性的), with respect to any specific class.
-		- That is, the variance or spread is the same in all directions. 
-		- In other words, there is no directional preference in the spread of the distribution.
+That is:
+$$
+\Sigma_1=\Sigma_2=\cdots=\Sigma_{|\omega|}=\sigma^2I=\begin{bmatrix} \sigma^2 & 0 & \cdots & 0 \\ 0 & \sigma ^2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \sigma^2 \end{bmatrix}
+$$
+- All the classes have a *Common Covariance Matrix* of $\sigma^2 I$.
+- The common covariate matrix is *isotropic (各向同性的)* with respect to any class.
+	- i.e., the variance is the same in all directions.
+	- i.e., no directional preference in the spread of distribution
 
-- Therefore, we have:
-	- $|\Sigma_i|=\sigma^{2d}$
-	- $\Sigma_i^{-1}=\dfrac{1}{\sigma^2}I$
-- And the discriminant function $g_i(x)$ is:
-	- $g_i(x)=$
-		- $-\dfrac{1}{2}|\Sigma_i|$
-		- $-\dfrac{1}{2}(X-\mu_i)^T\Sigma_i^{-1}(X-\mu_i)$
-		- $+\ln[P(\omega_i)]$
- - Here, as $|\Sigma_i|=\sigma^{2d}$ is a constant, it is ignored. Therefore,
-	 - $g_i(x)=$
-		- $-\dfrac{1}{2}(X-\mu_i)^\top\Sigma_i^{-1}(X-\mu_i)$
-		- $+\ln[P(\omega_i)]$
-	- $=-\dfrac{1}{2}(X-\mu_i)^\top \ \times \ [\dfrac{1}{\sigma^2}I] \ \times \ (X-\mu_i) \ + \ \ln[P(\omega_i)]$,
-	- $=-\dfrac{(X-\mu_i)^\top(X-\mu_i)}{2\sigma^2}+\ln[P(\omega_i)]$,
-	- $= -\dfrac{(X^\top-\mu_i^\top)(X-\mu_i)}{2\sigma^2}+\ln[P(\omega_i)]$,
-	- $=-\dfrac{X^\top X-X^\top\mu_i-\mu_i^\top X+\mu_i^\top\mu_i}{2\sigma^2}+\ln[P(\omega_i)]$,
-	- $=-\dfrac{X^\top X-2\mu_i^\top X+\mu_i^\top\mu_i}{2\sigma^2}+\ln[P(\omega_i)]$, known that $a^\top b=b^\top a$
-		- $=-\dfrac{||X-\mu_i||^2}{2\sigma^2}+\ln[P(\omega_i)]$, where $||\cdot||$ is the **Euclidean Distance**.
+Therefore, we have:
+$$
+\begin{align}
+|\Sigma_i| &= \sigma^{2d} \\ \\
+\Sigma_i^{-1} &= \frac{1}{\sigma^2}I
+\end{align}
+$$
 
-- Here, we ignore $X^\top X$ because it is the same for any class. (Remember $X$ is just the random variable that needs us to classify.)
-	- $g_i(x)=-\dfrac{-2\mu_i^\top X+\mu_i^\top\mu_i}{2\sigma^2}+\ln[P(\omega_i)]$, with $X^\top X$ ignored.
-	- $=\dfrac{\mu_i^\top X}{\sigma^2}-\dfrac{\mu_i^\top\mu_i}{2\sigma^2}+ \ln[P(\omega_i)]$
-	- $=(\dfrac{\mu_i}{\sigma^2})^\top X + (-\dfrac{\mu_i^\top\mu_i}{2\sigma^2}+ \ln[P(\omega_i)])$
-	- $=w_i^TX+w_{i0}$, where
-		- $w_i=\dfrac{\mu_i}{\sigma^2}=\begin{bmatrix} \dfrac{\mu_{i1}}{\sigma^2} \\ \dfrac{\mu_{i2}}{\sigma^2} \\ \vdots \\ \dfrac{\mu_{id}}{\sigma^2} \end{bmatrix}$ is the weight vector, and
-		- $w_{i0}=(-\dfrac{\mu_i^\top\mu_i}{2\sigma^2}+ \ln[P(\omega_i)])$ is the threshold/bias scalar.
-- We have got a **Linear Discriminant Function**.
+This is the original discriminant function:
+$$
+g_i(\mathbf{x})=-\frac{1}{2}\ln|\Sigma_i|-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_i)^\top\Sigma_i^{-1}(\mathbf{x}-\mathbf{\mu}_i)+\ln\Bigl[P(\omega_i)\Bigr]
+$$
+Here, $-\frac{1}{2}\ln|\Sigma_i|=-\frac{1}{2}\ln|\sigma^2I|$ is a constant, therefore can be ignored:
+$$
+\begin{align}
+g_i(\mathbf{x}) &= -\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_i)^\top\Sigma_i^{-1}(\mathbf{x}-\mathbf{\mu}_i)+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+&= -\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_i)^\top\cdot(\frac{1}{\sigma^2}I)\cdot(\mathbf{x}-\mathbf{\mu}_i)+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+&=-\frac{(\mathbf{x}-\mathbf{\mu}_i)^\top(\mathbf{x}-\mathbf{\mu}_i)}{2\sigma^2}+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+&=-\frac{(\mathbf{x}^\top-\mathbf{\mu}_i^\top)(\mathbf{x}-\mathbf{\mu}_i)}{2\sigma^2}+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+&=-\frac{\mathbf{x}^\top\mathbf{x}-\mathbf{x}^\top\mathbf{\mu}_i-\mathbf{\mu}_i^\top\mathbf{x}+\mathbf{\mu}_i^\top\mathbf{\mu}_i}{2\sigma^2}+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+&=-\frac{\mathbf{x}^\top\mathbf{x}-2\mathbf{\mu}_i^\top\mathbf{x}+\mathbf{\mu}_i^\top\mathbf{\mu}_i}{2\sigma^2}+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+&=-\frac{\|\mathbf{x}-\mathbf{\mu}_i\|^2}{2\sigma^2}+\ln\Bigl[P(\omega_i)\Bigr]
+\end{align}
+$$
+Note: $\|\cdot\|^2$ denotes the *Euclidean Distance.* 
+Moreover $\mathbf{x}^\top\mathbf{x}$ is the same across all classes, therefore can be ignored:
+$$
+\begin{align}
+g_i(\mathbf{x})&=-\frac{-2\mathbf{\mu}_i^\top\mathbf{x}+\mathbf{\mu}_i^\top\mathbf{\mu}_i}{2\sigma^2}+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+&=\frac{\mathbf{\mu}_i^\top\mathbf{x}}{\sigma^2}-\frac{\mathbf{\mu}_i^\top\mathbf{\mu}_i}{2\sigma^2}+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+&=\Bigl(\frac{\mu_i}{\sigma^2}\Bigr)^\top\mathbf{x}+\Bigl(-\frac{\mu_i^\top\mu_i}{2\sigma^2}+\ln\Bigl[P(\omega_i)\Bigr]\Bigr)
+\end{align}
+$$
+Namely,
+$$
+g_i(\mathbf{x})=\mathbf{w}_i^\top\mathbf{x}+w_{i0}
+$$
+where:
+- $\mathbf{w}_i=\frac{\mathbf{\mu}_i}{\sigma^2}$ is the weight vector, and
+- $w_{i0}=-\frac{\mu_i^\top\mu_i}{2\sigma^2}+\ln\Bigl[P(\omega_i)\Bigr]$ is the threshold / bias scalar.
 
-- Having the discriminant functions defined, we get the decision surface by:
-	- $g_i(X)-g_j(X)=0$
-	- $\implies w_iX+w_{i0}-(w_jX+w_{j0})=0$
-	- $\implies \dfrac{\mu_i}{\sigma^2}X+w_{i0}-(\dfrac{\mu_j}{\sigma^2}X+w_{jo})=0$
-	- $\implies (\dfrac{\mu_i-\mu_j}{\sigma^2})X+(w_{i0}-w_{j0})=0$
-	- $\implies (\mu_i-\mu_j)X+\sigma^2(w_{i0}-w_{j0})=0$
+This is a **Linear Discriminant Function.** The decision surface is thus:
+$$
+\begin{align}
+& g_i(\mathbf{x})-g_j(\mathbf{x})=0 \\ \\
+\implies& \mathbf{w}_i^\top\mathbf{x}+w_{i0}- (\mathbf{w}_j^\top\mathbf{x}+w_{j0})=0 \\ \\
+\implies& (\mathbf{w}_i-\mathbf{w}_j)^\top\mathbf{x}+(w_{i0}-w_{j0})=0 \\ \\
+\implies& (\frac{\mathbf{\mu}_i-\mathbf{\mu}_j}{\sigma^2})^\top\mathbf{x}+(w_{i0}-w_{j0})=0 \\ \\
+\implies& (\mu_i-\mu_j)^\top\mathbf{x}+\sigma^2(w_{i0}-w_{j0})=0 \\ \\
+\implies& (\mu_i-\mu_j)^\top\mathbf{x}+\sigma^2(\frac{-\mu_i^\top\mu_i}{2\sigma^2}-\frac{-\mu_j^\top\mu_j}{2\sigma^2}+\ln\Bigl[P(\omega_i)\Bigr]-\ln\Bigl[P(\omega_j)\Bigr])=0 \\ \\
+\implies & (\mu_i-\mu_j)^\top\mathbf{x}-\frac{1}{2}(\mu_i^\top\mu_i-\mu_j^\top\mu_j)+\sigma^2\ln\Bigl[\frac{P(\omega_i)}{P(\omega_j)}\Bigr]=0 \\ \\
+\implies & (\mu_i-\mu_j)^\top\mathbf{x}-\frac{1}{2}(\mu_i-\mu_j)^\top(\mu_i+\mu_j)+\sigma^2\ln\Bigl[\frac{P(\omega_i)}{P(\omega_j)}\Bigr]=0 \\ \\
+\implies & \mathbf{x}-\frac{1}{2}(\mu_i+\mu_j)+\sigma^2\ln\Bigl[\frac{P(\omega_i)}{P(\omega_j)}\Bigr]\cdot\frac{\mu_i-\mu_j}{\|\mu_i-\mu_j\|^2}=0 \\ \\
+\implies & \mathbf{x}=\frac{1}{2}(\mu_i+\mu_j)-\sigma^2\ln\Bigl[\frac{P(\omega_i)}{P(\omega_j)}\Bigr]\cdot\frac{\mu_i-\mu_j}{\|\mu_i-\mu_j\|^2} \in\mathbb{R}^2
+\end{align}
+$$
 ### Case II: $\Sigma_i=\Sigma$
-- That is, $\Sigma_1=\Sigma_2=\cdots=\Sigma_{|\omega|}=\Sigma$
-	- All the classes have a common covariance matrix $\Sigma$.
-	- More general than Case I.
-	  
-- And the discriminant function $g_i(x)$ is:
-	- $g_i(x)=$
-		- $-\dfrac{1}{2}|\Sigma_i|$
-		- $-\dfrac{1}{2}(X-\mu_i)^\top\Sigma_i^{-1}(X-\mu_i)$
-		- $+\ln[P(\omega_i)]$
- - Here, as $|\Sigma_i|=|\Sigma|$ is a constant, it is ignored. Therefore,
-	 - $g_i(x)=-\dfrac{1}{2}(X-\mu_i)^\top\Sigma^{-1}(X-\mu_i)+\ln P(\omega_i)$
-		 - where $(X-\mu_i)^\top\Sigma^{-1}(X-\mu_i)$ is the **Squared Mahalanobis Distance**.
-		 - When $\Sigma=I$, it reduces to **Euclidean Distance**.
-	- $=-\dfrac{1}{2}(X-\mu_i)^\top(\Sigma^{-1}X-\Sigma^{-1}\mu_i)+\ln P(\omega_i)$
-	- $=-\dfrac{1}{2}(X^\top-\mu_i^\top)(\Sigma^{-1}X-\Sigma^{-1}\mu_i)+\ln P(\omega_i)$
-	- $=-\dfrac{1}{2}(X^\top\Sigma^{-1}X-X^\top\Sigma^{-1}\mu_i-\mu_i^\top\Sigma^{-1}X+\mu_i^\top\Sigma^{-1}\mu_i)+\ln P(\omega_i)$
-	- $=-\dfrac{1}{2}(X^\top\Sigma^{-1}X-2\mu_i^\top\Sigma^{-1}X+\mu_i^\top\Sigma^{-1}\mu_i)+\ln P(\omega_i)$
+That is:
+$$
+\Sigma_1=\Sigma_2=\cdots=\Sigma_{|\omega|}=\Sigma
+$$
+- All the classes have a *Common Covariance Matrix* of $\Sigma$.
+- More general than Case I.
 
-- Here, $X^\top\Sigma^{-1}X$ is the same for all class, thus can be ignored.
-	- $g_i(x)=(\mu_i^\top\Sigma^{-1})X+(-\dfrac{\mu_i^\top\Sigma^{-1}\mu_i}{2}+\ln P(\omega_i))$
-### Case III: $\Sigma_i=arbitrary$
+This is the original discriminant function:
+$$
+g_i(\mathbf{x})=-\frac{1}{2}\ln|\Sigma_i|-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_i)^\top\Sigma_i^{-1}(\mathbf{x}-\mathbf{\mu}_i)+\ln\Bigl[P(\omega_i)\Bigr]
+$$
+Here, $-\frac{1}{2}\ln|\Sigma_i|=-\frac{1}{2}\ln|\Sigma|$ is constant, which could be ignored:
+$$
+\begin{align}
+g_i(\mathbf{x})&=-\frac{1}{2}(\mathbf{x}-\mu_i)^\top\Sigma^{-1}(\mathbf{x}-\mu_i)+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+&= -\frac{1}{2}(\mathbf{x}^\top-\mu_i^\top)\Bigl(\Sigma^{-1}\mathbf{x}-\Sigma^{-1}\mu_i\Bigr)+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+&= -\frac{1}{2}(\mathbf{x}^\top\Sigma^{-1}\mathbf{x}-\mathbf{x}^\top\Sigma^{-1}\mu_i-\mu_i^\top\Sigma^{-1}\mathbf{x}+\mu_i^\top\Sigma^{-1}\mu_i)+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+&= -\frac{1}{2}(\mathbf{x}^\top\Sigma^{-1}\mathbf{x}-2\mu_i^\top\Sigma^{-1}\mathbf{x}+\mu_i^\top\Sigma^{-1}\mu_i)+\ln\Bigl[P(\omega_i)\Bigr]
+\end{align}
+$$
+Here, $\mathbf{x}^\top\Sigma^{-1}\mathbf{x}$ is the same across all classes, thus can be ignored:
+$$
+\begin{align}
+g_i(\mathbf{x})&=\mu_i^\top\Sigma^{-1}\mathbf{x}+(-\frac{\mu_i^\top\Sigma^{-1}\mu_i}{2}+\ln\Bigl[P(\omega_i)\Bigr]) \\ \\
+\end{align}
+$$
+Namely,
+$$
+g_i(\mathbf{x})=\mathbf{w}_i^\top\mathbf{x}+w_{i0}
+$$
+where:
+- $\mathbf{w}_i=\mu_i$ is the weight vector;
+- $w_{i0}=-\frac{1}{2}\mu_i^\top\Sigma^{-1}\mu_i+\ln\Bigl[P(\omega_i)\Bigr]$ is the threshold / bias scalar.
+### Case III: $\Sigma_i$ is arbitrary
 In most cases, for each class $\omega_i$, $\Sigma_i$, the covariance/spread of data in this class is arbitrary.
-
-- $g_i(x)=-\dfrac{1}{2}(X-\mu_i)^\top\Sigma_i^{-1}(X-\mu_i)-\dfrac{1}{2}\ln|\Sigma_i|+\ln P(\omega_i)$
-- $=-\dfrac{1}{2}(X-\mu_i)^\top(\Sigma_i^{-1}X-\Sigma_i^{-1}\mu_i)-\dfrac{1}{2}\ln|\Sigma_i|+\ln P(\omega_i)$
-- $=-\dfrac{1}{2}(X^\top-\mu_i^\top)(\Sigma_i^{-1}X-\Sigma_i^{-1}\mu_i)-\dfrac{1}{2}\ln|\Sigma_i|+\ln P(\omega_i)$
-- $=-\dfrac{1}{2}(X^\top\Sigma_i^{-1}X-X^\top\Sigma_i^{-1}\mu_i-\mu_i^\top\Sigma_i^{-1}X+\mu_i^\top\Sigma_i^{-1}\mu_i)-\dfrac{1}{2}\ln|\Sigma_i|+\ln P(\omega_i)$
-- $=-\dfrac{1}{2}(X^\top\Sigma_i^{-1}X-2\mu_i^\top\Sigma_i^{-1}X+\mu_i^\top\Sigma_i^{-1}\mu_i)-\dfrac{1}{2}\ln|\Sigma_i|+\ln P(\omega_i)$
-- $=X^\top(-\dfrac{1}{2}\Sigma_i^{-1})X+(\mu_i^\top\Sigma_i^{-1})X+(-\dfrac{\mu_i^\top\Sigma^{-1}\mu_i}{2}-\dfrac{\ln|\Sigma_i|}{2}+\ln P(\omega_i))$
-Thus,
-- $g_i(X)=X^\top W_i X + w_i^\top X + w_{i0}$, where
-	- $W_i=-\dfrac{1}{2}\Sigma_i^{-1}$ is the Quadratic matrix.
-	- $w_i=\mu_i^\top\Sigma_i^{-1}$ is the Weight Vector
-	- $w_{i0}=-\dfrac{\mu_i^\top\Sigma^{-1}\mu_i}{2}-\dfrac{\ln|\Sigma_i|}{2}+\ln P(\omega_i)$ is the Threshold/Bias.
-
+This is the original discriminant function:
+$$
+g_i(\mathbf{x})=-\frac{1}{2}\ln|\Sigma_i|-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_i)^\top\Sigma_i^{-1}(\mathbf{x}-\mathbf{\mu}_i)+\ln\Bigl[P(\omega_i)\Bigr]
+$$
+We can derive that:
+$$
+\begin{align}
+g_i(\mathbf{x}) &= -\frac{1}{2}(\mathbf{x}-\mu_i)^\top\Sigma_{i}^{-1}(\mathbf{x}-\mu_i)-\frac{1}{2}\ln|\Sigma_i|+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+&= -\frac{1}{2}(\mathbf{x}^\top-\mu_i^\top)(\Sigma_i^{-1}\mathbf{x}-\Sigma_i^{-1}\mu_i)+(-\frac{1}{2}|\Sigma_i|+\ln\Bigl[P(\omega_i)\Bigr]) \\ \\
+&= -\frac{1}{2}(\mathbf{x}^\top\Sigma_i^{-1}\mathbf{x}-\mathbf{x}^\top\Sigma_i^{-1}\mu_i-\mu_i^\top\Sigma_i^{-1}\mathbf{x}+\mu_i^\top\Sigma_i^{-1}\mu_i)+(-\frac{1}{2}|\Sigma_i|+\ln\Bigl[P(\omega_i)\Bigr]) \\ \\
+&= -\frac{1}{2}(\mathbf{x}^\top\Sigma_i^{-1}\mathbf{x}-2\mu_i^\top\Sigma_i^{-1}\mathbf{x}+\mu_i^\top\Sigma_i^{-1}\mu_i)+(-\frac{1}{2}|\Sigma_i|+\ln\Bigl[P(\omega_i)\Bigr]) \\ \\
+&= -\frac{1}{2}\mathbf{x}^\top\Sigma_I^{-1}\mathbf{x}+\mu_i^\top\Sigma_i^{-1}\mathbf{x}-\frac{1}{2}\mu_i^\top\Sigma_i^{-1}\mu_i-\frac{1}{2}|\Sigma_i|+\ln\Bigl[P(\omega_i)\Bigr] \\ \\
+&= -\frac{1}{2}\mathbf{x}^\top\Sigma_i^{-1}\mathbf{x}+\mu_i^\top\Sigma_i^{-1}\mathbf{x}+(-\frac{\mu_i^\top\Sigma_i^{-1}\mu_i+|\Sigma_i|}{2}+\ln\Bigl[P(\omega_i)\Bigr]) \\ \\
+&=\mathbf{x}^\top(-\frac{1}{2}\Sigma_i^{-1})\mathbf{x}+(\mu_i^\top\Sigma_i^{-1})\mathbf{x}+(-\frac{\mu_i^\top\Sigma_i^{-1}\mu_i+|\Sigma_i|}{2}+\ln\Bigl[P(\omega_i)\Bigr])
+\end{align}
+$$
+Namely,
+$$
+g_i(\mathbf{x})=\mathbf{x}^\top\mathbf{W}_i\mathbf{x}+\mathbf{w}_i^\top\mathbf{x}+w_{i0}
+$$
+where:
+- $\mathbf{W}_i=-\frac{1}{2}\Sigma_i^{-1}$ is the Quadratic matrix.
+- $\mathbf{w}_i=\mu_i^\top\Sigma_i^{-1}$ is the weight vector.
+- $w_{i0}=-\frac{\mu_i^\top\Sigma_i^{-1}\mu_i+|\Sigma_i|}{2}+\ln\Bigl[P(\omega_i)\Bigr]$ is the threshold / bias scalar.
+### Summary
 Again, for special covariance matrices:
 - $\Sigma_i=\sigma^2I$:
 	- Assign $x$ to $\omega_i$ if there is a smaller **Euclidean Distance:** $d_{Euclidean}=\|X-\mu_i\|$
 - $\Sigma_i=\Sigma$:
 	- Assign $x$ to $\omega_i$ if there is a smaller **Mahalanobis Distance:** $d_{Mahalanobis}=\sqrt{(X-\mu_i)^\top\Sigma^{-1}(X-\mu_i)}$
-![[Euclidean_and_Mahalanobis.png]]
 
+![[Euclidean_and_Mahalanobis.png|300]]
 
-# 2.6 (Additional) Geometric Description of Covariance Matrix
-## 2.6.1 Meta Matrices
-Take the 2-D case as an example. Geometrically, the covariance matrix tells how the original Euclidean Space could be transformed into a Mahalanobis space.
-
-The transformation info of a 2-D covariance matrix could be described as:
-- Scale factor: Multiplication
-- Skew factor: Addition
+## 2.5.3 Examples
+**Given:**
+- Two classes: $\omega_1, \omega_2$ 
+- Prior probabilities: 
+	- $P(\omega_1)=P(\omega_2)$.
+- Posterior probabilities:
+	- $P(\mathbf{x}|\omega_1)\sim N(\mu_1,\Sigma)$
+	- $P(\mathbf{x}|\omega_2)\sim N(\mu_2,\Sigma)$
+	- where:
+		- $\mu_1=\begin{pmatrix}0\\0\end{pmatrix}, \mu_2=\begin{pmatrix}3\\3\end{pmatrix}$
+		- $\Sigma=\begin{pmatrix}1.1 & 0.3 \\ 0.3 & 1.9\end{pmatrix}$
+**Do:**
+- Classify $\mathbf{x}=\begin{pmatrix}1.0\\2.2\end{pmatrix}$ using Bayes Classification.
+**Solve:**
+Compute inverse of covariance matrix:
 $$
-\begin{bmatrix} {x_1 \ scale \ factor} & {x_1 \ skew \ factor} \\ {x_2 \ skew \ factor} & {x_2 \ scale \ factor} \end{bmatrix} 
+\begin{align}
+\begin{pmatrix}1.1 & 0.3 \\ 0.3 & 1.9\end{pmatrix}^{-1} &= \frac{1}{1.1\times 1.9-0.3^2}\begin{pmatrix}1.9 & -0.3 \\ -0.3 & 1.1\end{pmatrix} \\ \\
+&= \frac{1}{2}\begin{pmatrix}1.9 & -0.3 \\ -0.3 & 1.1\end{pmatrix} \\ \\
+\Sigma^{-1}&=\begin{pmatrix}0.95 & -0.15 \\ -0.15 & 0.55\end{pmatrix}
+\end{align}
 $$
-### 1. Identity Matrix
-In the trivial case, $I^2$ as the covariance matrix does no effect on the original Euclidean space. The inverse of the identity matrix is itself.
-
-$\Sigma=\Sigma^{-1}=\begin{bmatrix} 1 & 0 \\ 0 & 1\end{bmatrix}$
-![[Matrix_1.png|300]]
-
-### 2. Scales $x_1$
-By setting the $x_1$ scale factor non-1, the matrix scales the Euclidean space on the $x_1$ axis. The inverse of covariance matrix does the opposite, that is to scale a coordinate back. 
-$\Sigma=\begin{bmatrix} 1.2 & 0 \\ 0 & 1\end{bmatrix}$ $\Sigma^{-1}=\begin{bmatrix} \dfrac{1}{1.2} & 0 \\ 0 & 1\end{bmatrix}$
-
-For $v=\begin{bmatrix} v_1 \\ v_2\end{bmatrix}$, $\Sigma\times v=\begin{bmatrix} 1.2 & 0 \\ 0 & 1\end{bmatrix}\begin{bmatrix}v_1 \\ v_2\end{bmatrix}=\begin{bmatrix}1.2v_1 \\ v_2\end{bmatrix}$
-
-![[Matrix_2.png|300]]
-### 3. Scales $x_2$
-By setting the $x_2$ scale factor non-1, the matrix scales the Euclidean space on the $x_2$ axis. The inverse of covariance matrix does the opposite, that is to scale a coordinate back. 
-$\Sigma=\begin{bmatrix} 1 & 0 \\ 0 & 0.8\end{bmatrix}$ $\Sigma^{-1}=\begin{bmatrix} \dfrac{1}{0.8} & 0 \\ 0 & 1\end{bmatrix}$
-
-For $v=\begin{bmatrix} v_1 \\ v_2\end{bmatrix}$, $\Sigma\times v=\begin{bmatrix} 1 & 0 \\ 0 & 0.8\end{bmatrix}\begin{bmatrix}v_1 \\ v_2\end{bmatrix}=\begin{bmatrix}v_1 \\ 0.8v_2\end{bmatrix}$
-![[Matrix_3.png|300]]
-### 4. Skews $x_1$
-By setting the $x_1$ skewing factor non-zero, the matrix pans (平移) the $x_1$ coordinate of a vector by the multiplication of:
-- The factor
-- And the $x_2$ coordinate of that vector.
-
-Therefore, the larger $x_2$ coordinate the vector has, the more it is panned.
-
-$\Sigma=\begin{bmatrix} 1 & 0.2 \\ 0 & 1\end{bmatrix}$ $\Sigma^{-1}=\begin{bmatrix} 1 & -0.2 \\ 0 & 1\end{bmatrix}$
-
-For $v=\begin{bmatrix} v_1 \\ v_2\end{bmatrix}$, $\Sigma\times v=\begin{bmatrix} 1 & 0.2 \\ 0 & 1\end{bmatrix}\begin{bmatrix}v_1 \\ v_2\end{bmatrix}=\begin{bmatrix}v_1+0.2v_2 \\ v_2\end{bmatrix}$
-
-![[Matrix_4.png|300]]
-
-### 5. Skews $x_2$
-By setting the $x_2$ skewing factor non-zero, the matrix pans (平移) the $x_2$ coordinate of a vector by the multiplication of:
-- The factor
-- And the $x_1$ coordinate of that vector.
-
-Therefore, the larger $x_1$ coordinate the vector has, the more it is panned.
-
-$\Sigma=\begin{bmatrix} 1 & 0 \\ 0.2 & 1\end{bmatrix}$ $\Sigma^{-1}=\begin{bmatrix} 1 & 0 \\ -0.2 & 1\end{bmatrix}$
-
-For $v=\begin{bmatrix} v_1 \\ v_2\end{bmatrix}$, $\Sigma\times v=\begin{bmatrix} 1 & 0 \\ 0.2 & 1\end{bmatrix}\begin{bmatrix}v_1 \\ v_2\end{bmatrix}=\begin{bmatrix}v_1 \\ 0.2v_1+v_2\end{bmatrix}$
-
-![[Matrix_5.png|300]]
-
-
-## 2.6.2 Combined Matrices
-Several meta matrices could be combined to a single covariance matrix, performing batch operations.
+Compute *Mahalanobis distance* using $\mu_1$ and $\mu_2$.
 $$
-\begin{bmatrix}1.2 & 0 \\ 0 & 1\end{bmatrix}
-\begin{bmatrix}1 & 0 \\ 0 & 0.8\end{bmatrix}
-\begin{bmatrix}1 & 0.2 \\ 0 & 1\end{bmatrix}
-\begin{bmatrix}1 & 0 \\ 0.2 & 1\end{bmatrix}
+d^2(\mathbf{x},\mu_i)=(\mathbf{x}-\mu_i)^\top\Sigma^{-1}(\mathbf{x}-\mu_i)
 $$
-$=\begin{bmatrix}1.2 & 0 \\ 0 & 0.8\end{bmatrix} \begin{bmatrix}1 & 0.2 \\ 0 & 1\end{bmatrix} \begin{bmatrix}1 & 0 \\ 0.2 & 1\end{bmatrix}$
-
-$=\begin{bmatrix}1.2 & 0.24 \\ 0 & 0.8\end{bmatrix} \begin{bmatrix}1 & 0 \\ 0.2 & 1\end{bmatrix}$
-
-$=\begin{bmatrix}1.2 & 0.24 \\ 0 & 0.8\end{bmatrix} \begin{bmatrix}1 & 0 \\ 0.2 & 1\end{bmatrix}$
-
-$=\begin{bmatrix}1.248 & 0.24 \\ 0.16 & 0.8\end{bmatrix}$
-
- **Calculation of Squared Mahalanobis Distance**
- $d_{M}^2=(X-\mu_i)^\top\Sigma^{-1}(X-\mu_i)=(X-\mu_i)^\top[\Sigma^{-1}(X-\mu_i)]$
- The inverse of the covariance matrix $\Sigma^{-1}$ reverses the transformed space back to its original Euclidean Space to compute the Mahalanobis distance.
- ![[Matrix_6.png|300]]
+$$
+\begin{align}
+& \mathbf{x}-\mu_1=\begin{pmatrix}1.0\\2.2\end{pmatrix}, \ \mathbf{x}-\mu_2=\begin{pmatrix}-2.0\\-0.8\end{pmatrix} \\ \\
+& d^2(\mathbf{x},\mu_1)=\begin{pmatrix}1.0 & 2.2\end{pmatrix}\begin{pmatrix}0.95 & -0.15 \\ -0.15 & 0.55\end{pmatrix}\begin{pmatrix}1.0 \\ 2.2\end{pmatrix}=2.952 \\ \\
+& d^2(\mathbf{x},\mu_2)=\begin{pmatrix}-2.0 & -0.8\end{pmatrix}\begin{pmatrix}0.95 & -0.15 \\ -0.15 & 0.55\end{pmatrix}\begin{pmatrix}-2.0 \\ -0.8\end{pmatrix}=3.672
+\end{align}
+$$
+Therefore, classify $\mathbf{x}\leftarrow\omega_1$, since $d^2(\mathbf{x},\mu_2)> d^2(\mathbf{x},\mu_1)$.
