@@ -1,25 +1,25 @@
 # 2.1 Bayes Decision Theory 贝叶斯决策理论
-Basic Assumptions
+- [i] Basic Assumptions
 - The decision problem is posed in probabilistic terms.
 - **ALL** relevant probability values are known.
 
 ## 2.1.1 Process
-- **Given:**
-	1. A test sample $\mathbf{x}$.
-		- Contains features $\mathbf{x}=\begin{bmatrix}x_1\\x_2\\\vdots\\x_l\end{bmatrix}$.
-		- Often reduced, removed some non-discriminative (un-useful) features.
-	2. A list of classes/patterns $\omega=\{\omega_1,\omega_2,...\omega_c\}$.
-		- Defined by human-being.
-	3. A classification method $M$.
-		- A **database** storing multiple samples with the same type of $x$.
-		- Each sample is assigned to an arbitrary class $\omega_{any}\in\{\omega_1,\omega_2,...\omega_c\}$.
-- **Do:**
-	- $\{P(\omega_1|\mathbf{x}),\cdots,P(\omega_c|\mathbf{x})\}\leftarrow classify(M,\mathbf{x},\omega)$
-	- That is, for all the possible classes, find:
-		- The probability that the given $x$ belongs to that class.
-- **Get:**
-	-  $\omega_{target}(\mathbf{x})=\text{argmax}_{i}\Bigl[P(\omega_i|x)\Bigr], i\in[1,c]$.
-	- That is, assign $x$ a class/pattern from $\omega$ with the **most probable** one.
+**Given:**
+1. A test sample $\mathbf{x}$.
+	- Contains features $\mathbf{x}=\begin{bmatrix}x_1\\x_2\\\vdots\\x_l\end{bmatrix}$.
+	- Often reduced, removed some non-discriminative (un-useful) features.
+2. A list of classes/patterns $\omega=\{\omega_1,\omega_2,...\omega_c\}$.
+	- Defined by human-being.
+3. A classification method $M$.
+	- A **database** storing multiple samples with the same type of $x$.
+	- Each sample is assigned to an arbitrary class $\omega_{any}\in\{\omega_1,\omega_2,...\omega_c\}$.
+**Do:**
+- $\{P(\omega_1|\mathbf{x}),\cdots,P(\omega_c|\mathbf{x})\}\leftarrow classify(M,\mathbf{x},\omega)$
+- That is, for all the possible classes, find:
+	- The probability that the given $x$ belongs to that class.
+**Get:**
+-  $\omega_{target}(\mathbf{x})=\text{argmax}_{i}\Bigl[P(\omega_i|x)\Bigr], i\in[1,c]$.
+- That is, assign $x$ a class/pattern from $\omega$ with the **most probable** one.
 
 **Example**
 MNIST database.
@@ -94,16 +94,18 @@ where:
 $$
 P(\omega_1)=P(\omega_2)=\cdots=P(\omega_c)=\frac{1}{c}
 $$
-	- The amount of members in each class is same.
-	- Posterior probabilities $P(\omega_j|\mathbf{x})$ only depend on likelihoods $P(\mathbf{x}|\omega_j)$.
+
+- The amount of members in each class is same.
+- Posterior probabilities $P(\omega_j|\mathbf{x})$ only depend on likelihoods $P(\mathbf{x}|\omega_j)$.
 
 2. Equal Likelihood
 $$
 P(\mathbf{x}|\omega_1)=P(\mathbf{x}|\omega_2)=\cdots=P(\mathbf{x}|\omega_c)
 $$
-	- The amount of members *that's same to $\mathbf{x}$* in each class is same.
-	- Posterior probabilities $P(\omega_j|\mathbf{x})$ only depend on priors $P(\omega_j)$.
-	- Back to Naïve Decision Rule.
+
+- The amount of members *that's same to $\mathbf{x}$* in each class is same.
+- Posterior probabilities $P(\omega_j|\mathbf{x})$ only depend on priors $P(\omega_j)$.
+- Back to Naïve Decision Rule.
 
 ## 2.2.3 Classification Examples
 **Given:**
