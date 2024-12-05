@@ -114,7 +114,7 @@ $$
 \end{bmatrix}
 \in\mathcal{Y}
 $$
-	- where $\mathbf{x}_1\in\omega_2, \ \mathbf{x}_2\in\omega_1$
+where $\mathbf{x}_1\in\omega_2, \ \mathbf{x}_2\in\omega_1$
 - The learning rate of the current step:
 $$
 \rho_t=\rho=0.7
