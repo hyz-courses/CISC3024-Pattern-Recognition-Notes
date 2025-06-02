@@ -7,6 +7,9 @@
 
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{algorithm2e}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
 
 \begin{document}
 \maketitle
@@ -118,6 +121,78 @@ In the following part of the document, this notation is implicitly used.
 
 \clearpage
 
+\subsection{Perceptron and Hyperplane}
+\begin{description}
+    \item[Definition] A perceptron represents a smart hyperplane. 
+\end{description}
+
+Suppose we have a set of numerical input $\mathbf{x}=\begin{bmatrix}
+    x_{1} & x_{2} & \cdots & x_{l} & 1
+\end{bmatrix}^\top$. A perceptron has:
+\begin{itemize}
+    \item An adder weights $\mathbf{w} \in \mathbb{R}^{l+1}$ that sums the input.
+    \item A smart decision unit $f$ called \textbf{activation function} that activates the sum result by the adder.
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[
+        node distance=1.5cm,
+        input neuron/.style={circle, draw, fill=blue!20, minimum size=12pt, inner sep=0pt},
+        hidden neuron/.style={circle, draw, fill=red!20, minimum size=25pt, inner sep=0pt},
+        block/.style={rectangle, draw, thick, minimum size=12pt, inner sep=5pt},
+        output/.style={right of=block},
+        neuron connection/.style={->, >=stealth, thick}
+    ]
+
+        % Input neurons
+        \foreach \name/\label in {1/x_1, 2/x_2, 3/\vdots, 4/x_l, 5/1}
+        {
+            \node[input neuron] (I-\name) at (0,-\name*1.2) {};
+            \node[left=of I-\name] {$\label$};
+        }
+
+        % Weights
+        \foreach \name/\label in {1/w_1, 2/w_2, 4/w_l, 5/w_0}
+        {
+            \node[right=of I-\name] {$\label$};
+        }
+
+        % Neuron (hidden layer)
+        \node[hidden neuron, right=2.5cm of I-3] (H-1) {};
+        \node[above=0.2cm of H-1] {\textbf{Sum}};
+        
+        % Connections from inputs to neuron
+        \foreach \i in {1,...,5}
+        {
+            \draw[neuron connection] (I-\i) -- (H-1);
+        }
+
+        % Activation function block
+        \node[block, right=of H-1] (activation) {$f$};
+
+        % Output y
+        \node[output, right=of activation] (output) {$y$};
+
+        % Connection from neuron to activation block and then to output
+        \draw[neuron connection] (H-1) -- (activation);
+        \draw[neuron connection] (activation) -- (output);
+
+    \end{tikzpicture}
+    \caption{A Perceptron Neuron with Activation Function Block}
+    \label{fig:perceptron-neuron}
+\end{figure}
+
+A go-through of an input into a perceptron could be described as follows. 
+
+\begin{equation}
+    y = f(\mathbf{w}^\top\mathbf{x})
+\end{equation}
+
+
+
+\clearpage
+
 \subsection{Perceptron Cost Function}
 A \textbf{cost function} $\mathcal{J}(\mathbf{w})_{\delta_{\mathbf{x}}}$ is defined by the following:
 
@@ -131,13 +206,14 @@ A \textbf{cost function} $\mathcal{J}(\mathbf{w})_{\delta_{\mathbf{x}}}$ is defi
 where:
 
 \begin{itemize}
-    \item $\mathcal{X}_{\text{e}} \subset \mathcal{X}$ is a set of all wrongly-classified data samples. Surely, $\mathbf{X}_{\text{e}}$ is a subset of all the data samples $\mathbf{X}$.
+    \item $\mathcal{X}_{\text{e}} \subset \mathcal{X}$ is a set of all wrongly-classified data samples. Surely, $\mathcal{X}_{\text{e}}$ is a subset of all the data samples $\mathcal{X}$.
     \item $\delta_{\mathbf{x}}$ is the cost, i.e., the punishment for this data sample to be different as the ground truth. In this section, we define it as follows: \\ $\delta_{\mathbf{x}}=\begin{cases}-1 & \text{if} \ \mathbf{x}\in\omega_1 \\ +1 & \text{if} \ \mathbf{x}\in\omega_2\end{cases}$
 \end{itemize}
 
-Q:\@ Why is the cost function only accepting the parameter of $\mathbf{w}$? 
-
-A:\@ Because $\mathbf{x}$ are ground-truths that can't be changed. We are finding a hyperplane, i.e., a $\mathbf{w}$ that fits the unchanging  $\mathbf{x}$.
+\begin{description}
+    \item[Q:] Why is the cost function only accepting the parameter of $\mathbf{w}$?
+    \item[A:] Because $\mathbf{x}$ are ground-truths that can't be changed. We are finding a hyperplane, i.e., a $\mathbf{w}$ that fits the unchanging $\mathbf{x}$.
+\end{description}
 
 The gradient of the cost function:
 
